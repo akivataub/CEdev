@@ -51,6 +51,7 @@ void itoa(int num, char* str) {
 
 int endgame(void) {
     gfx_FillScreen(255);
+    
 
 }
 
