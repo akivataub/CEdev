@@ -105,22 +105,22 @@ int main(void) {
             ball_y += ball_vel_y;
             balldrawn = true;
         }
-
-        //hi3
+        
         // 7. Swap the buffer to the screen
         gfx_FillScreen(255);
         if (ifhit == true) {
             gfx_PrintStringXY("HIT", 20, 80);
         }
-        char paddlexs [4];
+        //char paddlexs [4];
         //char bys [4];
         //char byx [4];
-        itoa(paddlex, paddlexs);
+        //itoa(paddlex, paddlexs);
         //itoa(ball_y, bys);
         //itoa(ball_x, byx);
         //gfx_PrintStringXY(bys ,20, 20);
         //gfx_PrintStringXY(byx ,20, 40);
-        gfx_PrintStringXY(paddlexs ,20, 60);
+        //gfx_PrintStringXY(paddlexs ,20, 60);
+
         gfx_FillCircle(ball_x, ball_y, 2);
         gfx_FillRectangle(paddlex, paddley, paddle_width, paddle_height);
         gfx_SwapDraw();
