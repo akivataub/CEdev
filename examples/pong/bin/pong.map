@@ -7,9 +7,9 @@ Section          Base   Top    High   Length
 .init.reruncheck D1AA4A D1AA4A             0h
 .init            D1AA4A D1AA74            2Ah
 .fini            D1AA74 D1AAA8            34h
-.text            D1AAA8 D1AE1C           374h
-.data            D1AE1C D1AE1F             3h
-.rodata          D1AE1F D1AE41            22h
+.text            D1AAA8 D1AE12           36Ah
+.data            D1AE12 D1AE15             3h
+.rodata          D1AE15 D1AE37            22h
 .init_array      000000 000000             0h
 .ctors           000000 000000             0h
 .dtors           000000 000000             0h
@@ -47,10 +47,10 @@ _os_DisableHomeTextBuffer  = D1ABD4
 _os_EnableHomeTextBuffer   = D1ABE6
 ___sleep_common.3          = D1ABFA
 _clock                     = D1AC13
-.missingappvar             = D1AE1F
-.libloadname               = D1AE24
+.missingappvar             = D1AE15
+.libloadname               = D1AE1A
 .libloadnamelen            = 000007
-.webaddress                = D1AE2C
+.webaddress                = D1AE22
 ___init_clock              = D1AA2F
 __start                    = D1AA4A
 ___exithl                  = D1AA74
@@ -62,7 +62,7 @@ _exit.flash_wait_states    = D1AA7F
 _itoa                      = D1AC1E
 _main                      = D1ACCE
 _paddlex                   = D052C6
-_paddley                   = D1AE1C
+_paddley                   = D1AE12
 _ball_x                    = D052C9
 _ball_y                    = D052CC
 _ball_vel_x                = D052CF

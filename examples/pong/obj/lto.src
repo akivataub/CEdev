@@ -160,24 +160,19 @@ BB1_9:
 	jr	nz, BB1_11
 	ld	hl, (_ball_vel_y)
 	call	__ineg
-	push	hl
-	pop	iy
-	ld	(_ball_vel_y), iy
-	ld	hl, (_ball_vel_x)
-	call	__ineg
-	push	hl
-	pop	bc
+	ld	(_ball_vel_y), hl
+	ld	bc, 0
 	ld	(_ball_vel_x), bc
 	jr	BB1_12
 BB1_11:
 	ld	bc, (_ball_vel_x)
-	ld	iy, (_ball_vel_y)
+	ld	hl, (_ball_vel_y)
 BB1_12:
-	ld	hl, (_ball_x)
-	add	hl, bc
-	ld	(_ball_x), hl
-	add	iy, de
-	ld	(_ball_y), iy
+	ld	iy, (_ball_x)
+	add	iy, bc
+	ld	(_ball_x), iy
+	add	hl, de
+	ld	(_ball_y), hl
 	scf
 	sbc	hl, hl
 	push	hl
