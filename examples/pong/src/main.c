@@ -161,7 +161,7 @@ int main(void) {
         delay(20);
 
         endgame:
-        if ()
+        if () {
         gfx_FillScreen(255);
         gfx_PrintStringXY("Play Again?", 20, 10);
         gfx_PrintStringXY("> Yes", 30, 20);
@@ -202,7 +202,7 @@ int main(void) {
                 gfx_FillScreen(255);
                 break;
             }
-
+        }
     }
             
 
