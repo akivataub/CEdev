@@ -10,22 +10,16 @@
 
 int ball_x, ball_y;
 int ball_vel_x, ball_vel_y;
-
-int paddle_left_y = 120;
-int paddle_right_y = 120;
     
-int score_left_person = 4;
+int score_left_person = 0;
 int score_right_person = 0;
-int lastscorelp = 4;
+int lastscorelp = 0;
 int lastscorerp = 0;
 
 int paddlex = 2;
 int paddley = 160;
 
 int menuitem = 1;
-
-int lastbpm;
-int currentbpm;
 
 bool endg = false;
 
@@ -57,7 +51,8 @@ void itoa(int num, char* str) {
 int main(void) {
     startgame:
     
-    
+    score_left_person = 0;
+    lastscorelp = 0;
 
     endg = false;
 
