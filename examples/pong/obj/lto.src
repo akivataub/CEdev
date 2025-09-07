@@ -244,17 +244,20 @@ BB1_7:
 BB1_9:
 	push	de
 	pop	hl
-	add	hl, bc
+	ld	bc, 3
 	or	a, a
 	sbc	hl, bc
-	jr	z, BB1_11
+	call	pe, __setflag
+	ld	hl, 1
+	jp	p, BB1_11
 	ex	de, hl
-	ld	de, 3
+	ld	de, 1
 	or	a, a
 	sbc	hl, de
-	jp	nz, BB1_1
+	call	pe, __setflag
+	ld	hl, 2
+	jp	p, BB1_1
 BB1_11:
-	ld	hl, 1
 	ld	(_menuitem), hl
 	jp	BB1_1
 	section	.text,"ax",@progbits
