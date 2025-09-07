@@ -9,13 +9,23 @@ cd "$REPO_DIR" || {
     exit 1
 }
 
+# Stage and commit any unstaged changes
+git add .
+if ! git diff-index --quiet HEAD --; then
+    git commit -m "Auto-commit unstaged changes: $(date)" && {
+        echo "$(date): Committed unstaged changes" >> "$LOG_FILE"
+    } || {
+        echo "$(date): Commit of unstaged changes failed" >> "$LOG_FILE"
+    }
+fi
+
 # Pull latest changes to avoid conflicts
 git pull origin main --rebase || {
     echo "$(date): Pull failed" >> "$LOG_FILE"
     exit 1
 }
 
-# Add all files
+# Add all files (in case new files were added after pull)
 git add .
 
 # Commit changes (only if there are changes)
