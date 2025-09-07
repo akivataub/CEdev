@@ -90,7 +90,7 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, -11
+	ld	hl, -14
 	call	__frameset
 	xor	a, a
 	ld	hl, 10
@@ -104,6 +104,7 @@ BB1_1:
 	ld	(_ball_vel_x), de
 	ld	(_ball_vel_y), de
 	call	_gfx_Begin
+BB1_2:
 	ld	hl, -720868
 	push	de
 	ld	e, (hl)
@@ -114,7 +115,7 @@ BB1_1:
 	pop	de
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_41
+	jp	nz, BB1_42
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
@@ -127,40 +128,40 @@ BB1_1:
 	ld.sis	bc, 1
 	call	__sand
 	bit	0, l
-	jr	nz, BB1_6
+	jr	nz, BB1_7
 	ld	l, (iy)
 	ld	h, (iy + 1)
 	ld	a, l
 	ld	iy, (_paddley)
 	bit	3, a
-	jr	z, BB1_5
+	jr	z, BB1_6
 	lea	hl, iy
 	ld	de, 1
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	p, BB1_8
-BB1_5:
-	lea	hl, iy
-	jr	BB1_10
+	jp	p, BB1_9
 BB1_6:
+	lea	hl, iy
+	jr	BB1_11
+BB1_7:
 	ld	iy, (_paddley)
 	lea	hl, iy
 	ld	de, 220
 	or	a, a
 	sbc	hl, de
 	ld	hl, 220
-	jr	z, BB1_10
+	jr	z, BB1_11
 	ld	de, 3
-	jr	BB1_9
-BB1_8:
-	ld	de, -3
+	jr	BB1_10
 BB1_9:
+	ld	de, -3
+BB1_10:
 	add	iy, de
 	lea	hl, iy
 	ld	(_paddley), hl
-BB1_10:
-	ld	(ix - 11), hl
+BB1_11:
+	ld	(ix - 14), hl
 	ld	hl, (_ball_x)
 	ld	bc, (_paddlex)
 	push	bc
@@ -168,53 +169,51 @@ BB1_10:
 	ld	de, 4
 	add	iy, de
 	ld	de, (_ball_y)
+	ld	(ix - 11), de
 	ld	(ix - 8), hl
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
-	jp	m, BB1_15
+	ld	de, 20
+	jp	m, BB1_16
 	lea	hl, iy
-	push	de
-	pop	bc
-	ld	de, (ix - 8)
-	or	a, a
-	sbc	hl, de
-	push	bc
-	pop	de
-	call	pe, __setflag
-	jp	m, BB1_15
-	ld	iy, (ix - 11)
-	ld	bc, 20
-	add	iy, bc
-	push	de
-	pop	hl
-	ld	bc, (ix - 11)
+	ld	bc, (ix - 8)
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
-	jp	m, BB1_15
+	jp	m, BB1_16
+	ld	bc, (ix - 14)
+	push	bc
+	pop	iy
+	add	iy, de
+	ld	hl, (ix - 11)
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	jp	m, BB1_16
 	lea	hl, iy
+	ld	de, (ix - 11)
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	m, BB1_15
+	jp	m, BB1_16
 	ld	hl, (_ball_vel_x)
 	call	__ineg
 	ld	(_ball_vel_x), hl
-BB1_15:
-	push	de
+BB1_16:
+	ld	hl, (ix - 11)
+	push	hl
 	pop	iy
-	ex	de, hl
 	ld	de, -238
 	add	hl, de
 	inc	de
 	or	a, a
 	sbc	hl, de
-	jr	nc, BB1_17
+	jr	nc, BB1_18
 	ld	hl, (_ball_vel_y)
 	call	__ineg
 	ld	(_ball_vel_y), hl
-BB1_17:
+BB1_18:
 	ld	bc, (ix - 8)
 	push	bc
 	pop	hl
@@ -222,14 +221,19 @@ BB1_17:
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	p, BB1_21
+	jp	m, BB1_20
+	ld	hl, (_ball_vel_x)
+	call	__ineg
+	ld	(_ball_vel_x), hl
+	jp	BB1_24
+BB1_20:
 	push	bc
 	pop	hl
 	ld	de, 3
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	p, BB1_22
+	jp	p, BB1_23
 	ld	hl, (_score_left_person)
 	ld	(_lastscorelp), hl
 	inc	hl
@@ -250,12 +254,12 @@ BB1_17:
 	ld	de, 5
 	or	a, a
 	sbc	hl, de
-	jp	z, BB1_24
+	jp	nz, BB1_41
 	ld	hl, 30
 	push	hl
 	ld	hl, 20
 	push	hl
-	ld	hl, _.str.1
+	ld	hl, _.str
 	push	hl
 	call	_gfx_PrintStringXY
 	pop	hl
@@ -272,18 +276,12 @@ BB1_17:
 	push	hl
 	call	_delay
 	pop	hl
-	ld	hl, 10
-	ld	de, 2
-	xor	a, a
-	jp	BB1_1
-BB1_21:
-	ld	hl, (_ball_vel_x)
-	call	__ineg
-	ld	(_ball_vel_x), hl
-	jr	BB1_23
-BB1_22:
-	ld	hl, (_ball_vel_x)
+	ld	a, 1
+	ld	(_endg), a
+	jr	BB1_25
 BB1_23:
+	ld	hl, (_ball_vel_x)
+BB1_24:
 	lea	de, iy
 	add	hl, bc
 	ld	(_ball_x), hl
@@ -336,39 +334,9 @@ BB1_23:
 	pop	hl
 	pop	hl
 	pop	hl
-	call	_gfx_SwapDraw
-	ld	hl, 20
-	push	hl
-	call	_delay
-	pop	hl
 	ld	a, (_endg)
 	or	a, a
-	jr	nz, BB1_25
-	jp	BB1_40
-BB1_24:
-	ld	hl, 30
-	push	hl
-	ld	hl, 20
-	push	hl
-	ld	hl, _.str
-	push	hl
-	call	_gfx_PrintStringXY
-	pop	hl
-	pop	hl
-	pop	hl
-	ld	hl, 1
-	push	hl
-	push	hl
-	call	_gfx_SetTextScale
-	pop	hl
-	pop	hl
-	call	_gfx_SwapDraw
-	ld	hl, 1500
-	push	hl
-	call	_delay
-	pop	hl
-	ld	a, 1
-	ld	(_endg), a
+	jp	z, BB1_40
 BB1_25:
 	scf
 	sbc	hl, hl
@@ -552,8 +520,40 @@ BB1_38:
 	call	_gfx_FillScreen
 	pop	hl
 BB1_40:
-	call	_gfx_End
+	call	_gfx_SwapDraw
+	ld	hl, 20
+	push	hl
+	call	_delay
+	pop	hl
+	jp	BB1_2
 BB1_41:
+	ld	hl, 30
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, _.str.1
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	ld	hl, 1500
+	push	hl
+	call	_delay
+	pop	hl
+	xor	a, a
+	ld	hl, 10
+	ld	de, 2
+	jp	BB1_1
+BB1_42:
+	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
 	ld	sp, ix

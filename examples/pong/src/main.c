@@ -162,8 +162,6 @@ int main(void) {
         //drawing ball and paddle
         gfx_FillCircle(ball_x, ball_y, 2);
         gfx_FillRectangle(paddlex, paddley, paddle_width, paddle_height);
-        gfx_SwapDraw();
-        delay(20);
 
         endgame:
         if (endg == true) {
@@ -209,10 +207,11 @@ int main(void) {
             }
         }
     }
-            
+    gfx_SwapDraw();
+    delay(20);
+}        
 
     gfx_End();
 
     return 0;
-}
 }
