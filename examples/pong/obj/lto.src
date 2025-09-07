@@ -90,14 +90,14 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	iy, 160
+	ld	hl, 160
 	ld	de, 120
 	ld	bc, -3
-	ld	hl, 2
-	ld	(_ball_x), iy
+	ld	iy, -2
+	ld	(_ball_x), hl
 	ld	(_ball_y), de
 	ld	(_ball_vel_x), bc
-	ld	(_ball_vel_y), hl
+	ld	(_ball_vel_y), iy
 	call	_gfx_Begin
 	ld	hl, (_paddley)
 	ld	de, _paddleystring
@@ -153,15 +153,13 @@ BB1_8:
 	ld	(_paddley), iy
 BB1_9:
 	ld	de, (_ball_vel_x)
-	inc	de
-	ld	(_ball_vel_x), de
-	ld	bc, (_ball_vel_y)
-	inc	bc
-	ld	(_ball_vel_y), bc
 	ld	hl, (_ball_x)
 	add	hl, de
 	ld	(_ball_x), hl
-	ld	(_ball_y), bc
+	ld	de, (_ball_vel_y)
+	ld	hl, (_ball_y)
+	add	hl, de
+	ld	(_ball_y), hl
 	scf
 	sbc	hl, hl
 	push	hl
