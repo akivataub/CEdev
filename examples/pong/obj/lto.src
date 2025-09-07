@@ -124,6 +124,11 @@ _endgame:
 	pop	hl
 	pop	hl
 	pop	hl
+	ld	hl, 5000
+	push	hl
+	call	_delay
+	pop	hl
+	call	_gfx_SwapDraw
 	or	a, a
 	sbc	hl, hl
 	ret
