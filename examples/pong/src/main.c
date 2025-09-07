@@ -85,7 +85,9 @@ int main(void) {
         // Draw the ball
         // Draw the scores
         if (ball_y == 238) {
-            ball_vel_y = ;
+            ball_vel_y = ball_vel_y - ball_vel_y;
+            ball_vel_x = ball_vel_x - ball_vel_x;
+
         }
 
         if (balldrawn == false) {
