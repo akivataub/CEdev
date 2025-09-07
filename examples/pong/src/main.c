@@ -66,7 +66,7 @@ int main(void) {
                 {
                     
                 } else {
-                paddley = paddley + 5;
+                paddley = paddley + 3;
                 }
             }
             else if (kb_IsDown(kb_KeyUp)) {
@@ -74,7 +74,7 @@ int main(void) {
                 {
                     
                 } else {
-                paddley = paddley - 5;
+                paddley = paddley - 3;
                 }
             }
 
