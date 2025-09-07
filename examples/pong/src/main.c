@@ -104,6 +104,7 @@ int main(void) {
         //hi3
         // 7. Swap the buffer to the screen
         gfx_FillScreen(255);
+        char paddlex [4];
         char bys [4];
         char byx [4];
         itoa(ball_y, bys);
