@@ -248,16 +248,18 @@ BB1_9:
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
-	ld	hl, 1
+	ld	hl, -1
 	jp	p, BB1_11
-	ex	de, hl
-	ld	de, 1
+	push	de
+	pop	hl
+	ld	bc, 1
 	or	a, a
-	sbc	hl, de
+	sbc	hl, bc
 	call	pe, __setflag
-	ld	hl, 2
+	ld	hl, 1
 	jp	p, BB1_1
 BB1_11:
+	add	hl, de
 	ld	(_menuitem), hl
 	jp	BB1_1
 	section	.text,"ax",@progbits
