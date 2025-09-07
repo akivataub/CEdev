@@ -321,8 +321,12 @@ BB1_23:
 	push	hl
 	push	hl
 	call	_gfx_SetTextScale
-	ld	de, 2
 	pop	hl
+	pop	hl
+	ld	hl, 1000
+	push	hl
+	call	_delay
+	ld	de, 2
 	pop	hl
 	ld	hl, 10
 	jp	BB1_1
