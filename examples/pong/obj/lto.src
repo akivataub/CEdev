@@ -92,14 +92,14 @@ BB0_7:
 _main:
 	ld	hl, -14
 	call	__frameset
-	ld	de, 1
 	ld	hl, 3
+	ld	de, 2
 	lea	bc, ix - 2
 	ld	(ix - 5), bc
-	ld	(_ball_x), de
-	ld	(_ball_y), de
-	ld	(_ball_vel_x), hl
-	ld	(_ball_vel_y), hl
+	ld	(_ball_x), hl
+	ld	(_ball_y), hl
+	ld	(_ball_vel_x), de
+	ld	(_ball_vel_y), de
 	call	_gfx_Begin
 BB1_1:
 	ld	hl, -720868
