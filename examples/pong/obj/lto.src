@@ -150,10 +150,10 @@ BB1_7:
 	sbc	hl, de
 	ld	hl, 220
 	jr	z, BB1_11
-	ld	de, 5
+	ld	de, 3
 	jr	BB1_10
 BB1_9:
-	ld	de, -5
+	ld	de, -3
 BB1_10:
 	add	iy, de
 	lea	hl, iy
@@ -167,30 +167,32 @@ BB1_11:
 	ld	de, 4
 	add	iy, de
 	ld	de, (_ball_y)
-	ld	(ix - 11), de
 	ld	(ix - 8), hl
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
-	ld	de, 20
+	ld	(ix - 11), de
 	jp	m, BB1_16
 	lea	hl, iy
-	ld	bc, (ix - 8)
+	ld	de, (ix - 8)
 	or	a, a
-	sbc	hl, bc
+	sbc	hl, de
+	ld	de, (ix - 11)
 	call	pe, __setflag
 	jp	m, BB1_16
 	ld	bc, (ix - 14)
 	push	bc
 	pop	iy
+	ld	de, 20
 	add	iy, de
-	ld	hl, (ix - 11)
+	ld	de, (ix - 11)
+	push	de
+	pop	hl
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
 	jp	m, BB1_16
 	lea	hl, iy
-	ld	de, (ix - 11)
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
@@ -198,12 +200,8 @@ BB1_11:
 	ld	hl, (_ball_vel_x)
 	call	__ineg
 	ld	(_ball_vel_x), hl
-	ld	a, 1
-	ld	(_ifhit), a
 BB1_16:
-	ld	hl, (ix - 11)
-	push	hl
-	pop	iy
+	ex	de, hl
 	ld	de, -238
 	add	hl, de
 	inc	de
@@ -236,7 +234,7 @@ BB1_20:
 	jp	m, BB1_23
 	ld	hl, (_ball_vel_x)
 BB1_22:
-	lea	de, iy
+	ld	de, (ix - 11)
 	add	hl, bc
 	ld	(_ball_x), hl
 	ld	hl, (_ball_vel_y)
@@ -246,18 +244,6 @@ BB1_22:
 	sbc	hl, hl
 	push	hl
 	call	_gfx_FillScreen
-	pop	hl
-	ld	a, (_ifhit)
-	bit	0, a
-	ld	hl, 80
-	push	hl
-	ld	hl, 20
-	push	hl
-	ld	hl, _.str
-	push	hl
-	call	nz, _gfx_PrintStringXY
-	pop	hl
-	pop	hl
 	pop	hl
 	ld	hl, (_score_left_person)
 	ld	de, (ix - 5)
@@ -310,8 +296,35 @@ BB1_23:
 	ld	(_lastscorelp), hl
 	inc	hl
 	ld	(_score_left_person), hl
-	ld	hl, 10
+	scf
+	sbc	hl, hl
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+	ld	hl, 2
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	ld	hl, 30
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, _.str
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
 	ld	de, 2
+	pop	hl
+	pop	hl
+	ld	hl, 10
 	jp	BB1_1
 BB1_24:
 	call	_gfx_End
@@ -363,11 +376,6 @@ _paddley:
 	dl	160
 
 	section	.bss,"aw",@nobits
-	public	_ifhit
-_ifhit:
-	rb	1
-
-	section	.bss,"aw",@nobits
 	public	_ball_x
 _ball_x:
 	rb	3
@@ -390,7 +398,7 @@ _ball_vel_y:
 	section	.rodata,"a",@progbits
 	private	_.str
 _.str:
-	db	"HIT", 0
+	db	"Right Scores!", 0
 
 	ident	"clang version 15.0.0 (https://github.com/CE-Programming/llvm-project 23b78267b5d376b232475d0805a937e54b61e0d0)"
 	extern	__Unwind_SjLj_Register
@@ -408,6 +416,7 @@ _.str:
 	extern	_gfx_SetColor
 	extern	__ineg
 	extern	_delay
-	extern	_gfx_PrintStringXY
 	extern	_gfx_FillCircle
+	extern	_gfx_PrintStringXY
 	extern	_gfx_End
+	extern	_gfx_SetTextScale

@@ -2,75 +2,74 @@ Section          Base   Top    High   Length
 ---------------- ------ ------ ------ -------
 .icon            D1A882 D1A99A           118h
 .init.libs       D1A99A D1A9F2            58h
-.libs            D1A9F2 D1AA33            41h
-.init.clock      D1AA33 D1AA4E            1Bh
-.init.reruncheck D1AA4E D1AA4E             0h
-.init            D1AA4E D1AA78            2Ah
-.fini            D1AA78 D1AAAC            34h
-.text            D1AAAC D1AF15           469h
-.data            D1AF15 D1AF1B             6h
-.rodata          D1AF1B D1AF41            26h
+.libs            D1A9F2 D1AA37            45h
+.init.clock      D1AA37 D1AA52            1Bh
+.init.reruncheck D1AA52 D1AA52             0h
+.init            D1AA52 D1AA7C            2Ah
+.fini            D1AA7C D1AAB0            34h
+.text            D1AAB0 D1AF2B           47Bh
+.data            D1AF2B D1AF31             6h
+.rodata          D1AF31 D1AF61            30h
 .init_array      000000 000000             0h
 .ctors           000000 000000             0h
 .dtors           000000 000000             0h
 .fini_array      000000 000000             0h
-.bss             D052C6 D052D9 D13FD8     13h
+.bss             D052C6 D052D8 D13FD8     12h
 .header          D1A87F D1A882             3h
 
 Label                        Value
 --------------------------   ------
 ___low_bss                 = D052C6
-___len_bss                 = 000013
+___len_bss                 = 000012
 ___heaptop                 = D13FD8
-___heapbot                 = D052D9
+___heapbot                 = D052D8
 ___libs                    = D1A9F2
 ___init_array_count        = 000000
 ___ctors_count             = 000000
 ___dtors_count             = 000000
 ___fini_array_count        = 000000
 __stack                    = D1A87E
-__frameset                 = D1AAAC
-__idivu                    = D1AABA
-__idvrmu                   = D1AAC2
-__ineg                     = D1AADA
-__ishru                    = D1AAE3
-__lmulu                    = D1AB24
+__frameset                 = D1AAB0
+__idivu                    = D1AABE
+__idvrmu                   = D1AAC6
+__ineg                     = D1AADE
+__ishru                    = D1AAE7
+__lmulu                    = D1AB28
 __ftol                     = 00027C
 __ftoul                    = 00027C
 __ltof                     = 000284
 __setflag                  = 000218
 __ultof                    = 000280
-__sand                     = D1AB80
-_atomic_load_increasing_32 = D1AB89
-_delay                     = D1ABAE
-_os_DisableHomeTextBuffer  = D1ABD8
-_os_EnableHomeTextBuffer   = D1ABEA
-___sleep_common.3          = D1ABFE
-_clock                     = D1AC17
-.missingappvar             = D1AF1B
-.libloadname               = D1AF20
+__sand                     = D1AB84
+_atomic_load_increasing_32 = D1AB8D
+_delay                     = D1ABB2
+_os_DisableHomeTextBuffer  = D1ABDC
+_os_EnableHomeTextBuffer   = D1ABEE
+___sleep_common.3          = D1AC02
+_clock                     = D1AC1B
+.missingappvar             = D1AF31
+.libloadname               = D1AF36
 .libloadnamelen            = 000007
-.webaddress                = D1AF28
-___init_clock              = D1AA33
-__start                    = D1AA4E
-___exithl                  = D1AA78
-skip._exit                 = D1AA78
-skip.__Exit                = D1AA78
-skip._abort                = D1AA78
-_exit.sp                   = D1AA79
-_exit.flash_wait_states    = D1AA83
-_itoa                      = D1AC22
-_main                      = D1ACD2
+.webaddress                = D1AF3E
+___init_clock              = D1AA37
+__start                    = D1AA52
+___exithl                  = D1AA7C
+skip._exit                 = D1AA7C
+skip.__Exit                = D1AA7C
+skip._abort                = D1AA7C
+_exit.sp                   = D1AA7D
+_exit.flash_wait_states    = D1AA87
+_itoa                      = D1AC26
+_main                      = D1ACD6
 _score_left_person         = D052C6
 _lastscorelp               = D052C9
-_paddlex                   = D1AF15
-_paddley                   = D1AF18
-_ifhit                     = D052CC
-_ball_x                    = D052CD
-_ball_y                    = D052D0
-_ball_vel_x                = D052D3
-_ball_vel_y                = D052D6
-_.str                      = D1AF3D
+_paddlex                   = D1AF2B
+_paddley                   = D1AF2E
+_ball_x                    = D052CC
+_ball_y                    = D052CF
+_ball_vel_x                = D052D2
+_ball_vel_y                = D052D5
+_.str                      = D1AF53
 lib.LibLoad                = D1A9F2
 _#gfx_Begin                = D1AA05
 _#gfx_End                  = D1AA09
@@ -80,4 +79,5 @@ _#gfx_SwapDraw             = D1AA15
 _#gfx_PrintStringXY        = D1AA19
 _#gfx_FillCircle           = D1AA1D
 _#gfx_FillRectangle        = D1AA21
-_#kb_Scan                  = D1AA2F
+_#gfx_SetTextScale         = D1AA25
+_#kb_Scan                  = D1AA33
