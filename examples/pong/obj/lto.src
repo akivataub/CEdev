@@ -324,7 +324,7 @@ BB1_23:
 	pop	hl
 	pop	hl
 	call	_gfx_SwapDraw
-	ld	hl, 1000
+	ld	hl, 1500
 	push	hl
 	call	_delay
 	ld	de, 2
