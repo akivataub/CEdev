@@ -103,12 +103,12 @@ int main(void) {
             balldrawn = true;
         }
 
-        if (ifhit == true) {
-            gfx_PrintStringXY("HIT", 20, 80);
-        }
         //hi3
         // 7. Swap the buffer to the screen
         gfx_FillScreen(255);
+        if (ifhit == true) {
+            gfx_PrintStringXY("HIT", 20, 80);
+        }
         char paddlexs [4];
         //char bys [4];
         //char byx [4];

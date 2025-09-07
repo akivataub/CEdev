@@ -166,15 +166,15 @@ BB1_10:
 	ld	de, 4
 	add	iy, de
 	ld	de, (_ball_y)
-	ld	(ix - 13), de
-	ld	(ix - 7), hl
+	ld	(ix - 7), de
+	ld	(ix - 13), hl
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
 	ld	de, 20
 	jp	m, BB1_15
 	lea	hl, iy
-	ld	bc, (ix - 7)
+	ld	bc, (ix - 13)
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
@@ -183,13 +183,13 @@ BB1_10:
 	push	bc
 	pop	iy
 	add	iy, de
-	ld	hl, (ix - 13)
+	ld	hl, (ix - 7)
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
 	jp	m, BB1_15
 	lea	hl, iy
-	ld	de, (ix - 13)
+	ld	de, (ix - 7)
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
@@ -200,26 +200,26 @@ BB1_10:
 	ld	a, 1
 	ld	(_ifhit), a
 BB1_15:
-	ld	hl, (ix - 13)
-	push	hl
-	pop	de
-	ld	bc, -238
-	add	hl, bc
-	inc	bc
+	ld	hl, (ix - 7)
+	ld	de, -238
+	add	hl, de
+	inc	de
 	or	a, a
-	sbc	hl, bc
+	sbc	hl, de
 	jr	nc, BB1_17
 	ld	hl, (_ball_vel_y)
 	call	__ineg
 	ld	(_ball_vel_y), hl
 BB1_17:
-	ld	hl, (ix - 7)
-	ld	bc, -318
-	add	hl, bc
+	ld	bc, (ix - 13)
+	push	bc
+	pop	hl
+	ld	de, -318
+	add	hl, de
 	ld	iy, (_ball_vel_x)
-	inc	bc
+	inc	de
 	or	a, a
-	sbc	hl, bc
+	sbc	hl, de
 	jr	nc, BB1_19
 	lea	hl, iy
 	call	__ineg
@@ -227,12 +227,17 @@ BB1_17:
 	pop	iy
 	ld	(_ball_vel_x), iy
 BB1_19:
-	ld	bc, (ix - 7)
+	ld	de, (ix - 7)
 	add	iy, bc
 	ld	(_ball_x), iy
 	ld	hl, (_ball_vel_y)
 	add	hl, de
 	ld	(_ball_y), hl
+	scf
+	sbc	hl, hl
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
 	ld	a, (_ifhit)
 	bit	0, a
 	ld	hl, 80
@@ -244,11 +249,6 @@ BB1_19:
 	call	nz, _gfx_PrintStringXY
 	pop	hl
 	pop	hl
-	pop	hl
-	scf
-	sbc	hl, hl
-	push	hl
-	call	_gfx_FillScreen
 	pop	hl
 	ld	hl, (_paddlex)
 	ld	de, (ix - 10)
