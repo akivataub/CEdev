@@ -25,6 +25,7 @@ int paddley = 160;
 int menuitem = 1;
 
 int lastbpm;
+int currentbpm;
 
 //bool ifhit = false; TEST
 //char paddleystring[4]; TEST
@@ -58,14 +59,16 @@ int endgame(void) {
     gfx_PrintStringXY("  No", 30, 30);
     while (1) {
         kb_Scan();
-        if 
+        if (lastbpm == )
         if (kb_IsDown(kb_KeyDown)) {
             menuitem = menuitem + 1;
             lastbpm = 1;
+            currentbpm = 3;
         }
         if (kb_IsDown(kb_KeyUp)) {
             menuitem = menuitem - 1;
-            lastbpm = 2
+            lastbpm = 2;
+            currentbpm = 4;
         }
         if (menuitem == 1) {
             gfx_FillScreen(255);
