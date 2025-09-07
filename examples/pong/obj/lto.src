@@ -88,21 +88,63 @@ BB0_7:
 	section	.text,"ax",@progbits
 
 	section	.text,"ax",@progbits
+	public	_endgame
+_endgame:
+	scf
+	sbc	hl, hl
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, _.str
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, 30
+	push	hl
+	ld	hl, _.str.1
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 30
+	push	hl
+	push	hl
+	ld	hl, _.str.2
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, -14
+	ld	hl, -11
 	call	__frameset
 	ld	hl, 10
 	ld	de, 2
 	lea	bc, ix - 2
 	ld	(ix - 5), bc
-BB1_1:
+BB2_1:
 	ld	(_ball_x), hl
 	ld	(_ball_y), hl
 	ld	(_ball_vel_x), de
 	ld	(_ball_vel_y), de
 	call	_gfx_Begin
-BB1_2:
+BB2_2:
 	ld	hl, -720868
 	push	de
 	ld	e, (hl)
@@ -113,7 +155,7 @@ BB1_2:
 	pop	de
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_24
+	jp	nz, BB2_25
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
@@ -126,40 +168,40 @@ BB1_2:
 	ld.sis	bc, 1
 	call	__sand
 	bit	0, l
-	jr	nz, BB1_7
+	jr	nz, BB2_7
 	ld	l, (iy)
 	ld	h, (iy + 1)
 	ld	a, l
 	ld	iy, (_paddley)
 	bit	3, a
-	jr	z, BB1_6
+	jr	z, BB2_6
 	lea	hl, iy
 	ld	de, 1
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	p, BB1_9
-BB1_6:
+	jp	p, BB2_9
+BB2_6:
 	lea	hl, iy
-	jr	BB1_11
-BB1_7:
+	jr	BB2_11
+BB2_7:
 	ld	iy, (_paddley)
 	lea	hl, iy
 	ld	de, 220
 	or	a, a
 	sbc	hl, de
 	ld	hl, 220
-	jr	z, BB1_11
+	jr	z, BB2_11
 	ld	de, 3
-	jr	BB1_10
-BB1_9:
+	jr	BB2_10
+BB2_9:
 	ld	de, -3
-BB1_10:
+BB2_10:
 	add	iy, de
 	lea	hl, iy
 	ld	(_paddley), hl
-BB1_11:
-	ld	(ix - 14), hl
+BB2_11:
+	ld	(ix - 11), hl
 	ld	hl, (_ball_x)
 	ld	bc, (_paddlex)
 	push	bc
@@ -170,48 +212,51 @@ BB1_11:
 	ld	(ix - 8), hl
 	or	a, a
 	sbc	hl, bc
+	push	de
+	pop	bc
 	call	pe, __setflag
-	ld	(ix - 11), de
-	jp	m, BB1_16
+	jp	m, BB2_16
 	lea	hl, iy
 	ld	de, (ix - 8)
 	or	a, a
 	sbc	hl, de
-	ld	de, (ix - 11)
 	call	pe, __setflag
-	jp	m, BB1_16
-	ld	bc, (ix - 14)
-	push	bc
-	pop	iy
+	jp	m, BB2_16
+	ld	iy, (ix - 11)
 	ld	de, 20
 	add	iy, de
-	ld	de, (ix - 11)
-	push	de
+	push	bc
 	pop	hl
-	or	a, a
-	sbc	hl, bc
-	call	pe, __setflag
-	jp	m, BB1_16
-	lea	hl, iy
+	ld	de, (ix - 11)
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	m, BB1_16
+	jp	m, BB2_16
+	lea	hl, iy
+	push	bc
+	pop	de
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	jp	m, BB2_16
 	ld	hl, (_ball_vel_x)
 	call	__ineg
 	ld	(_ball_vel_x), hl
-BB1_16:
-	ex	de, hl
+BB2_16:
+	push	bc
+	pop	hl
 	ld	de, -238
 	add	hl, de
 	inc	de
 	or	a, a
 	sbc	hl, de
-	jr	nc, BB1_18
+	push	bc
+	pop	iy
+	jr	nc, BB2_18
 	ld	hl, (_ball_vel_y)
 	call	__ineg
 	ld	(_ball_vel_y), hl
-BB1_18:
+BB2_18:
 	ld	bc, (ix - 8)
 	push	bc
 	pop	hl
@@ -219,26 +264,75 @@ BB1_18:
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	m, BB1_20
+	jp	m, BB2_20
 	ld	hl, (_ball_vel_x)
 	call	__ineg
 	ld	(_ball_vel_x), hl
-	jr	BB1_22
-BB1_20:
+	push	bc
+	pop	de
+	lea	bc, iy
+	jp	BB2_23
+BB2_20:
 	push	bc
 	pop	hl
 	ld	de, 3
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	m, BB1_23
+	push	bc
+	pop	de
+	lea	bc, iy
+	jp	p, BB2_23
+	ld	hl, (_score_left_person)
+	ld	(_lastscorelp), hl
+	inc	hl
+	ld	(ix - 8), hl
+	ld	(_score_left_person), hl
+	scf
+	sbc	hl, hl
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+	ld	hl, 2
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	ld	hl, (ix - 8)
+	ld	de, 5
+	or	a, a
+	sbc	hl, de
+	jp	nz, BB2_24
+	ld	hl, 30
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, _.str.3
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	ld	hl, 1500
+	push	hl
+	call	_delay
+	pop	hl
+	ld	de, (_ball_x)
+	ld	bc, (_ball_y)
+BB2_23:
 	ld	hl, (_ball_vel_x)
-BB1_22:
-	ld	de, (ix - 11)
-	add	hl, bc
+	add	hl, de
 	ld	(_ball_x), hl
 	ld	hl, (_ball_vel_y)
-	add	hl, de
+	add	hl, bc
 	ld	(_ball_y), hl
 	scf
 	sbc	hl, hl
@@ -291,28 +385,13 @@ BB1_22:
 	push	hl
 	call	_delay
 	pop	hl
-	jp	BB1_2
-BB1_23:
-	ld	hl, (_score_left_person)
-	ld	(_lastscorelp), hl
-	inc	hl
-	ld	(_score_left_person), hl
-	scf
-	sbc	hl, hl
-	push	hl
-	call	_gfx_FillScreen
-	pop	hl
-	ld	hl, 2
-	push	hl
-	push	hl
-	call	_gfx_SetTextScale
-	pop	hl
-	pop	hl
+	jp	BB2_2
+BB2_24:
 	ld	hl, 30
 	push	hl
 	ld	hl, 20
 	push	hl
-	ld	hl, _.str
+	ld	hl, _.str.4
 	push	hl
 	call	_gfx_PrintStringXY
 	pop	hl
@@ -328,11 +407,11 @@ BB1_23:
 	ld	hl, 1500
 	push	hl
 	call	_delay
-	ld	de, 2
 	pop	hl
 	ld	hl, 10
-	jp	BB1_1
-BB1_24:
+	ld	de, 2
+	jp	BB2_1
+BB2_25:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
@@ -382,6 +461,26 @@ _paddley:
 	dl	160
 
 	section	.bss,"aw",@nobits
+	public	_menuitem
+_menuitem:
+	rb	3
+
+	section	.rodata,"a",@progbits
+	private	_.str
+_.str:
+	db	"Play Again?", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.1
+_.str.1:
+	db	"→ Yes", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.2
+_.str.2:
+	db	"→ No", 0
+
+	section	.bss,"aw",@nobits
 	public	_ball_x
 _ball_x:
 	rb	3
@@ -402,8 +501,13 @@ _ball_vel_y:
 	rb	3
 
 	section	.rodata,"a",@progbits
-	private	_.str
-_.str:
+	private	_.str.3
+_.str.3:
+	db	"Right Wins!", 0
+
+	section	.rodata,"a",@progbits
+	private	_.str.4
+_.str.4:
 	db	"Right Scores!", 0
 
 	ident	"clang version 15.0.0 (https://github.com/CE-Programming/llvm-project 23b78267b5d376b232475d0805a937e54b61e0d0)"
@@ -422,7 +526,7 @@ _.str:
 	extern	_gfx_SetColor
 	extern	__ineg
 	extern	_delay
-	extern	_gfx_FillCircle
 	extern	_gfx_PrintStringXY
+	extern	_gfx_FillCircle
 	extern	_gfx_End
 	extern	_gfx_SetTextScale
