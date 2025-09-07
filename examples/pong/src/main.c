@@ -161,7 +161,7 @@ int main(void) {
                     gfx_SetTextScale(1, 1);
                     gfx_SwapDraw();
                     delay(1500);
-                    endgame();
+                    endgame;
             } else if (score_left_person > lastscorelp) {
                     gfx_FillScreen(255);
                     gfx_SetTextScale(2, 2);
