@@ -60,13 +60,13 @@ int main(void) {
     while (!kb_IsDown(kb_KeyClear)) {
         kb_Scan();
         bool balldrawn = false;
-            gfx_SetColor(0);
+        gfx_SetColor(0);
             if (kb_IsDown(kb_KeyDown)) {
                 if (paddley == 220)
                 {
                     
                 } else {
-                paddley = paddley + 3;
+                    paddley = paddley + 3;
                 }
             }
             else if (kb_IsDown(kb_KeyUp)) {
@@ -74,7 +74,7 @@ int main(void) {
                 {
                     
                 } else {
-                paddley = paddley - 3;
+                    paddley = paddley - 3;
                 }
             }
 
@@ -103,14 +103,22 @@ int main(void) {
         if (ball_x <= 2) {
             lastscorelp = score_left_person;
             score_left_person++;
+            if (score_left_person == 5) {
+                gfx_FillScreen(255);
+                gfx_SetTextScale(2, 2);
+                gfx_PrintStringXY("Right Scores!", 20, 30);
+                gfx_SetTextScale(1, 1);
+                gfx_SwapDraw();
+                delay(1500);
+            }
             if (score_left_person > lastscorelp) {
-            gfx_FillScreen(255);
-            gfx_SetTextScale(2, 2);
-            gfx_PrintStringXY("Right Scores!", 20, 30);
-            gfx_SetTextScale(1, 1);
-            gfx_SwapDraw();
-            delay(1500);
-            goto startgame;
+                gfx_FillScreen(255);
+                gfx_SetTextScale(2, 2);
+                gfx_PrintStringXY("Right Scores!", 20, 30);
+                gfx_SetTextScale(1, 1);
+                gfx_SwapDraw();
+                delay(1500);
+                goto startgame;
             }
         }
 
