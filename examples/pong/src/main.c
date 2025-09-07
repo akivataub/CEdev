@@ -52,12 +52,12 @@ int main(void) {
     ball_vel_y = 2; // Slight vertical movement
 
     gfx_Begin();
-    startgame:
     //itoa(paddley, paddleystring); TEST
     while (!kb_IsDown(kb_KeyClear)) {
         kb_Scan();
         bool balldrawn = false;
             gfx_SetColor(0);
+            startgame:
             if (kb_IsDown(kb_KeyDown)) {
                 if (paddley == 220)
                 {

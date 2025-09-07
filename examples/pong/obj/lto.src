@@ -90,7 +90,7 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, -14
+	ld	hl, -29
 	call	__frameset
 	ld	hl, 3
 	ld	de, 2
@@ -112,140 +112,164 @@ BB1_1:
 	pop	de
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_23
+	jp	nz, BB1_27
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
 	push	hl
 	call	_gfx_SetColor
 	pop	hl
+	ld	hl, (_ball_x)
+	ld	(ix - 8), hl
+	ld	hl, (_paddlex)
+	ld	(ix - 14), hl
+	ld	bc, 4
+	add	hl, bc
+	ld	(ix - 26), hl
+	ld	hl, (_ball_y)
+	ld	(ix - 20), hl
+	ld	bc, -238
+	add	hl, bc
+	ld	(ix - 17), hl
+	ld	hl, (_ball_vel_x)
+	ld	(ix - 23), hl
+	ld	hl, (_ball_vel_y)
+	ld	(ix - 11), hl
+	ld	de, (_score_left_person)
+BB1_3:
+	inc	de
 	ld	iy, -720866
 	ld	l, (iy)
 	ld	h, (iy + 1)
 	ld.sis	bc, 1
 	call	__sand
 	bit	0, l
-	jr	nz, BB1_6
+	ld	(ix - 29), de
+	jr	nz, BB1_7
 	ld	l, (iy)
 	ld	h, (iy + 1)
 	ld	a, l
 	ld	iy, (_paddley)
 	bit	3, a
-	jr	z, BB1_5
+	jr	z, BB1_6
 	lea	hl, iy
 	ld	de, 1
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	p, BB1_8
-BB1_5:
-	lea	hl, iy
-	jr	BB1_10
+	jp	p, BB1_9
 BB1_6:
+	lea	bc, iy
+	jr	BB1_11
+BB1_7:
 	ld	iy, (_paddley)
 	lea	hl, iy
 	ld	de, 220
 	or	a, a
 	sbc	hl, de
-	ld	hl, 220
-	jr	z, BB1_10
-	ld	de, 5
-	jr	BB1_9
-BB1_8:
-	ld	de, -5
+	ld	bc, 220
+	jr	z, BB1_11
+	ld	bc, 5
+	jr	BB1_10
 BB1_9:
-	add	iy, de
-	lea	hl, iy
-	ld	(_paddley), hl
+	ld	bc, -5
 BB1_10:
-	ld	(ix - 14), hl
-	ld	hl, (_ball_x)
-	ld	bc, (_paddlex)
+	add	iy, bc
+	lea	bc, iy
+	ld	(_paddley), bc
+BB1_11:
 	push	bc
 	pop	iy
-	ld	de, 4
-	add	iy, de
-	ld	de, (_ball_y)
-	ld	(ix - 11), de
-	ld	(ix - 8), hl
-	or	a, a
-	sbc	hl, bc
-	call	pe, __setflag
-	ld	de, 20
-	jp	m, BB1_15
-	lea	hl, iy
-	ld	bc, (ix - 8)
-	or	a, a
-	sbc	hl, bc
-	call	pe, __setflag
-	jp	m, BB1_15
+	ld	de, (ix - 8)
+	push	de
+	pop	hl
 	ld	bc, (ix - 14)
-	push	bc
-	pop	iy
-	add	iy, de
-	ld	hl, (ix - 11)
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
 	jp	m, BB1_15
-	lea	hl, iy
-	ld	de, (ix - 11)
+	ld	hl, (ix - 26)
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	m, BB1_15
-	ld	hl, (_ball_vel_x)
-	call	__ineg
-	ld	(_ball_vel_x), hl
-	ld	a, 1
-	ld	(_ifhit), a
+	jp	m, BB1_14
+	lea	bc, iy
+	ld	de, 20
+	add	iy, de
+	ld	de, (ix - 20)
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	jp	p, BB1_22
+BB1_14:
+	ld	bc, (ix - 8)
+	jr	BB1_16
 BB1_15:
-	ld	hl, (ix - 11)
+	push	de
+	pop	bc
+BB1_16:
+	ld	iy, (ix - 11)
+BB1_17:
+	ld	hl, (ix - 17)
+	ld	de, -237
+	or	a, a
+	sbc	hl, de
+	jr	nc, BB1_19
+	lea	hl, iy
+	call	__ineg
 	push	hl
 	pop	iy
-	ld	de, -238
-	add	hl, de
-	inc	de
-	or	a, a
-	sbc	hl, de
-	jr	nc, BB1_17
-	ld	hl, (_ball_vel_y)
-	call	__ineg
-	ld	(_ball_vel_y), hl
-BB1_17:
-	ld	bc, (ix - 8)
+	ld	(_ball_vel_y), iy
+BB1_19:
 	push	bc
 	pop	hl
 	ld	de, 318
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	m, BB1_19
-	ld	hl, (_ball_vel_x)
-	call	__ineg
-	ld	(_ball_vel_x), hl
-	jr	BB1_22
-BB1_19:
+	jp	p, BB1_24
 	push	bc
 	pop	hl
 	ld	de, 3
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	p, BB1_21
-	ld	hl, (_score_left_person)
-	inc	hl
-	ld	(_score_left_person), hl
-	jp	BB1_1
-BB1_21:
-	ld	hl, (_ball_vel_x)
+	jp	p, BB1_25
+	ld	(ix - 11), iy
+	ld	de, (ix - 29)
+	ld	(_score_left_person), de
+	jp	BB1_3
 BB1_22:
-	lea	de, iy
+	lea	hl, iy
+	or	a, a
+	sbc	hl, de
+	call	pe, __setflag
+	ld	bc, (ix - 8)
+	ld	iy, (ix - 11)
+	jp	m, BB1_17
+	ld	hl, (ix - 23)
+	call	__ineg
+	ld	(ix - 23), hl
+	ld	(_ball_vel_x), hl
+	ld	a, 1
+	ld	(_ifhit), a
+	jr	BB1_17
+BB1_24:
+	ld	hl, (ix - 23)
+	call	__ineg
+	ld	(_ball_vel_x), hl
+	ld	de, (ix - 20)
+	jr	BB1_26
+BB1_25:
+	ld	de, (ix - 20)
+	ld	hl, (ix - 23)
+BB1_26:
 	add	hl, bc
 	ld	(_ball_x), hl
-	ld	hl, (_ball_vel_y)
-	add	hl, de
-	ld	(_ball_y), hl
+	add	iy, de
+	ld	(_ball_y), iy
 	scf
 	sbc	hl, hl
 	push	hl
@@ -309,7 +333,7 @@ BB1_22:
 	call	_delay
 	pop	hl
 	jp	BB1_1
-BB1_23:
+BB1_27:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
