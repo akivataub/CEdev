@@ -207,8 +207,8 @@ int main(void) {
                 }
             } // while (1) loop ending
         } // endg = true ending
-    gfx_SwapDraw();
-    delay(20);
+        gfx_SwapDraw();
+        delay(20);
     } // game loop end      
     ending:
     gfx_End();
