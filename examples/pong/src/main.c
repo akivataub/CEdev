@@ -122,6 +122,10 @@ int main(void) {
         //gfx_PrintStringXY(byx ,20, 40); TEST
         //gfx_PrintStringXY(paddlexs ,20, 60); TEST
 
+        //scores
+        
+        
+        //drawing ball and paddle
         gfx_FillCircle(ball_x, ball_y, 2);
         gfx_FillRectangle(paddlex, paddley, paddle_width, paddle_height);
         gfx_SwapDraw();
