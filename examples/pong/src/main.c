@@ -84,7 +84,7 @@ int main(void) {
         // Draw the paddles
         // Draw the ball
         // Draw the scores
-        if (ball_x == (paddlex + 4)) {
+        if (ball_x == paddlex + 4) {
             ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
         }
 
