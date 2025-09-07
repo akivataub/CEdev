@@ -77,17 +77,10 @@ int endgame(void) {
             gfx_SwapDraw();
         }
         if (menuitem >= 3) {
-            gfx_PrintStringXY("Play Again?", 20, 10);
-            gfx_PrintStringXY("> Yes", 30, 20);
-            gfx_PrintStringXY("  No", 30, 30);
-            gfx_SwapDraw();
+
             menuitem = 1;
         }
         if (menuitem <= 0) {
-            gfx_PrintStringXY("Play Again?", 20, 10);
-            gfx_PrintStringXY("  Yes", 30, 20);
-            gfx_PrintStringXY("> No", 30, 30);
-            gfx_SwapDraw();
             menuitem = 2;
         }
     }
