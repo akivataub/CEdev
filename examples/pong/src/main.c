@@ -116,7 +116,7 @@ int main(void) {
         //itoa(ball_y, bys);
         //itoa(ball_x, byx);
         //gfx_PrintStringXY(bys ,20, 20);
-        gfx_PrintStringXY(byx ,20, 40);
+        //gfx_PrintStringXY(byx ,20, 40);
         gfx_PrintStringXY(paddlexs ,20, 60);
         gfx_FillCircle(ball_x, ball_y, 2);
         gfx_FillRectangle(paddlex, paddley, paddle_width, paddle_height);

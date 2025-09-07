@@ -90,32 +90,26 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, -24
+	ld	hl, -16
 	call	__frameset
 	ld	hl, 1
 	ld	de, 2
 	lea	bc, ix - 4
-	ld	(ix - 15), bc
-	lea	bc, ix - 8
-	ld	(ix - 18), bc
-	lea	bc, ix - 12
-	ld	(ix - 21), bc
+	ld	(ix - 10), bc
 	ld	(_ball_x), hl
 	ld	(_ball_y), hl
 	ld	(_ball_vel_x), de
 	ld	(_ball_vel_y), de
 	call	_gfx_Begin
-	ld	hl, (_paddley)
-	ld	de, _paddleystring
-	push	de
-	push	hl
-	call	_itoa
-	ld	iy, -720868
-	pop	hl
-	pop	hl
 BB1_1:
-	ld	l, (iy)
-	ld	h, (iy + 1)
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
 	ld	a, l
 	bit	6, a
 	jp	nz, BB1_20
@@ -164,37 +158,38 @@ BB1_9:
 	lea	hl, iy
 	ld	(_paddley), hl
 BB1_10:
-	ld	(ix - 24), hl
+	ld	(ix - 16), hl
 	ld	hl, (_ball_x)
-	ld	de, (_paddlex)
-	push	de
-	pop	iy
-	ld	bc, 4
-	add	iy, bc
-	push	hl
-	pop	bc
-	or	a, a
-	sbc	hl, de
-	call	pe, __setflag
-	jp	m, BB1_15
-	lea	hl, iy
-	or	a, a
-	sbc	hl, bc
-	call	pe, __setflag
-	jp	m, BB1_15
-	ld	hl, (_ball_y)
-	ld	bc, (ix - 24)
+	ld	bc, (_paddlex)
 	push	bc
 	pop	iy
-	ld	de, 20
+	ld	de, 4
 	add	iy, de
-	push	hl
-	pop	de
+	ld	de, (_ball_y)
+	ld	(ix - 13), de
+	ld	(ix - 7), hl
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	ld	de, 20
+	jp	m, BB1_15
+	lea	hl, iy
+	ld	bc, (ix - 7)
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	jp	m, BB1_15
+	ld	bc, (ix - 16)
+	push	bc
+	pop	iy
+	add	iy, de
+	ld	hl, (ix - 13)
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
 	jp	m, BB1_15
 	lea	hl, iy
+	ld	de, (ix - 13)
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
@@ -202,38 +197,29 @@ BB1_10:
 	ld	hl, (_ball_vel_x)
 	call	__ineg
 	ld	(_ball_vel_x), hl
-	ld	hl, 80
-	push	hl
-	ld	hl, 20
-	push	hl
-	ld	hl, _.str
-	push	hl
-	call	_gfx_PrintStringXY
-	pop	hl
-	pop	hl
-	pop	hl
+	ld	a, 1
+	ld	(_ifhit), a
 BB1_15:
-	ld	hl, (_ball_y)
-	ld	(ix - 24), hl
+	ld	hl, (ix - 13)
+	push	hl
+	pop	de
 	ld	bc, -238
 	add	hl, bc
-	ld	de, -237
+	inc	bc
 	or	a, a
-	sbc	hl, de
+	sbc	hl, bc
 	jr	nc, BB1_17
 	ld	hl, (_ball_vel_y)
 	call	__ineg
 	ld	(_ball_vel_y), hl
 BB1_17:
-	ld	bc, (_ball_x)
-	push	bc
-	pop	hl
-	ld	de, -318
-	add	hl, de
+	ld	hl, (ix - 7)
+	ld	bc, -318
+	add	hl, bc
 	ld	iy, (_ball_vel_x)
-	inc	de
+	inc	bc
 	or	a, a
-	sbc	hl, de
+	sbc	hl, bc
 	jr	nc, BB1_19
 	lea	hl, iy
 	call	__ineg
@@ -241,62 +227,41 @@ BB1_17:
 	pop	iy
 	ld	(_ball_vel_x), iy
 BB1_19:
-	ld	de, (ix - 24)
+	ld	bc, (ix - 7)
 	add	iy, bc
 	ld	(_ball_x), iy
 	ld	hl, (_ball_vel_y)
 	add	hl, de
 	ld	(_ball_y), hl
+	ld	a, (_ifhit)
+	bit	0, a
+	ld	hl, 80
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, _.str
+	push	hl
+	call	nz, _gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
 	scf
 	sbc	hl, hl
 	push	hl
 	call	_gfx_FillScreen
 	pop	hl
 	ld	hl, (_paddlex)
-	ld	de, (ix - 15)
+	ld	de, (ix - 10)
 	push	de
 	push	hl
 	call	_itoa
-	pop	hl
-	pop	hl
-	ld	hl, (_ball_y)
-	ld	de, (ix - 18)
-	push	de
-	push	hl
-	call	_itoa
-	pop	hl
-	pop	hl
-	ld	hl, (_ball_x)
-	ld	de, (ix - 21)
-	push	de
-	push	hl
-	call	_itoa
-	pop	hl
-	pop	hl
-	ld	hl, 20
-	push	hl
-	push	hl
-	ld	hl, (ix - 18)
-	push	hl
-	call	_gfx_PrintStringXY
-	pop	hl
-	pop	hl
-	pop	hl
-	ld	hl, 40
-	push	hl
-	ld	hl, 20
-	push	hl
-	ld	hl, (ix - 21)
-	push	hl
-	call	_gfx_PrintStringXY
-	pop	hl
 	pop	hl
 	pop	hl
 	ld	hl, 60
 	push	hl
 	ld	hl, 20
 	push	hl
-	ld	hl, (ix - 15)
+	ld	hl, (ix - 10)
 	push	hl
 	call	_gfx_PrintStringXY
 	pop	hl
@@ -330,7 +295,6 @@ BB1_19:
 	push	hl
 	call	_delay
 	pop	hl
-	ld	iy, -720868
 	jp	BB1_1
 BB1_20:
 	call	_gfx_End
@@ -372,6 +336,11 @@ _paddley:
 	dl	160
 
 	section	.bss,"aw",@nobits
+	public	_ifhit
+_ifhit:
+	rb	1
+
+	section	.bss,"aw",@nobits
 	public	_ball_x
 _ball_x:
 	rb	3
@@ -390,11 +359,6 @@ _ball_vel_x:
 	public	_ball_vel_y
 _ball_vel_y:
 	rb	3
-
-	section	.bss,"aw",@nobits
-	public	_paddleystring
-_paddleystring:
-	rb	4
 
 	section	.rodata,"a",@progbits
 	private	_.str
