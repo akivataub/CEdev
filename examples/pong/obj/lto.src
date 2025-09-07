@@ -323,6 +323,7 @@ BB1_23:
 	call	_gfx_SetTextScale
 	pop	hl
 	pop	hl
+	call	_gfx_SwapDraw
 	ld	hl, 1000
 	push	hl
 	call	_delay

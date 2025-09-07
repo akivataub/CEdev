@@ -108,6 +108,7 @@ int main(void) {
             gfx_SetTextScale(2, 2);
             gfx_PrintStringXY("Right Scores!", 20, 30);
             gfx_SetTextScale(1, 1);
+            gfx_SwapDraw();
             delay(1000);
             goto startgame;
             }
