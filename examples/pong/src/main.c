@@ -48,11 +48,11 @@ void itoa(int num, char* str) {
 int main(void) {
     ball_x = 1;
     ball_y = 1;
-    ball_vel_x = 2; // Start moving right
-    ball_vel_y = 2; // Slight vertical movement
+    ball_vel_x = 3; // Start moving right
+    ball_vel_y = 3; // Slight vertical movement
 
     gfx_Begin();
-
+    startgame:
     //itoa(paddley, paddleystring); TEST
     while (!kb_IsDown(kb_KeyClear)) {
         kb_Scan();
@@ -99,6 +99,7 @@ int main(void) {
 
         if (ball_x <= 2) {
             score_left_person++;
+            goto startgame;
         }
 
         if (balldrawn == false) {
@@ -126,6 +127,7 @@ int main(void) {
         char slps[2];
         itoa(score_left_person, slps);
         gfx_PrintStringXY(slps ,20 ,40);
+        
 
         //drawing ball and paddle
         gfx_FillCircle(ball_x, ball_y, 2);

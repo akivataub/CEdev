@@ -92,14 +92,14 @@ BB0_7:
 _main:
 	ld	hl, -14
 	call	__frameset
-	ld	hl, 1
-	ld	de, 2
+	ld	de, 1
+	ld	hl, 3
 	lea	bc, ix - 2
 	ld	(ix - 5), bc
-	ld	(_ball_x), hl
-	ld	(_ball_y), hl
-	ld	(_ball_vel_x), de
-	ld	(_ball_vel_y), de
+	ld	(_ball_x), de
+	ld	(_ball_y), de
+	ld	(_ball_vel_x), hl
+	ld	(_ball_vel_y), hl
 	call	_gfx_Begin
 BB1_1:
 	ld	hl, -720868
@@ -112,7 +112,7 @@ BB1_1:
 	pop	de
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_22
+	jp	nz, BB1_23
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
@@ -224,8 +224,7 @@ BB1_17:
 	ld	hl, (_ball_vel_x)
 	call	__ineg
 	ld	(_ball_vel_x), hl
-	lea	de, iy
-	jr	BB1_21
+	jr	BB1_22
 BB1_19:
 	push	bc
 	pop	hl
@@ -233,13 +232,15 @@ BB1_19:
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	lea	de, iy
 	jp	p, BB1_21
 	ld	hl, (_score_left_person)
 	inc	hl
 	ld	(_score_left_person), hl
+	jp	BB1_1
 BB1_21:
 	ld	hl, (_ball_vel_x)
+BB1_22:
+	lea	de, iy
 	add	hl, bc
 	ld	(_ball_x), hl
 	ld	hl, (_ball_vel_y)
@@ -308,7 +309,7 @@ BB1_21:
 	call	_delay
 	pop	hl
 	jp	BB1_1
-BB1_22:
+BB1_23:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
