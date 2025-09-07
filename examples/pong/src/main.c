@@ -60,20 +60,13 @@ int endgame(void) {
     while (1) {
         kb_Scan();
         menuitem = 1;
-        bool is_key_pressed = false;
-        if (!is_key_pressed) {
             if (kb_IsDown(kb_KeyDown)) {
                 menuitem = 2;
-                is_key_pressed = true;
                 delay(150);
             } else if (kb_IsDown(kb_KeyUp)) {
                 menuitem = 1;
-                is_key_pressed = true;
                 delay(150);
             }
-        } else if (!kb_IsDown(kb_KeyDown) && !kb_IsDown(kb_KeyUp)) {
-            is_key_pressed = false; // Reset when keys are released
-        }
         if (menuitem == 1) {
             gfx_FillScreen(255);
             gfx_PrintStringXY("Play Again?", 20, 10);
