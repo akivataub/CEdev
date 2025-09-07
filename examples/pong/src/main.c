@@ -86,6 +86,7 @@ int main(void) {
         // Draw the scores
         if (ball_x == paddlex + 4) {
             ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
+            gfx_PrintStringXY("HIT", 20, 80);
         }
 
         if (ball_y >= 238 || ball_y <= 0) {

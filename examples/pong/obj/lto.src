@@ -158,41 +158,49 @@ BB1_8:
 	add	iy, de
 	ld	(_paddley), iy
 BB1_9:
-	ld	de, (_ball_x)
-	ld	hl, (_paddlex)
-	ld	bc, 4
-	add	hl, bc
-	push	hl
-	pop	bc
-	push	de
-	pop	hl
+	ld	hl, (_ball_x)
+	ld	iy, (_paddlex)
+	ld	de, 4
+	add	iy, de
+	lea	de, iy
 	or	a, a
-	sbc	hl, bc
+	sbc	hl, de
 	jr	nz, BB1_11
 	ld	hl, (_ball_vel_x)
 	call	__ineg
 	ld	(_ball_vel_x), hl
+	ld	hl, 80
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, _.str
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
 BB1_11:
 	ld	hl, (_ball_y)
 	ld	(ix - 24), hl
 	ld	bc, -238
 	add	hl, bc
-	dec	bc
+	ld	de, -237
 	or	a, a
-	sbc	hl, bc
+	sbc	hl, de
 	jr	nc, BB1_13
 	ld	hl, (_ball_vel_y)
 	call	__ineg
 	ld	(_ball_vel_y), hl
 BB1_13:
-	push	de
+	ld	bc, (_ball_x)
+	push	bc
 	pop	hl
-	ld	bc, -318
-	add	hl, bc
+	ld	de, -318
+	add	hl, de
 	ld	iy, (_ball_vel_x)
-	inc	bc
+	inc	de
 	or	a, a
-	sbc	hl, bc
+	sbc	hl, de
 	jr	nc, BB1_15
 	lea	hl, iy
 	call	__ineg
@@ -200,11 +208,11 @@ BB1_13:
 	pop	iy
 	ld	(_ball_vel_x), iy
 BB1_15:
-	ld	bc, (ix - 24)
-	add	iy, de
+	ld	de, (ix - 24)
+	add	iy, bc
 	ld	(_ball_x), iy
 	ld	hl, (_ball_vel_y)
-	add	hl, bc
+	add	hl, de
 	ld	(_ball_y), hl
 	scf
 	sbc	hl, hl
@@ -354,6 +362,11 @@ _ball_vel_y:
 	public	_paddleystring
 _paddleystring:
 	rb	4
+
+	section	.rodata,"a",@progbits
+	private	_.str
+_.str:
+	db	"HIT", 0
 
 	ident	"clang version 15.0.0 (https://github.com/CE-Programming/llvm-project 23b78267b5d376b232475d0805a937e54b61e0d0)"
 	extern	__Unwind_SjLj_Register

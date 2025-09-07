@@ -7,9 +7,9 @@ Section          Base   Top    High   Length
 .init.reruncheck D1AA4E D1AA4E             0h
 .init            D1AA4E D1AA78            2Ah
 .fini            D1AA78 D1AAAC            34h
-.text            D1AAAC D1AED1           425h
-.data            D1AED1 D1AED4             3h
-.rodata          D1AED4 D1AEF6            22h
+.text            D1AAAC D1AEEF           443h
+.data            D1AEEF D1AEF2             3h
+.rodata          D1AEF2 D1AF18            26h
 .init_array      000000 000000             0h
 .ctors           000000 000000             0h
 .dtors           000000 000000             0h
@@ -47,10 +47,10 @@ _os_DisableHomeTextBuffer  = D1ABD8
 _os_EnableHomeTextBuffer   = D1ABEA
 ___sleep_common.3          = D1ABFE
 _clock                     = D1AC17
-.missingappvar             = D1AED4
-.libloadname               = D1AED9
+.missingappvar             = D1AEF2
+.libloadname               = D1AEF7
 .libloadnamelen            = 000007
-.webaddress                = D1AEE1
+.webaddress                = D1AEFF
 ___init_clock              = D1AA33
 __start                    = D1AA4E
 ___exithl                  = D1AA78
@@ -62,12 +62,13 @@ _exit.flash_wait_states    = D1AA83
 _itoa                      = D1AC22
 _main                      = D1ACD2
 _paddlex                   = D052C6
-_paddley                   = D1AED1
+_paddley                   = D1AEEF
 _ball_x                    = D052C9
 _ball_y                    = D052CC
 _ball_vel_x                = D052CF
 _ball_vel_y                = D052D2
 _paddleystring             = D052D5
+_.str                      = D1AF14
 lib.LibLoad                = D1A9F2
 _#gfx_Begin                = D1AA05
 _#gfx_End                  = D1AA09
