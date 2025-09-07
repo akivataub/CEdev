@@ -45,9 +45,9 @@ void itoa(int num, char* str) {
 }
 
 int main(void) {
-    ball_x = 160;
-    ball_y = 120;
-    ball_vel_x = 3; // Start moving right
+    ball_x = 0;
+    ball_y = 0;
+    ball_vel_x = 2; // Start moving right
     ball_vel_y = 2; // Slight vertical movement
 
     gfx_Begin();
@@ -85,7 +85,7 @@ int main(void) {
         // Draw the ball
         // Draw the scores
         if (ball_y == 238) {
-            
+            ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
         }
 
         if (balldrawn == false) {

@@ -90,14 +90,13 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, 160
-	ld	de, 120
-	ld	bc, -3
-	ld	iy, -2
+	or	a, a
+	sbc	hl, hl
+	ld	de, 2
 	ld	(_ball_x), hl
-	ld	(_ball_y), de
-	ld	(_ball_vel_x), bc
-	ld	(_ball_vel_y), iy
+	ld	(_ball_y), hl
+	ld	(_ball_vel_x), de
+	ld	(_ball_vel_y), de
 	call	_gfx_Begin
 	ld	hl, (_paddley)
 	ld	de, _paddleystring
@@ -112,7 +111,7 @@ BB1_1:
 	ld	h, (iy + 1)
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_10
+	jp	nz, BB1_12
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
@@ -152,12 +151,26 @@ BB1_8:
 	add	iy, de
 	ld	(_paddley), iy
 BB1_9:
-	ld	de, (_ball_vel_x)
-	ld	hl, (_ball_x)
-	add	hl, de
-	ld	(_ball_x), hl
-	ld	de, (_ball_vel_y)
 	ld	hl, (_ball_y)
+	ld	bc, (_ball_vel_x)
+	push	hl
+	pop	iy
+	ld	de, 238
+	or	a, a
+	sbc	hl, de
+	jr	nz, BB1_11
+	push	bc
+	pop	hl
+	call	__ineg
+	push	hl
+	pop	bc
+	ld	(_ball_vel_x), bc
+BB1_11:
+	lea	de, iy
+	ld	hl, (_ball_x)
+	add	hl, bc
+	ld	(_ball_x), hl
+	ld	hl, (_ball_vel_y)
 	add	hl, de
 	ld	(_ball_y), hl
 	scf
@@ -195,7 +208,7 @@ BB1_9:
 	pop	hl
 	ld	iy, -720868
 	jp	BB1_1
-BB1_10:
+BB1_12:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
@@ -271,6 +284,7 @@ _paddleystring:
 	extern	__Unwind_SjLj_Unregister
 	extern	_gfx_FillRectangle
 	extern	_gfx_SetColor
+	extern	__ineg
 	extern	_delay
 	extern	_gfx_End
 	extern	_gfx_FillCircle
