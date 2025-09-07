@@ -86,6 +86,10 @@ int endgame(void) {
         if (menuitem == 0) {
             menuitem = 2;
         }
+        if (menuitem == 1 && kb_KeyEnter) {
+            gfx_FillScreen(255);
+            main();
+        }
     }
     gfx_End();
     return 0;
