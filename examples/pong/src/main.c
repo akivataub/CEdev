@@ -82,6 +82,7 @@ int endgame(void) {
         if (menuitem <= 0) {
             menuitem = menuitem + 2;
         }
+        delay(200);
     }
     gfx_End();
     return 0;
