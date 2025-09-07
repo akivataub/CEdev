@@ -116,7 +116,7 @@ BB1_1:
 	ld	h, (iy + 1)
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_14
+	jp	nz, BB1_16
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
@@ -156,39 +156,53 @@ BB1_8:
 	add	iy, de
 	ld	(_paddley), iy
 BB1_9:
+	ld	de, (_ball_x)
+	ld	hl, (_paddlex)
+	ld	bc, 4
+	add	hl, bc
+	push	hl
+	pop	bc
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	jr	nz, BB1_11
+	ld	hl, (_ball_vel_x)
+	call	__ineg
+	ld	(_ball_vel_x), hl
+BB1_11:
 	ld	hl, (_ball_y)
 	ld	(ix - 17), hl
 	ld	bc, -238
 	add	hl, bc
-	ld	de, -239
+	dec	bc
 	or	a, a
-	sbc	hl, de
-	jr	nc, BB1_11
+	sbc	hl, bc
+	jr	nc, BB1_13
 	ld	hl, (_ball_vel_y)
 	call	__ineg
 	ld	(_ball_vel_y), hl
-BB1_11:
-	ld	bc, (_ball_x)
-	push	bc
+BB1_13:
+	push	de
 	pop	hl
-	ld	de, -318
-	add	hl, de
+	ld	bc, -318
+	add	hl, bc
 	ld	iy, (_ball_vel_x)
-	inc	de
+	inc	bc
 	or	a, a
-	sbc	hl, de
-	jr	nc, BB1_13
+	sbc	hl, bc
+	jr	nc, BB1_15
 	lea	hl, iy
 	call	__ineg
 	push	hl
 	pop	iy
 	ld	(_ball_vel_x), iy
-BB1_13:
-	ld	de, (ix - 17)
-	add	iy, bc
+BB1_15:
+	ld	bc, (ix - 17)
+	add	iy, de
 	ld	(_ball_x), iy
 	ld	hl, (_ball_vel_y)
-	add	hl, de
+	add	hl, bc
 	ld	(_ball_y), hl
 	scf
 	sbc	hl, hl
@@ -258,7 +272,7 @@ BB1_13:
 	pop	hl
 	ld	iy, -720868
 	jp	BB1_1
-BB1_14:
+BB1_16:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
