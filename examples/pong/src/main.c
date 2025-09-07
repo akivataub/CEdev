@@ -4,6 +4,7 @@
 #define paddle_width 4
 #define paddle_height 20
 #define paddle_speed 3
+
 #define SCREEN_WIDTH 320 //x
 #define SCREEN_HEIGHT 240 //y
 
@@ -20,7 +21,8 @@ int paddlex = 2;
 int paddley = 160;
 
 bool ifhit = false;
-//char paddleystring[4];
+//char paddleystring[4]; TEST
+
 void itoa(int num, char* str) {
     if (num == 0) {
         str[0] = '0';
@@ -50,12 +52,11 @@ int main(void) {
     ball_vel_y = 2; // Slight vertical movement
 
     gfx_Begin();
-    // --- THE GAME LOOP ---
-    //itoa(paddley, paddleystring);
-    while (!kb_IsDown(kb_KeyClear)) { // Run until the 'Clear' key is pressed
+
+    //itoa(paddley, paddleystring); TEST
+    while (!kb_IsDown(kb_KeyClear)) {
         kb_Scan();
         bool balldrawn = false;
-        // 4. Read user input
             gfx_SetColor(0);
             if (kb_IsDown(kb_KeyDown)) {
                 if (paddley == 220)
@@ -105,31 +106,29 @@ int main(void) {
             ball_y += ball_vel_y;
             balldrawn = true;
         }
-        
+
         // 7. Swap the buffer to the screen
         gfx_FillScreen(255);
         if (ifhit == true) {
             gfx_PrintStringXY("HIT", 20, 80);
         }
-        //char paddlexs [4];
-        //char bys [4];
-        //char byx [4];
-        //itoa(paddlex, paddlexs);
-        //itoa(ball_y, bys);
-        //itoa(ball_x, byx);
-        //gfx_PrintStringXY(bys ,20, 20);
-        //gfx_PrintStringXY(byx ,20, 40);
-        //gfx_PrintStringXY(paddlexs ,20, 60);
+        //char paddlexs [4]; TEST
+        //char bys [4]; TEST
+        //char byx [4]; TEST
+        //itoa(paddlex, paddlexs); TEST
+        //itoa(ball_y, bys); TEST
+        //itoa(ball_x, byx); TEST
+        //gfx_PrintStringXY(bys ,20, 20); TEST
+        //gfx_PrintStringXY(byx ,20, 40); TEST
+        //gfx_PrintStringXY(paddlexs ,20, 60); TEST
 
         gfx_FillCircle(ball_x, ball_y, 2);
         gfx_FillRectangle(paddlex, paddley, paddle_width, paddle_height);
         gfx_SwapDraw();
         delay(20);
-        // 8. A small delay to control game speed // Adjust this to make the game faster or slower
     }
             
 
-    // 9. End graphics mode
     gfx_End();
 
     return 0;
