@@ -436,20 +436,20 @@ _paddle_left_y:
 _paddle_right_y:
 	dl	120
 
-	section	.bss,"aw",@nobits
+	section	.data,"aw",@progbits
 	public	_score_left_person
 _score_left_person:
-	rb	3
+	dl	4
 
 	section	.bss,"aw",@nobits
 	public	_score_right_person
 _score_right_person:
 	rb	3
 
-	section	.bss,"aw",@nobits
+	section	.data,"aw",@progbits
 	public	_lastscorelp
 _lastscorelp:
-	rb	3
+	dl	4
 
 	section	.bss,"aw",@nobits
 	public	_lastscorerp
