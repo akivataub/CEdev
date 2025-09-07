@@ -59,7 +59,6 @@ int endgame(void) {
     gfx_PrintStringXY("  No", 30, 30);
     while (1) {
         kb_Scan();
-        menuitem = 1;
             if (kb_IsDown(kb_KeyDown)) {
                 menuitem = 2;
                 delay(150);

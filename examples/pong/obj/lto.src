@@ -126,8 +126,6 @@ _endgame:
 	pop	hl
 BB1_1:
 	call	_kb_Scan
-	ld	hl, 1
-	ld	(_menuitem), hl
 	ld	hl, -720866
 	push	de
 	ld	e, (hl)
@@ -159,14 +157,14 @@ BB1_3:
 	push	hl
 	call	_delay
 	pop	hl
+BB1_4:
 	ld	de, (_menuitem)
 	push	de
 	pop	hl
 	ld	bc, 1
 	or	a, a
 	sbc	hl, bc
-	jr	nz, BB1_5
-BB1_4:
+	jr	nz, BB1_6
 	scf
 	sbc	hl, hl
 	push	hl
@@ -203,13 +201,13 @@ BB1_4:
 	pop	hl
 	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
-BB1_5:
+BB1_6:
 	push	de
 	pop	hl
 	ld	bc, 2
 	or	a, a
 	sbc	hl, bc
-	jr	nz, BB1_7
+	jr	nz, BB1_8
 	scf
 	sbc	hl, hl
 	push	hl
@@ -246,25 +244,23 @@ BB1_5:
 	pop	hl
 	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
-BB1_7:
+BB1_8:
 	push	de
 	pop	hl
-	ld	bc, 3
+	add	hl, bc
 	or	a, a
 	sbc	hl, bc
-	call	pe, __setflag
-	ld	hl, -2
-	jp	p, BB1_9
-	push	de
-	pop	hl
-	ld	bc, 1
-	or	a, a
-	sbc	hl, bc
-	call	pe, __setflag
+	jr	nz, BB1_10
 	ld	hl, 2
-	jp	p, BB1_1
-BB1_9:
-	add	hl, de
+	jr	BB1_11
+BB1_10:
+	ex	de, hl
+	ld	de, 3
+	or	a, a
+	sbc	hl, de
+	ld	hl, 1
+	jp	nz, BB1_1
+BB1_11:
 	ld	(_menuitem), hl
 	jp	BB1_1
 	section	.text,"ax",@progbits
