@@ -72,7 +72,7 @@ int endgame(void) {
                 delay(150);
             }
         } else if (!kb_IsDown(kb_KeyDown) && !kb_IsDown(kb_KeyUp)) {
-            key_pressed = false; // Reset when keys are released
+            is_key_pressed = false; // Reset when keys are released
         }
         if (menuitem == 1) {
             gfx_FillScreen(255);
