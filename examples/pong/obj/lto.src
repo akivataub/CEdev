@@ -92,7 +92,7 @@ BB0_7:
 _main:
 	ld	iy, 160
 	ld	de, 120
-	ld	bc, 6
+	ld	bc, -3
 	ld	hl, 2
 	ld	(_ball_x), iy
 	ld	(_ball_y), de
@@ -152,14 +152,16 @@ BB1_8:
 	add	iy, de
 	ld	(_paddley), iy
 BB1_9:
-	ld	hl, (_ball_vel_x)
-	inc	hl
-	ld	(_ball_vel_x), hl
-	ld	de, (_ball_vel_y)
+	ld	de, (_ball_vel_x)
 	inc	de
-	ld	(_ball_vel_y), de
+	ld	(_ball_vel_x), de
+	ld	bc, (_ball_vel_y)
+	inc	bc
+	ld	(_ball_vel_y), bc
+	ld	hl, (_ball_x)
+	add	hl, de
 	ld	(_ball_x), hl
-	ld	(_ball_y), de
+	ld	(_ball_y), bc
 	scf
 	sbc	hl, hl
 	push	hl
