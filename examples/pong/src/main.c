@@ -52,7 +52,7 @@ void itoa(int num, char* str) {
     }
 }
 
-    startgl1:
+startgl1:
 
 
 int endgame(void) {
