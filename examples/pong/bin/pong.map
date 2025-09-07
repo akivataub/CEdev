@@ -7,9 +7,9 @@ Section          Base   Top    High   Length
 .init.reruncheck D1AA4A D1AA4A             0h
 .init            D1AA4A D1AA74            2Ah
 .fini            D1AA74 D1AAA8            34h
-.text            D1AAA8 D1ADFA           352h
-.data            D1ADFA D1ADFD             3h
-.rodata          D1ADFD D1AE1F            22h
+.text            D1AAA8 D1AE33           38Bh
+.data            D1AE33 D1AE36             3h
+.rodata          D1AE36 D1AE58            22h
 .init_array      000000 000000             0h
 .ctors           000000 000000             0h
 .dtors           000000 000000             0h
@@ -32,24 +32,25 @@ __stack                    = D1A87E
 __frameset                 = D1AAA8
 __idivu                    = D1AAB6
 __idvrmu                   = D1AABE
-__ishru                    = D1AAD6
-__lmulu                    = D1AB17
+__imulu                    = D1AAD6
+__ishru                    = D1AB06
+__lmulu                    = D1AB47
 __ftol                     = 00027C
 __ftoul                    = 00027C
 __ltof                     = 000284
 __setflag                  = 000218
 __ultof                    = 000280
-__sand                     = D1AB73
-_atomic_load_increasing_32 = D1AB7C
-_delay                     = D1ABA1
-_os_DisableHomeTextBuffer  = D1ABCB
-_os_EnableHomeTextBuffer   = D1ABDD
-___sleep_common.3          = D1ABF1
-_clock                     = D1AC0A
-.missingappvar             = D1ADFD
-.libloadname               = D1AE02
+__sand                     = D1ABA3
+_atomic_load_increasing_32 = D1ABAC
+_delay                     = D1ABD1
+_os_DisableHomeTextBuffer  = D1ABFB
+_os_EnableHomeTextBuffer   = D1AC0D
+___sleep_common.3          = D1AC21
+_clock                     = D1AC3A
+.missingappvar             = D1AE36
+.libloadname               = D1AE3B
 .libloadnamelen            = 000007
-.webaddress                = D1AE0A
+.webaddress                = D1AE43
 ___init_clock              = D1AA2F
 __start                    = D1AA4A
 ___exithl                  = D1AA74
@@ -58,10 +59,10 @@ skip.__Exit                = D1AA74
 skip._abort                = D1AA74
 _exit.sp                   = D1AA75
 _exit.flash_wait_states    = D1AA7F
-_itoa                      = D1AC15
-_main                      = D1ACC5
+_itoa                      = D1AC45
+_main                      = D1ACF5
 _paddlex                   = D052C6
-_paddley                   = D1ADFA
+_paddley                   = D1AE33
 _ball_x                    = D052C9
 _ball_y                    = D052CC
 _ball_vel_x                = D052CF
