@@ -62,7 +62,18 @@ int endgame(void) {
         if (kb_IsDown(kb_KeyUp)) {
             menuitem = menuitem - 1;
         }
-        
+        if (menuitem == 1) {
+            gfx_FillScreen(255);
+            gfx_PrintStringXY("Play Again?", 20, 10);
+            gfx_PrintStringXY("> Yes", 30, 20);
+            gfx_PrintStringXY("  No", 30, 30);
+        }
+        if (menuitem == 2) {
+            gfx_FillScreen(255);
+            gfx_PrintStringXY("Play Again?", 20, 10);
+            gfx_PrintStringXY("> Yes", 30, 20);
+            gfx_PrintStringXY("  No", 30, 30);
+        }
         gfx_SwapDraw();
     }
     gfx_End();
