@@ -203,7 +203,7 @@ BB1_15:
 	ld	hl, (ix - 7)
 	ld	de, -238
 	add	hl, de
-	dec	de
+	inc	de
 	or	a, a
 	sbc	hl, de
 	jr	nc, BB1_17
@@ -217,7 +217,7 @@ BB1_17:
 	ld	de, -318
 	add	hl, de
 	ld	iy, (_ball_vel_x)
-	dec	de
+	inc	de
 	or	a, a
 	sbc	hl, de
 	jr	nc, BB1_19
@@ -325,10 +325,10 @@ _scroefp:
 _scorefa:
 	rb	3
 
-	section	.bss,"aw",@nobits
+	section	.data,"aw",@progbits
 	public	_paddlex
 _paddlex:
-	rb	3
+	dl	2
 
 	section	.data,"aw",@progbits
 	public	_paddley

@@ -17,7 +17,7 @@ int paddle_right_y = 120;
 int scroefp = 0;
 int scorefa = 0;
 
-int paddlex = 0;
+int paddlex = 2;
 int paddley = 160;
 
 bool ifhit = false;
