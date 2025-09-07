@@ -90,8 +90,14 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
+	ld	hl, -14
+	call	__frameset
 	ld	hl, 3
 	ld	de, 2
+	lea	bc, ix - 4
+	ld	(ix - 11), bc
+	lea	bc, ix - 8
+	ld	(ix - 14), bc
 	ld	(_ball_x), hl
 	ld	(_ball_y), hl
 	ld	(_ball_vel_x), de
@@ -170,7 +176,7 @@ BB1_12:
 	ld	bc, (_ball_x)
 	push	bc
 	pop	hl
-	ld	de, 2
+	ld	de, -2
 	or	a, a
 	sbc	hl, de
 	jr	z, BB1_14
@@ -198,6 +204,39 @@ BB1_16:
 	sbc	hl, hl
 	push	hl
 	call	_gfx_FillScreen
+	pop	hl
+	ld	hl, (_ball_y)
+	ld	de, (ix - 11)
+	push	de
+	push	hl
+	call	_itoa
+	pop	hl
+	pop	hl
+	ld	hl, (_ball_x)
+	ld	de, (ix - 14)
+	push	de
+	push	hl
+	call	_itoa
+	pop	hl
+	pop	hl
+	ld	hl, 20
+	push	hl
+	push	hl
+	ld	hl, (ix - 11)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 40
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, (ix - 14)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
 	pop	hl
 	ld	hl, (_ball_x)
 	ld	de, (_ball_y)
@@ -233,6 +272,8 @@ BB1_17:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
+	ld	sp, ix
+	pop	ix
 	ret
 	section	.text,"ax",@progbits
 
@@ -307,5 +348,6 @@ _paddleystring:
 	extern	_gfx_SetColor
 	extern	__ineg
 	extern	_delay
-	extern	_gfx_End
+	extern	_gfx_PrintStringXY
 	extern	_gfx_FillCircle
+	extern	_gfx_End
