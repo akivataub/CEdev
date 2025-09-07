@@ -87,7 +87,9 @@ int main(void) {
         if (ball_y == 238) {
             ball_vel_y = ball_vel_y - ball_vel_y - ball_vel_y;
         }
-        if (ball == )
+        if (ball == 318) {
+            ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
+        }
 
         if (balldrawn == false) {
             ball_x += ball_vel_x;
