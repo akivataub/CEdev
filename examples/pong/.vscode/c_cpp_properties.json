@@ -1,0 +1,39 @@
+{
+    "configurations": [
+        {
+            "name": "clang",
+            "includePath": [
+                "/home/akiva/Documents/CEdev/include/"
+            ],
+            "defines": [],
+            "compilerPath": "/home/akiva/Documents/CEdev/bin/ez80-clang",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-clang-x64",
+            "compilerPathInCppPropertiesJson": "/home/akiva/Documents/CEdev/bin/ez80-clang",
+            "mergeConfigurations": false,
+            "recursiveIncludes": {},
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            }
+        },
+        {
+            "name": "random",
+            "includePath": [
+                "/home/akiva/Documents/CEdev/include/"
+            ],
+            "defines": [],
+            "compilerPath": "/home/akiva/Documents/CEdev/bin/ez80-clang",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-clang-x64",
+            "compilerPathInCppPropertiesJson": "/usr/bin/clang",
+            "mergeConfigurations": false,
+            "recursiveIncludes": {},
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ],
+    "version": 4
+}

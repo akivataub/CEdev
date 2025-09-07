@@ -1,0 +1,7 @@
+{
+    "makefile.configureOnOpen": false,
+    "files.associations": {
+        "graphx.h": "c",
+        "keypadc.h": "c"
+    }
+}

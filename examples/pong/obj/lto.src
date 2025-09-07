@@ -1,0 +1,276 @@
+	section	.text,"ax",@progbits
+	assume	adl = 1
+	section	.text,"ax",@progbits
+	public	_itoa
+_itoa:
+	ld	hl, -9
+	call	__frameset
+	ld	iy, (ix + 6)
+	ld	de, (ix + 9)
+	or	a, a
+	sbc	hl, hl
+	ld	(ix - 3), hl
+	lea	hl, iy
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jr	nz, BB0_3
+	push	de
+	pop	iy
+	ld	(iy), 48
+	ld	(iy + 1), 0
+BB0_2:
+	ld	sp, ix
+	pop	ix
+	ret
+BB0_3:
+	ld	(ix - 6), de
+	ld	bc, 1
+	ld	l, -10
+	ld	(ix - 9), hl
+BB0_4:
+	lea	hl, iy
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	jp	m, BB0_6
+	lea	hl, iy
+	ld	bc, 10
+	call	__idivu
+	ld	de, (ix - 9)
+	ld	d, l
+	ld	(ix - 9), de
+	mlt	de
+	ld	a, e
+	ld	de, (ix - 3)
+	ld	bc, 1
+	add	a, iyl
+	or	a, 48
+	ld	iy, (ix + 9)
+	add	iy, de
+	ld	(iy), a
+	inc	de
+	ld	(ix - 3), de
+	push	hl
+	pop	iy
+	jr	BB0_4
+BB0_6:
+	ld	iy, (ix + 9)
+	ld	de, (ix - 3)
+	add	iy, de
+	ld	(iy), 0
+	ld	c, 1
+	ex	de, hl
+	call	__ishru
+	push	hl
+	pop	bc
+	dec	iy
+	lea	de, iy
+BB0_7:
+	push	bc
+	pop	hl
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jr	z, BB0_2
+	ld	iy, (ix - 6)
+	ld	a, (iy)
+	ex	de, hl
+	ld	e, (hl)
+	ld	(iy), e
+	ld	(hl), a
+	inc	iy
+	ld	(ix - 6), iy
+	dec	hl
+	ex	de, hl
+	dec	bc
+	jr	BB0_7
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_main
+_main:
+	ld	iy, 160
+	ld	de, 120
+	ld	bc, 3
+	ld	hl, 2
+	ld	(_ball_x), iy
+	ld	(_ball_y), de
+	ld	(_ball_vel_x), bc
+	ld	(_ball_vel_y), hl
+	call	_gfx_Begin
+	ld	hl, (_paddley)
+	ld	de, _paddleystring
+	push	de
+	push	hl
+	call	_itoa
+	ld	iy, -720868
+	pop	hl
+	pop	hl
+BB1_1:
+	ld	l, (iy)
+	ld	h, (iy + 1)
+	ld	a, l
+	bit	6, a
+	jp	nz, BB1_10
+	call	_kb_Scan
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	iy, -720866
+	ld	l, (iy)
+	ld	h, (iy + 1)
+	ld.sis	bc, 1
+	call	__sand
+	bit	0, l
+	jr	nz, BB1_6
+	ld	l, (iy)
+	ld	h, (iy + 1)
+	ld	a, l
+	bit	3, a
+	jr	z, BB1_9
+	ld	iy, (_paddley)
+	lea	hl, iy
+	ld	de, 1
+	or	a, a
+	sbc	hl, de
+	call	pe, __setflag
+	jp	m, BB1_9
+	ld	de, -5
+	jr	BB1_8
+BB1_6:
+	ld	iy, (_paddley)
+	lea	hl, iy
+	ld	de, 220
+	or	a, a
+	sbc	hl, de
+	jr	z, BB1_9
+	ld	de, 5
+BB1_8:
+	add	iy, de
+	ld	(_paddley), iy
+BB1_9:
+	ld	hl, (_ball_vel_x)
+	inc	hl
+	ld	(_ball_vel_x), hl
+	ld	de, (_ball_vel_y)
+	inc	de
+	ld	(_ball_vel_y), de
+	ld	(_ball_x), hl
+	ld	(_ball_y), de
+	scf
+	sbc	hl, hl
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+	ld	hl, (_ball_x)
+	ld	de, (_ball_y)
+	ld	bc, 2
+	push	bc
+	push	de
+	push	hl
+	call	_gfx_FillCircle
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, (_paddlex)
+	ld	de, (_paddley)
+	ld	bc, 20
+	push	bc
+	ld	bc, 4
+	push	bc
+	push	de
+	push	hl
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	ld	hl, 20
+	push	hl
+	call	_delay
+	pop	hl
+	ld	iy, -720868
+	jp	BB1_1
+BB1_10:
+	call	_gfx_End
+	or	a, a
+	sbc	hl, hl
+	ret
+	section	.text,"ax",@progbits
+
+	section	.data,"aw",@progbits
+	public	_paddle_left_y
+_paddle_left_y:
+	dl	120
+
+	section	.data,"aw",@progbits
+	public	_paddle_right_y
+_paddle_right_y:
+	dl	120
+
+	section	.bss,"aw",@nobits
+	public	_scroefp
+_scroefp:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_scorefa
+_scorefa:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_paddlex
+_paddlex:
+	rb	3
+
+	section	.data,"aw",@progbits
+	public	_paddley
+_paddley:
+	dl	160
+
+	section	.bss,"aw",@nobits
+	public	_ball_x
+_ball_x:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_ball_y
+_ball_y:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_ball_vel_x
+_ball_vel_x:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_ball_vel_y
+_ball_vel_y:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_paddleystring
+_paddleystring:
+	rb	4
+
+	ident	"clang version 15.0.0 (https://github.com/CE-Programming/llvm-project 23b78267b5d376b232475d0805a937e54b61e0d0)"
+	extern	__Unwind_SjLj_Register
+	extern	__frameset
+	extern	_gfx_Begin
+	extern	_kb_Scan
+	extern	__sand
+	extern	__ishru
+	extern	_gfx_SwapDraw
+	extern	__idivu
+	extern	__setflag
+	extern	_gfx_FillScreen
+	extern	__Unwind_SjLj_Unregister
+	extern	_gfx_FillRectangle
+	extern	_gfx_SetColor
+	extern	_delay
+	extern	_gfx_End
+	extern	_gfx_FillCircle
