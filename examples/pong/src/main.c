@@ -4,8 +4,8 @@
 #define paddle_width 4
 #define paddle_height 20
 #define paddle_speed 3
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#define SCREEN_WIDTH 320 //x
+#define SCREEN_HEIGHT 240 //y
 
 int ball_x, ball_y;
 int ball_vel_x, ball_vel_y;
@@ -47,8 +47,8 @@ void itoa(int num, char* str) {
 int main(void) {
     ball_x = 160;
     ball_y = 120;
-    ball_vel_x = -3; // Start moving right
-    ball_vel_y = -2; // Slight vertical movement
+    ball_vel_x = 3; // Start moving right
+    ball_vel_y = 2; // Slight vertical movement
 
     gfx_Begin();
     // --- THE GAME LOOP ---
@@ -84,11 +84,16 @@ int main(void) {
         // Draw the paddles
         // Draw the ball
         // Draw the scores
+        if (ball_y == 238) {
+            
+        }
+
         if (balldrawn == false) {
             ball_x += ball_vel_x;
             ball_y += ball_vel_y;
             balldrawn = true;
         }
+
         //hi3
         // 7. Swap the buffer to the screen
         gfx_FillScreen(255);
