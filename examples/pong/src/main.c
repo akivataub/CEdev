@@ -81,11 +81,11 @@ int endgame(void) {
             gfx_PrintStringXY("> No", 30, 30);
             gfx_SwapDraw();
         }
-        if (menuitem >= 3) {
-            menuitem = menuitem - 2;
+        if (menuitem == 3) {
+            menuitem = 1;
         }
-        if (menuitem <= 0) {
-            menuitem = menuitem + 2;
+        if (menuitem == 0) {
+            menuitem = 2;
         }
     }
     gfx_End();
