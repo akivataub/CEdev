@@ -100,6 +100,12 @@ int main(void) {
         //hi3
         // 7. Swap the buffer to the screen
         gfx_FillScreen(255);
+        char bys [4];
+        char byx [4];
+        itoa(ball_y, bys);
+        itoa(ball_x, byx);
+        gfx_PrintStringXY(,,);
+        gfx_PrintStringXY(,,);
         gfx_FillCircle(ball_x, ball_y, 2);
         gfx_FillRectangle(paddlex, paddley, paddle_width, paddle_height);
         gfx_SwapDraw();
