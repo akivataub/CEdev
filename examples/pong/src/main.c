@@ -59,16 +59,18 @@ int endgame(void) {
     gfx_PrintStringXY("  No", 30, 30);
     while (1) {
         kb_Scan();
-        if (lastbpm == )
+        if (lastbpm == currentbpm) {
+            
+        }
         if (kb_IsDown(kb_KeyDown)) {
             menuitem = menuitem + 1;
             lastbpm = 1;
-            currentbpm = 3;
+            currentbpm = 1;
         }
         if (kb_IsDown(kb_KeyUp)) {
             menuitem = menuitem - 1;
             lastbpm = 2;
-            currentbpm = 4;
+            currentbpm = 2;
         }
         if (menuitem == 1) {
             gfx_FillScreen(255);
