@@ -80,7 +80,7 @@ int endgame(void) {
             menuitem = menuitem - 2;
         }
         if (menuitem <= 0) {
-            menuitem++;
+            menuitem = menuitem + 2;
         }
     }
     gfx_End();

@@ -248,7 +248,7 @@ BB1_9:
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
-	ld	hl, -1
+	ld	hl, -2
 	jp	p, BB1_11
 	push	de
 	pop	hl
@@ -256,7 +256,7 @@ BB1_9:
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
-	ld	hl, 1
+	ld	hl, 2
 	jp	p, BB1_1
 BB1_11:
 	add	hl, de
