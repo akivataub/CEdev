@@ -90,8 +90,7 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	or	a, a
-	sbc	hl, hl
+	ld	hl, 3
 	ld	de, 2
 	ld	(_ball_x), hl
 	ld	(_ball_y), hl
@@ -171,7 +170,7 @@ BB1_12:
 	ld	bc, (_ball_x)
 	push	bc
 	pop	hl
-	ld	de, -2
+	ld	de, 2
 	or	a, a
 	sbc	hl, de
 	jr	z, BB1_14
