@@ -90,6 +90,8 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_endgame
 _endgame:
+	ld	hl, -9
+	call	__frameset
 	scf
 	sbc	hl, hl
 	push	hl
@@ -248,50 +250,31 @@ BB1_9:
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
-	jp	m, BB1_11
-	scf
-	sbc	hl, hl
-	push	hl
-	call	_gfx_FillScreen
-	pop	hl
-	ld	hl, 10
-	push	hl
-	ld	hl, 20
-	push	hl
-	ld	hl, _.str
-	push	hl
-	call	_gfx_PrintStringXY
-	pop	hl
-	pop	hl
-	pop	hl
-	ld	hl, 20
-	push	hl
-	ld	hl, 30
-	push	hl
 	ld	hl, _.str.1
 	push	hl
-	call	_gfx_PrintStringXY
-	pop	hl
-	pop	hl
-	pop	hl
-	ld	hl, 30
-	push	hl
-	push	hl
+	pop	iy
 	ld	hl, _.str.2
 	push	hl
-	call	_gfx_PrintStringXY
-	pop	hl
-	pop	hl
-	pop	hl
-	call	_gfx_SwapDraw
-	ld	de, (_menuitem)
-BB1_11:
+	pop	bc
+	ld	hl, 1
+	jp	p, BB1_11
 	ex	de, hl
 	ld	de, 1
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
+	ld	hl, _.str.3
+	push	hl
+	pop	iy
+	ld	hl, _.str.4
+	push	hl
+	pop	bc
+	ld	hl, 2
 	jp	p, BB1_1
+BB1_11:
+	ld	(ix - 9), iy
+	ld	(ix - 6), bc
+	ld	(ix - 3), hl
 	scf
 	sbc	hl, hl
 	push	hl
@@ -311,7 +294,7 @@ BB1_11:
 	push	hl
 	ld	hl, 30
 	push	hl
-	ld	hl, _.str.3
+	ld	hl, (ix - 9)
 	push	hl
 	call	_gfx_PrintStringXY
 	pop	hl
@@ -320,13 +303,15 @@ BB1_11:
 	ld	hl, 30
 	push	hl
 	push	hl
-	ld	hl, _.str.4
+	ld	hl, (ix - 6)
 	push	hl
 	call	_gfx_PrintStringXY
 	pop	hl
 	pop	hl
 	pop	hl
 	call	_gfx_SwapDraw
+	ld	hl, (ix - 3)
+	ld	(_menuitem), hl
 	jp	BB1_1
 	section	.text,"ax",@progbits
 
