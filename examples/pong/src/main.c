@@ -54,8 +54,8 @@ int endgame(void) {
     gfx_PrintStringXY("Play Again?", 20, 10);
     gfx_PrintStringXY("→ Yes", 30, 20);
     gfx_PrintStringXY("→ No", 30, 30);
-    delay(5000);
     gfx_SwapDraw();
+    delay(5000);
     return 0;
 }
 
