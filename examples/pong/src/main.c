@@ -22,8 +22,6 @@ int lastscorerp = 0;
 int paddlex = 2;
 int paddley = 160;
 
-startgame:
-bool ifhit = false;
 //char paddleystring[4]; TEST
 
 void itoa(int num, char* str) {
@@ -49,6 +47,10 @@ void itoa(int num, char* str) {
 }
 
 int main(void) {
+    startgame:
+
+    bool ifhit = false;
+    
     ball_x = 3;
     ball_y = 3;
     ball_vel_x = 2; // Start moving right
