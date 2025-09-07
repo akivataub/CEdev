@@ -247,17 +247,14 @@ BB1_9:
 	add	hl, bc
 	or	a, a
 	sbc	hl, bc
-	jr	nz, BB1_11
-	ld	hl, 2
-	jr	BB1_12
-BB1_11:
+	jr	z, BB1_11
 	ex	de, hl
 	ld	de, 3
 	or	a, a
 	sbc	hl, de
-	ld	hl, 1
 	jp	nz, BB1_1
-BB1_12:
+BB1_11:
+	ld	hl, 1
 	ld	(_menuitem), hl
 	jp	BB1_1
 	section	.text,"ax",@progbits
