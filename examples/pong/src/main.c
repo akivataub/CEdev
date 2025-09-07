@@ -85,7 +85,7 @@ int main(void) {
         // Draw the ball
         // Draw the scores
         //paddley + 20 paddlex + 4
-        if (ball_x >= (paddlex + 4) && ball_y >= (paddley + 20 || paddley)) {
+        if (ball_x >= (paddlex + 4 || paddlex) && ball_y >= (paddley + 20 || paddley)) {
             ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
             gfx_PrintStringXY("HIT", 20, 80);
         }

@@ -136,12 +136,12 @@ BB1_1:
 	ld	h, (iy + 1)
 	ld	a, l
 	bit	3, a
+	ld	bc, 1
 	jr	z, BB1_9
 	ld	iy, (_paddley)
 	lea	hl, iy
-	ld	de, 1
 	or	a, a
-	sbc	hl, de
+	sbc	hl, bc
 	call	pe, __setflag
 	jp	m, BB1_9
 	ld	de, -5
@@ -152,6 +152,7 @@ BB1_6:
 	ld	de, 220
 	or	a, a
 	sbc	hl, de
+	ld	bc, 1
 	jr	z, BB1_9
 	ld	de, 5
 BB1_8:
@@ -159,10 +160,6 @@ BB1_8:
 	ld	(_paddley), iy
 BB1_9:
 	ld	hl, (_ball_x)
-	ld	iy, (_paddlex)
-	ld	de, 4
-	add	iy, de
-	lea	bc, iy
 	ld	de, (_ball_y)
 	or	a, a
 	sbc	hl, bc
@@ -170,13 +167,8 @@ BB1_9:
 	jp	m, BB1_12
 	push	de
 	pop	hl
-	push	de
-	pop	bc
-	ld	de, 1
 	or	a, a
-	sbc	hl, de
-	push	bc
-	pop	de
+	sbc	hl, bc
 	call	pe, __setflag
 	jp	m, BB1_12
 	ld	hl, (_ball_vel_x)
