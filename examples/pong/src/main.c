@@ -47,7 +47,7 @@ void itoa(int num, char* str) {
 int main(void) {
     ball_x = 160;
     ball_y = 120;
-    ball_vel_x = 0.3; // Start moving right
+    ball_vel_x = 6; // Start moving right
     ball_vel_y = 2; // Slight vertical movement
 
     gfx_Begin();

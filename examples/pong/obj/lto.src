@@ -92,7 +92,7 @@ BB0_7:
 _main:
 	ld	iy, 160
 	ld	de, 120
-	ld	bc, 0
+	ld	bc, 6
 	ld	hl, 2
 	ld	(_ball_x), iy
 	ld	(_ball_y), de
