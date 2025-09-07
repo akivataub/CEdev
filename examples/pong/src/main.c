@@ -77,7 +77,7 @@ int endgame(void) {
             gfx_SwapDraw();
         }
         if (menuitem >= 3) {
-            menuitem--;
+            menuitem = menuitem - 2;
         }
         if (menuitem <= 0) {
             menuitem++;
