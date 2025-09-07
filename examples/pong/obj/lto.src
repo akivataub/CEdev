@@ -92,7 +92,7 @@ BB0_7:
 _main:
 	ld	hl, -14
 	call	__frameset
-	ld	hl, 5
+	ld	hl, 10
 	ld	de, 2
 	lea	bc, ix - 2
 	ld	(ix - 5), bc
@@ -310,7 +310,7 @@ BB1_23:
 	ld	(_lastscorelp), hl
 	inc	hl
 	ld	(_score_left_person), hl
-	ld	hl, 5
+	ld	hl, 10
 	ld	de, 2
 	jp	BB1_1
 BB1_24:

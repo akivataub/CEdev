@@ -50,8 +50,8 @@ void itoa(int num, char* str) {
 int main(void) {
     startgame:
     
-    ball_x = 5;
-    ball_y = 5;
+    ball_x = 10;
+    ball_y = 10;
     ball_vel_x = 2; // Start moving right
     ball_vel_y = 2; // Slight vertical movement
 
