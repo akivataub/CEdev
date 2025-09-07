@@ -92,11 +92,13 @@ BB0_7:
 _main:
 	ld	hl, -11
 	call	__frameset
+	xor	a, a
 	ld	hl, 10
 	ld	de, 2
 	lea	bc, ix - 2
 	ld	(ix - 5), bc
 BB1_1:
+	ld	(_endg), a
 	ld	(_ball_x), hl
 	ld	(_ball_y), hl
 	ld	(_ball_vel_x), de
@@ -112,7 +114,7 @@ BB1_1:
 	pop	de
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_39
+	jp	nz, BB1_41
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
@@ -248,7 +250,7 @@ BB1_17:
 	ld	de, 5
 	or	a, a
 	sbc	hl, de
-	jp	z, BB1_40
+	jp	z, BB1_24
 	ld	hl, 30
 	push	hl
 	ld	hl, 20
@@ -272,6 +274,7 @@ BB1_17:
 	pop	hl
 	ld	hl, 10
 	ld	de, 2
+	xor	a, a
 	jp	BB1_1
 BB1_21:
 	ld	hl, (_ball_vel_x)
@@ -335,10 +338,38 @@ BB1_23:
 	pop	hl
 	call	_gfx_SwapDraw
 	ld	hl, 20
-BB1_24:
 	push	hl
 	call	_delay
 	pop	hl
+	ld	a, (_endg)
+	or	a, a
+	jr	nz, BB1_25
+	jp	BB1_40
+BB1_24:
+	ld	hl, 30
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, _.str
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	ld	hl, 1500
+	push	hl
+	call	_delay
+	pop	hl
+	ld	a, 1
+	ld	(_endg), a
+BB1_25:
 	scf
 	sbc	hl, hl
 	push	hl
@@ -373,7 +404,7 @@ BB1_24:
 	pop	hl
 	pop	hl
 	pop	hl
-BB1_25:
+BB1_26:
 	call	_kb_Scan
 	ld	iy, -720866
 	ld	l, (iy)
@@ -382,27 +413,27 @@ BB1_25:
 	call	__sand
 	bit	0, l
 	ld	hl, 2
-	jr	nz, BB1_27
+	jr	nz, BB1_28
 	ld	l, (iy)
 	ld	h, (iy + 1)
 	ld	a, l
 	bit	3, a
 	ld	hl, 1
-	jr	z, BB1_28
-BB1_27:
+	jr	z, BB1_29
+BB1_28:
 	ld	(_menuitem), hl
 	ld	hl, 150
 	push	hl
 	call	_delay
 	pop	hl
-BB1_28:
+BB1_29:
 	ld	de, (_menuitem)
 	push	de
 	pop	hl
 	ld	bc, 1
 	or	a, a
 	sbc	hl, bc
-	jr	nz, BB1_30
+	jr	nz, BB1_31
 	scf
 	sbc	hl, hl
 	push	hl
@@ -439,13 +470,13 @@ BB1_28:
 	pop	hl
 	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
-BB1_30:
+BB1_31:
 	push	de
 	pop	hl
 	ld	bc, 2
 	or	a, a
 	sbc	hl, bc
-	jr	nz, BB1_32
+	jr	nz, BB1_33
 	scf
 	sbc	hl, hl
 	push	hl
@@ -482,27 +513,27 @@ BB1_30:
 	pop	hl
 	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
-BB1_32:
+BB1_33:
 	push	de
 	pop	hl
 	ld	bc, 4
 	or	a, a
 	sbc	hl, bc
-	jp	nc, BB1_25
+	jp	nc, BB1_26
 	ld	hl, JTI1_0
 	add	hl, de
 	add	hl, de
 	add	hl, de
 	ld	hl, (hl)
 	jp	(hl)
-BB1_34:
-	ld	hl, 2
-	jr	BB1_36
 BB1_35:
-	ld	hl, 1
+	ld	hl, 2
+	jr	BB1_37
 BB1_36:
-	ld	(_menuitem), hl
+	ld	hl, 1
 BB1_37:
+	ld	(_menuitem), hl
+BB1_38:
 	ld	hl, -720868
 	push	de
 	ld	e, (hl)
@@ -514,47 +545,28 @@ BB1_37:
 	ld.sis	bc, 1
 	call	__sand
 	bit	0, l
-	jp	z, BB1_25
+	jp	z, BB1_26
 	scf
 	sbc	hl, hl
 	push	hl
 	call	_gfx_FillScreen
 	pop	hl
+BB1_40:
 	call	_gfx_End
-BB1_39:
+BB1_41:
 	or	a, a
 	sbc	hl, hl
 	ld	sp, ix
 	pop	ix
 	ret
-BB1_40:
-	ld	hl, 30
-	push	hl
-	ld	hl, 20
-	push	hl
-	ld	hl, _.str
-	push	hl
-	call	_gfx_PrintStringXY
-	pop	hl
-	pop	hl
-	pop	hl
-	ld	hl, 1
-	push	hl
-	push	hl
-	call	_gfx_SetTextScale
-	pop	hl
-	pop	hl
-	call	_gfx_SwapDraw
-	ld	hl, 1500
-	jp	BB1_24
 	section	.text,"ax",@progbits
 	section	.rodata,"a",@progbits
 	private	JTI1_0
 JTI1_0:
-	dl	BB1_34
-	dl	BB1_37
-	dl	BB1_37
 	dl	BB1_35
+	dl	BB1_38
+	dl	BB1_38
+	dl	BB1_36
 
 	section	.data,"aw",@progbits
 	public	_paddle_left_y
@@ -600,6 +612,11 @@ _paddley:
 	public	_menuitem
 _menuitem:
 	dl	1
+
+	section	.bss,"aw",@nobits
+	public	_endg
+_endg:
+	rb	1
 
 	section	.bss,"aw",@nobits
 	public	_ball_x

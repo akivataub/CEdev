@@ -27,6 +27,8 @@ int menuitem = 1;
 int lastbpm;
 int currentbpm;
 
+bool endg = false;
+
 //bool ifhit = false; TEST
 //char paddleystring[4]; TEST
 
@@ -55,7 +57,7 @@ void itoa(int num, char* str) {
 int main(void) {
     startgame:
     
-    bool endg = false;
+    endg = false;
 
     ball_x = 10;
     ball_y = 10;
@@ -117,7 +119,7 @@ int main(void) {
                     gfx_SetTextScale(1, 1);
                     gfx_SwapDraw();
                     delay(1500);
-                    endg == true;
+                    endg = true;
                     goto endgame;
             } else if (score_left_person > lastscorelp) {
                     gfx_FillScreen(255);
