@@ -124,7 +124,7 @@ int main(void) {
 
         //scores
         
-        
+
         //drawing ball and paddle
         gfx_FillCircle(ball_x, ball_y, 2);
         gfx_FillRectangle(paddlex, paddley, paddle_width, paddle_height);
