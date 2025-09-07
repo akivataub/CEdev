@@ -90,12 +90,12 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, -16
+	ld	hl, -14
 	call	__frameset
 	ld	hl, 1
 	ld	de, 2
-	lea	bc, ix - 4
-	ld	(ix - 10), bc
+	lea	bc, ix - 2
+	ld	(ix - 5), bc
 	ld	(_ball_x), hl
 	ld	(_ball_y), hl
 	ld	(_ball_vel_x), de
@@ -112,7 +112,7 @@ BB1_1:
 	pop	de
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_20
+	jp	nz, BB1_22
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
@@ -158,7 +158,7 @@ BB1_9:
 	lea	hl, iy
 	ld	(_paddley), hl
 BB1_10:
-	ld	(ix - 16), hl
+	ld	(ix - 14), hl
 	ld	hl, (_ball_x)
 	ld	bc, (_paddlex)
 	push	bc
@@ -166,30 +166,30 @@ BB1_10:
 	ld	de, 4
 	add	iy, de
 	ld	de, (_ball_y)
-	ld	(ix - 7), de
-	ld	(ix - 13), hl
+	ld	(ix - 11), de
+	ld	(ix - 8), hl
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
 	ld	de, 20
 	jp	m, BB1_15
 	lea	hl, iy
-	ld	bc, (ix - 13)
+	ld	bc, (ix - 8)
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
 	jp	m, BB1_15
-	ld	bc, (ix - 16)
+	ld	bc, (ix - 14)
 	push	bc
 	pop	iy
 	add	iy, de
-	ld	hl, (ix - 7)
+	ld	hl, (ix - 11)
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
 	jp	m, BB1_15
 	lea	hl, iy
-	ld	de, (ix - 7)
+	ld	de, (ix - 11)
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
@@ -200,7 +200,9 @@ BB1_10:
 	ld	a, 1
 	ld	(_ifhit), a
 BB1_15:
-	ld	hl, (ix - 7)
+	ld	hl, (ix - 11)
+	push	hl
+	pop	iy
 	ld	de, -238
 	add	hl, de
 	inc	de
@@ -211,25 +213,35 @@ BB1_15:
 	call	__ineg
 	ld	(_ball_vel_y), hl
 BB1_17:
-	ld	bc, (ix - 13)
+	ld	bc, (ix - 8)
 	push	bc
 	pop	hl
-	ld	de, -318
-	add	hl, de
-	ld	iy, (_ball_vel_x)
-	inc	de
+	ld	de, 318
 	or	a, a
 	sbc	hl, de
-	jr	nc, BB1_19
-	lea	hl, iy
+	call	pe, __setflag
+	jp	m, BB1_19
+	ld	hl, (_ball_vel_x)
 	call	__ineg
-	push	hl
-	pop	iy
-	ld	(_ball_vel_x), iy
+	ld	(_ball_vel_x), hl
+	lea	de, iy
+	jr	BB1_21
 BB1_19:
-	ld	de, (ix - 7)
-	add	iy, bc
-	ld	(_ball_x), iy
+	push	bc
+	pop	hl
+	ld	de, 3
+	or	a, a
+	sbc	hl, de
+	call	pe, __setflag
+	lea	de, iy
+	jp	p, BB1_21
+	ld	hl, (_score_left_person)
+	inc	hl
+	ld	(_score_left_person), hl
+BB1_21:
+	ld	hl, (_ball_vel_x)
+	add	hl, bc
+	ld	(_ball_x), hl
 	ld	hl, (_ball_vel_y)
 	add	hl, de
 	ld	(_ball_y), hl
@@ -250,18 +262,18 @@ BB1_19:
 	pop	hl
 	pop	hl
 	pop	hl
-	ld	hl, (_paddlex)
-	ld	de, (ix - 10)
+	ld	hl, (_score_left_person)
+	ld	de, (ix - 5)
 	push	de
 	push	hl
 	call	_itoa
 	pop	hl
 	pop	hl
-	ld	hl, 60
+	ld	hl, 40
 	push	hl
 	ld	hl, 20
 	push	hl
-	ld	hl, (ix - 10)
+	ld	hl, (ix - 5)
 	push	hl
 	call	_gfx_PrintStringXY
 	pop	hl
@@ -296,7 +308,7 @@ BB1_19:
 	call	_delay
 	pop	hl
 	jp	BB1_1
-BB1_20:
+BB1_22:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
@@ -316,13 +328,13 @@ _paddle_right_y:
 	dl	120
 
 	section	.bss,"aw",@nobits
-	public	_scroefp
-_scroefp:
+	public	_score_left_person
+_score_left_person:
 	rb	3
 
 	section	.bss,"aw",@nobits
-	public	_scorefa
-_scorefa:
+	public	_score_right_person
+_score_right_person:
 	rb	3
 
 	section	.data,"aw",@progbits
@@ -381,6 +393,6 @@ _.str:
 	extern	_gfx_SetColor
 	extern	__ineg
 	extern	_delay
-	extern	_gfx_PrintStringXY
 	extern	_gfx_FillCircle
+	extern	_gfx_PrintStringXY
 	extern	_gfx_End

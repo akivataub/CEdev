@@ -123,7 +123,9 @@ int main(void) {
         //gfx_PrintStringXY(paddlexs ,20, 60); TEST
 
         //scores
-        
+        char slps[2];
+        itoa(score_left_person, slps);
+        gfx_PrintStringXY(slps ,20 ,40);
 
         //drawing ball and paddle
         gfx_FillCircle(ball_x, ball_y, 2);
