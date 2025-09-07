@@ -22,7 +22,7 @@ int lastscorerp = 0;
 int paddlex = 2;
 int paddley = 160;
 
-bool ifhit = false;
+//bool ifhit = false; TEST
 //char paddleystring[4]; TEST
 
 void itoa(int num, char* str) {
@@ -90,7 +90,7 @@ int main(void) {
         //paddley + 20 paddlex + 4
         if (ball_x >= paddlex &&  ball_x <= paddlex + paddle_width && ball_y >= paddley && ball_y <= paddley + paddle_height) {
             ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
-            ifhit = true;
+            //ifhit = true; TEST
         }
 
         if (ball_y >= 238 || ball_y <= 0) {
@@ -116,9 +116,9 @@ int main(void) {
 
         // 7. Swap the buffer to the screen
         gfx_FillScreen(255);
-        if (ifhit == true) {
-            gfx_PrintStringXY("HIT", 20, 80);
-        }
+        //if (ifhit == true) { TEST
+            //gfx_PrintStringXY("HIT", 20, 80); TEST
+        //} TEST
         //char paddlexs [4]; TEST
         //char bys [4]; TEST
         //char byx [4]; TEST
