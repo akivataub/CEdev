@@ -22,7 +22,7 @@ int lastscorerp = 0;
 int paddlex = 2;
 int paddley = 160;
 
-int menuitem = 0;
+int menuitem = 1;
 
 //bool ifhit = false; TEST
 //char paddleystring[4]; TEST
@@ -67,14 +67,16 @@ int endgame(void) {
             gfx_PrintStringXY("Play Again?", 20, 10);
             gfx_PrintStringXY("> Yes", 30, 20);
             gfx_PrintStringXY("  No", 30, 30);
+            gfx_SwapDraw();
         }
         if (menuitem == 2) {
             gfx_FillScreen(255);
             gfx_PrintStringXY("Play Again?", 20, 10);
             gfx_PrintStringXY("  Yes", 30, 20);
             gfx_PrintStringXY("> No", 30, 30);
+            gfx_SwapDraw();
         }
-        gfx_SwapDraw();
+
     }
     gfx_End();
     return 0;

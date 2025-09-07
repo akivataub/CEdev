@@ -196,13 +196,14 @@ BB1_5:
 	pop	hl
 	pop	hl
 	pop	hl
+	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
 BB1_7:
 	ex	de, hl
 	ld	de, 2
 	or	a, a
 	sbc	hl, de
-	jr	nz, BB1_9
+	jp	nz, BB1_1
 	scf
 	sbc	hl, hl
 	push	hl
@@ -237,7 +238,6 @@ BB1_7:
 	pop	hl
 	pop	hl
 	pop	hl
-BB1_9:
 	call	_gfx_SwapDraw
 	jp	BB1_1
 	section	.text,"ax",@progbits
