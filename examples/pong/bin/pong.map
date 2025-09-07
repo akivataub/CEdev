@@ -7,22 +7,22 @@ Section          Base   Top    High   Length
 .init.reruncheck D1AA52 D1AA52             0h
 .init            D1AA52 D1AA7C            2Ah
 .fini            D1AA7C D1AAB0            34h
-.text            D1AAB0 D1B115           665h
-.data            D1B115 D1B124             Fh
-.rodata          D1B124 D1B182            5Eh
+.text            D1AAB0 D1B106           656h
+.data            D1B106 D1B115             Fh
+.rodata          D1B115 D1B173            5Eh
 .init_array      000000 000000             0h
 .ctors           000000 000000             0h
 .dtors           000000 000000             0h
 .fini_array      000000 000000             0h
-.bss             D052C6 D052D8 D13FD8     12h
+.bss             D052C6 D052D2 D13FD8      Ch
 .header          D1A87F D1A882             3h
 
 Label                        Value
 --------------------------   ------
 ___low_bss                 = D052C6
-___len_bss                 = 000012
+___len_bss                 = 00000C
 ___heaptop                 = D13FD8
-___heapbot                 = D052D8
+___heapbot                 = D052D2
 ___libs                    = D1A9F2
 ___init_array_count        = 000000
 ___ctors_count             = 000000
@@ -47,10 +47,10 @@ _os_DisableHomeTextBuffer  = D1ABDC
 _os_EnableHomeTextBuffer   = D1ABEE
 ___sleep_common.3          = D1AC02
 _clock                     = D1AC1B
-.missingappvar             = D1B124
-.libloadname               = D1B129
+.missingappvar             = D1B115
+.libloadname               = D1B11A
 .libloadnamelen            = 000007
-.webaddress                = D1B131
+.webaddress                = D1B122
 ___init_clock              = D1AA37
 __start                    = D1AA52
 ___exithl                  = D1AA7C
@@ -61,25 +61,23 @@ _exit.sp                   = D1AA7D
 _exit.flash_wait_states    = D1AA87
 _itoa                      = D1AC26
 _endgame                   = D1ACD6
-_main                      = D1AE72
-_score_left_person         = D1B115
-_lastscorelp               = D1B118
-_paddlex                   = D1B11B
-_paddley                   = D1B11E
-_menuitem                  = D1B121
-_.str                      = D1B146
-_.str.1                    = D1B152
-_.str.2                    = D1B158
-_lastbpm                   = D052C6
-_currentbpm                = D052C9
-_.str.3                    = D1B15D
-_.str.4                    = D1B163
-_ball_x                    = D052CC
-_ball_y                    = D052CF
-_ball_vel_x                = D052D2
-_ball_vel_y                = D052D5
-_.str.5                    = D1B168
-_.str.6                    = D1B174
+_main                      = D1AE63
+_score_left_person         = D1B106
+_lastscorelp               = D1B109
+_paddlex                   = D1B10C
+_paddley                   = D1B10F
+_menuitem                  = D1B112
+_.str                      = D1B137
+_.str.1                    = D1B143
+_.str.2                    = D1B149
+_.str.3                    = D1B14E
+_.str.4                    = D1B154
+_ball_x                    = D052C6
+_ball_y                    = D052C9
+_ball_vel_x                = D052CC
+_ball_vel_y                = D052CF
+_.str.5                    = D1B159
+_.str.6                    = D1B165
 lib.LibLoad                = D1A9F2
 _#gfx_Begin                = D1AA05
 _#gfx_End                  = D1AA09

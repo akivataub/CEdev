@@ -59,19 +59,18 @@ int endgame(void) {
     gfx_PrintStringXY("  No", 30, 30);
     while (1) {
         kb_Scan();
-        if (lastbpm == currentbpm) {
-
-        }
-        if (lastbpm != currentbpm) {
+        menuitem = 1;
+        bool is_key_pressed = false;
+        if (!is_key_pressed) {
             if (kb_IsDown(kb_KeyDown)) {
-                menuitem = menuitem + 1;
-                lastbpm = 1;
-                currentbpm = 1;
+                menuitem = 2;
+                is_key_pressed = true;
+                delay(150);
             }
             if (kb_IsDown(kb_KeyUp)) {
                 menuitem = menuitem - 1;
-                lastbpm = 2;
-                currentbpm = 2;
+                is_key_pressed = true;
+                delay(150);
             }
         }
         if (menuitem == 1) {

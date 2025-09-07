@@ -126,11 +126,8 @@ _endgame:
 	pop	hl
 BB1_1:
 	call	_kb_Scan
-	ld	hl, (_lastbpm)
-	ld	de, (_currentbpm)
-	or	a, a
-	sbc	hl, de
-	jr	z, BB1_5
+	ld	hl, 1
+	ld	(_menuitem), hl
 	ld	hl, -720866
 	push	de
 	ld	e, (hl)
@@ -142,14 +139,14 @@ BB1_1:
 	ld.sis	bc, 1
 	call	__sand
 	bit	0, l
-	jr	z, BB1_4
-	ld	hl, (_menuitem)
-	inc	hl
+	jr	z, BB1_3
+	ld	hl, 2
 	ld	(_menuitem), hl
-	ld	hl, 1
-	ld	(_lastbpm), hl
-	ld	(_currentbpm), hl
-BB1_4:
+	ld	hl, 150
+	push	hl
+	call	_delay
+	pop	hl
+BB1_3:
 	ld	hl, -720866
 	push	de
 	ld	e, (hl)
@@ -160,24 +157,22 @@ BB1_4:
 	pop	de
 	ld	a, l
 	bit	3, a
-	jr	nz, BB1_6
+	jr	z, BB1_5
+	ld	hl, (_menuitem)
+	dec	hl
+	ld	(_menuitem), hl
+	ld	hl, 150
+	push	hl
+	call	_delay
+	pop	hl
 BB1_5:
 	ld	de, (_menuitem)
-	jr	BB1_7
-BB1_6:
-	ld	de, (_menuitem)
-	dec	de
-	ld	(_menuitem), de
-	ld	hl, 2
-	ld	(_lastbpm), hl
-	ld	(_currentbpm), hl
-BB1_7:
 	push	de
 	pop	hl
 	ld	bc, 1
 	or	a, a
 	sbc	hl, bc
-	jr	nz, BB1_9
+	jr	nz, BB1_7
 	scf
 	sbc	hl, hl
 	push	hl
@@ -214,13 +209,13 @@ BB1_7:
 	pop	hl
 	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
-BB1_9:
+BB1_7:
 	push	de
 	pop	hl
 	ld	bc, 2
 	or	a, a
 	sbc	hl, bc
-	jr	nz, BB1_11
+	jr	nz, BB1_9
 	scf
 	sbc	hl, hl
 	push	hl
@@ -257,7 +252,7 @@ BB1_9:
 	pop	hl
 	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
-BB1_11:
+BB1_9:
 	push	de
 	pop	hl
 	ld	bc, 3
@@ -265,7 +260,7 @@ BB1_11:
 	sbc	hl, bc
 	call	pe, __setflag
 	ld	hl, -2
-	jp	p, BB1_13
+	jp	p, BB1_11
 	push	de
 	pop	hl
 	ld	bc, 1
@@ -274,7 +269,7 @@ BB1_11:
 	call	pe, __setflag
 	ld	hl, 2
 	jp	p, BB1_1
-BB1_13:
+BB1_11:
 	add	hl, de
 	ld	(_menuitem), hl
 	jp	BB1_1
@@ -625,16 +620,6 @@ _.str.1:
 _.str.2:
 	db	"  No", 0
 
-	section	.bss,"aw",@nobits
-	public	_lastbpm
-_lastbpm:
-	rb	3
-
-	section	.bss,"aw",@nobits
-	public	_currentbpm
-_currentbpm:
-	rb	3
-
 	section	.rodata,"a",@progbits
 	private	_.str.3
 _.str.3:
@@ -675,11 +660,21 @@ _.str.5:
 _.str.6:
 	db	"Right Scores!", 0
 
+	section	.bss,"aw",@nobits
+	public	_lastbpm
+_lastbpm:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_currentbpm
+_currentbpm:
+	rb	3
+
 	ident	"clang version 15.0.0 (https://github.com/CE-Programming/llvm-project 23b78267b5d376b232475d0805a937e54b61e0d0)"
 	extern	__Unwind_SjLj_Register
 	extern	__frameset
-	extern	_kb_Scan
 	extern	_gfx_Begin
+	extern	_kb_Scan
 	extern	__sand
 	extern	__ishru
 	extern	_gfx_SwapDraw
