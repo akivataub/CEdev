@@ -88,11 +88,15 @@ int endgame(void) {
         }
         if (menuitem == 1 && kb_IsDown(kb_KeyEnter)) {
             gfx_FillScreen(255);
-            startgame;
+            break;
         } else if (menuitem == 2 && kb_IsDown(kb_KeyEnter)) {
             gfx_FillScreen(255);
             break;
         }
+    }
+    if (menuitem == 1 && kb_IsDown(kb_KeyEnter)) {
+        gfx_FillScreen(255);
+        break;
     }
     gfx_End();
     return 0;
