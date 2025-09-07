@@ -90,14 +90,16 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, -17
+	ld	hl, -24
 	call	__frameset
 	ld	hl, 1
 	ld	de, 2
 	lea	bc, ix - 4
-	ld	(ix - 11), bc
+	ld	(ix - 15), bc
 	lea	bc, ix - 8
-	ld	(ix - 14), bc
+	ld	(ix - 18), bc
+	lea	bc, ix - 12
+	ld	(ix - 21), bc
 	ld	(_ball_x), hl
 	ld	(_ball_y), hl
 	ld	(_ball_vel_x), de
@@ -172,7 +174,7 @@ BB1_9:
 	ld	(_ball_vel_x), hl
 BB1_11:
 	ld	hl, (_ball_y)
-	ld	(ix - 17), hl
+	ld	(ix - 24), hl
 	ld	bc, -238
 	add	hl, bc
 	dec	bc
@@ -198,7 +200,7 @@ BB1_13:
 	pop	iy
 	ld	(_ball_vel_x), iy
 BB1_15:
-	ld	bc, (ix - 17)
+	ld	bc, (ix - 24)
 	add	iy, de
 	ld	(_ball_x), iy
 	ld	hl, (_ball_vel_y)
@@ -209,15 +211,22 @@ BB1_15:
 	push	hl
 	call	_gfx_FillScreen
 	pop	hl
+	ld	hl, (_paddlex)
+	ld	de, (ix - 15)
+	push	de
+	push	hl
+	call	_itoa
+	pop	hl
+	pop	hl
 	ld	hl, (_ball_y)
-	ld	de, (ix - 11)
+	ld	de, (ix - 18)
 	push	de
 	push	hl
 	call	_itoa
 	pop	hl
 	pop	hl
 	ld	hl, (_ball_x)
-	ld	de, (ix - 14)
+	ld	de, (ix - 21)
 	push	de
 	push	hl
 	call	_itoa
@@ -226,7 +235,7 @@ BB1_15:
 	ld	hl, 20
 	push	hl
 	push	hl
-	ld	hl, (ix - 11)
+	ld	hl, (ix - 18)
 	push	hl
 	call	_gfx_PrintStringXY
 	pop	hl
@@ -236,7 +245,17 @@ BB1_15:
 	push	hl
 	ld	hl, 20
 	push	hl
-	ld	hl, (ix - 14)
+	ld	hl, (ix - 21)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 60
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, (ix - 15)
 	push	hl
 	call	_gfx_PrintStringXY
 	pop	hl
