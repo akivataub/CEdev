@@ -92,21 +92,20 @@ BB0_7:
 _main:
 	ld	hl, -14
 	call	__frameset
-	or	a, a
-	sbc	hl, hl
+	ld	iy, 0
 	xor	a, a
 	ld	de, 10
-	ld	iy, 2
-	lea	bc, ix - 2
-	ld	(ix - 5), bc
+	ld	bc, 2
+	lea	hl, ix - 2
+	ld	(ix - 5), hl
+	ld	(_score_left_person), iy
+	ld	(_lastscorelp), iy
 BB1_1:
-	ld	(_score_left_person), hl
-	ld	(_lastscorelp), hl
 	ld	(_endg), a
 	ld	(_ball_x), de
 	ld	(_ball_y), de
-	ld	(_ball_vel_x), iy
-	ld	(_ball_vel_y), iy
+	ld	(_ball_vel_x), bc
+	ld	(_ball_vel_y), bc
 	call	_gfx_Begin
 BB1_2:
 	ld	hl, -720868
@@ -567,13 +566,9 @@ BB1_41:
 	push	hl
 	call	_delay
 	pop	hl
-	or	a, a
-	sbc	hl, hl
 	xor	a, a
 	ld	de, 10
 	ld	bc, 2
-	push	bc
-	pop	iy
 	jp	BB1_1
 BB1_42:
 	scf
@@ -597,20 +592,20 @@ JTI1_0:
 	dl	BB1_36
 	dl	BB1_37
 
-	section	.data,"aw",@progbits
+	section	.bss,"aw",@nobits
 	public	_score_left_person
 _score_left_person:
-	dl	4
+	rb	3
 
 	section	.bss,"aw",@nobits
 	public	_score_right_person
 _score_right_person:
 	rb	3
 
-	section	.data,"aw",@progbits
+	section	.bss,"aw",@nobits
 	public	_lastscorelp
 _lastscorelp:
-	dl	4
+	rb	3
 
 	section	.bss,"aw",@nobits
 	public	_lastscorerp

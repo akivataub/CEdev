@@ -49,10 +49,10 @@ void itoa(int num, char* str) {
 }
 
 int main(void) {
-    startgame:
-    
     score_left_person = 0;
     lastscorelp = 0;
+    
+    startgame:
 
     endg = false;
 
