@@ -52,6 +52,9 @@ void itoa(int num, char* str) {
     }
 }
 
+startgl1:
+
+
 int endgame(void) {
     gfx_FillScreen(255);
     gfx_PrintStringXY("Play Again?", 20, 10);
@@ -88,19 +91,15 @@ int endgame(void) {
         }
         if (menuitem == 1 && kb_IsDown(kb_KeyEnter)) {
             gfx_FillScreen(255);
+            startgl1;
             break;
         } else if (menuitem == 2 && kb_IsDown(kb_KeyEnter)) {
             gfx_FillScreen(255);
             break;
         }
-    }
-    if (menuitem == 1 && kb_IsDown(kb_KeyEnter)) {
-        gfx_FillScreen(255);
-        break;
-    }
     gfx_End();
     return 0;
-}
+}}
 
 int main(void) {
     startgame:
