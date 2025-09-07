@@ -9,7 +9,6 @@
 
 int ball_x, ball_y;
 int ball_vel_x, ball_vel_y;
-#define ball_size 4
 
 int paddle_left_y = 120;
 int paddle_right_y = 120;
