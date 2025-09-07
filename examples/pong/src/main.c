@@ -16,6 +16,8 @@ int paddle_right_y = 120;
     
 int score_left_person = 0;
 int score_right_person = 0;
+int lastscorelp = 0;
+int lastscorerp = 0;
 
 int paddlex = 2;
 int paddley = 160;
