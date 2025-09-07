@@ -123,8 +123,8 @@ _endgame:
 	call	_gfx_PrintStringXY
 	pop	hl
 	pop	hl
-	pop	hl
 BB1_1:
+	pop	hl
 	call	_kb_Scan
 	ld	hl, -720866
 	push	de
@@ -257,10 +257,14 @@ BB1_9:
 	sbc	hl, bc
 	call	pe, __setflag
 	ld	hl, 2
-	jp	p, BB1_1
+	jp	p, BB1_12
 BB1_11:
 	add	hl, de
 	ld	(_menuitem), hl
+BB1_12:
+	ld	hl, 200
+	push	hl
+	call	_delay
 	jp	BB1_1
 	section	.text,"ax",@progbits
 
