@@ -104,24 +104,20 @@ int main(void) {
             lastscorelp = score_left_person;
             score_left_person++;
             if (score_left_person == 5) {
-            
-            } else {
+                    gfx_FillScreen(255);
+                    gfx_SetTextScale(2, 2);
+                    gfx_PrintStringXY("Right Wins!", 20, 30);
+                    gfx_SetTextScale(1, 1);
+                    gfx_SwapDraw();
+                    delay(1500);
+            } else if (score_left_person > lastscorelp) {
                     gfx_FillScreen(255);
                     gfx_SetTextScale(2, 2);
                     gfx_PrintStringXY("Right Scores!", 20, 30);
                     gfx_SetTextScale(1, 1);
                     gfx_SwapDraw();
                     delay(1500);
-                }
-            }
-            if (score_left_person > lastscorelp) {
-                gfx_FillScreen(255);
-                gfx_SetTextScale(2, 2);
-                gfx_PrintStringXY("Right Scores!", 20, 30);
-                gfx_SetTextScale(1, 1);
-                gfx_SwapDraw();
-                delay(1500);
-                goto startgame;
+                    goto startgame;
             }
         }
 
