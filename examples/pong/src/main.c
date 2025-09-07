@@ -52,52 +52,6 @@ void itoa(int num, char* str) {
     }
 }
 
-
-int endgame(void) {
-    gfx_FillScreen(255);
-    gfx_PrintStringXY("Play Again?", 20, 10);
-    gfx_PrintStringXY("> Yes", 30, 20);
-    gfx_PrintStringXY("  No", 30, 30);
-    while (1) {
-        kb_Scan();
-            if (kb_IsDown(kb_KeyDown)) {
-                menuitem = 2;
-                delay(150);
-            } else if (kb_IsDown(kb_KeyUp)) {
-                menuitem = 1;
-                delay(150);
-            }
-        if (menuitem == 1) {
-            gfx_FillScreen(255);
-            gfx_PrintStringXY("Play Again?", 20, 10);
-            gfx_PrintStringXY("> Yes", 30, 20);
-            gfx_PrintStringXY("  No", 30, 30);
-            gfx_SwapDraw();
-        }
-        if (menuitem == 2) {
-            gfx_FillScreen(255);
-            gfx_PrintStringXY("Play Again?", 20, 10);
-            gfx_PrintStringXY("  Yes", 30, 20);
-            gfx_PrintStringXY("> No", 30, 30);
-            gfx_SwapDraw();
-        }
-        if (menuitem == 3) {
-            menuitem = 1;
-        }
-        if (menuitem == 0) {
-            menuitem = 2;
-        }
-        if (menuitem == 1 && kb_IsDown(kb_KeyEnter)) {
-            gfx_FillScreen(255);
-            break;
-        } else if (menuitem == 2 && kb_IsDown(kb_KeyEnter)) {
-            gfx_FillScreen(255);
-            break;
-        }
-    gfx_End();
-    return 0;
-}}
-
 int main(void) {
     startgame:
     
@@ -161,7 +115,7 @@ int main(void) {
                     gfx_SetTextScale(1, 1);
                     gfx_SwapDraw();
                     delay(1500);
-                    endgame;
+                    goto endgame;
             } else if (score_left_person > lastscorelp) {
                     gfx_FillScreen(255);
                     gfx_SetTextScale(2, 2);
@@ -254,4 +208,5 @@ int main(void) {
     gfx_End();
 
     return 0;
+}
 }
