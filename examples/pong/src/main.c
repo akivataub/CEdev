@@ -54,15 +54,18 @@ int endgame(void) {
     gfx_PrintStringXY("Play Again?", 20, 10);
     gfx_PrintStringXY("> Yes", 30, 20);
     gfx_PrintStringXY("  No", 30, 30);
-    while
+    while (1) {
         kb_Scan();
         if (kb_IsDown(kb_KeyDown)) {
             menuitem = menuitem + 1;
         }
         if (kb_IsDown(kb_KeyUp)) {
-            menuitem
+            menuitem = menuitem - 1;
         }
-    gfx_SwapDraw();
+        
+        gfx_SwapDraw();
+    }
+    gfx_End();
     return 0;
 }
 
