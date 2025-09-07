@@ -90,8 +90,6 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, -3
-	call	__frameset
 	or	a, a
 	sbc	hl, hl
 	ld	de, 2
@@ -113,7 +111,7 @@ BB1_1:
 	ld	h, (iy + 1)
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_15
+	jp	nz, BB1_17
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
@@ -154,12 +152,13 @@ BB1_8:
 	ld	(_paddley), iy
 BB1_9:
 	ld	hl, (_ball_y)
-	ld	(ix - 3), hl
-	ld	bc, 2
+	push	hl
+	pop	iy
+	ld	bc, -2
 	or	a, a
 	sbc	hl, bc
 	jr	z, BB1_11
-	ld	hl, (ix - 3)
+	lea	hl, iy
 	ld	de, 238
 	or	a, a
 	sbc	hl, de
@@ -170,23 +169,30 @@ BB1_11:
 	ld	(_ball_vel_y), hl
 BB1_12:
 	ld	bc, (_ball_x)
-	ld	iy, (_ball_vel_x)
+	push	bc
+	pop	hl
+	ld	de, -2
+	or	a, a
+	sbc	hl, de
+	jr	z, BB1_14
 	push	bc
 	pop	hl
 	ld	de, 318
 	or	a, a
 	sbc	hl, de
-	jr	nz, BB1_14
-	lea	hl, iy
-	call	__ineg
-	push	hl
-	pop	iy
-	ld	(_ball_vel_x), iy
+	jr	nz, BB1_15
 BB1_14:
-	add	iy, bc
-	ld	(_ball_x), iy
+	ld	hl, (_ball_vel_x)
+	call	__ineg
+	ld	(_ball_vel_x), hl
+	jr	BB1_16
+BB1_15:
+	ld	hl, (_ball_vel_x)
+BB1_16:
+	add	hl, bc
+	ld	(_ball_x), hl
 	ld	hl, (_ball_vel_y)
-	ld	de, (ix - 3)
+	lea	de, iy
 	add	hl, de
 	ld	(_ball_y), hl
 	scf
@@ -224,12 +230,10 @@ BB1_14:
 	pop	hl
 	ld	iy, -720868
 	jp	BB1_1
-BB1_15:
+BB1_17:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
-	ld	sp, ix
-	pop	ix
 	ret
 	section	.text,"ax",@progbits
 

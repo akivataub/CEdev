@@ -84,10 +84,10 @@ int main(void) {
         // Draw the paddles
         // Draw the ball
         // Draw the scores
-        if (ball_y == 238 || ball_y == 2) {
+        if (ball_y == 238 || ball_y == -2) {
             ball_vel_y = ball_vel_y - ball_vel_y - ball_vel_y;
         }
-        if (ball_x == 318) {
+        if (ball_x == 318 || ball_x == -2) {
             ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
         }
 
