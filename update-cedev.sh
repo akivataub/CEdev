@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script to auto-upload files in ~/Documents/pong to GitHub
+# Script to auto-upload files in ~/Documents/CEdev to GitHub
 REPO_DIR="/home/akiva/Documents/CEdev"
 LOG_FILE="/home/akiva/Documents/CEdev/update.log"
 
@@ -30,7 +30,7 @@ else
 fi
 
 # Push to GitHub
-git push origin master && {
+git push origin main && {
     echo "$(date): Pushed to GitHub" >> "$LOG_FILE"
 } || {
     echo "$(date): Push failed" >> "$LOG_FILE"
