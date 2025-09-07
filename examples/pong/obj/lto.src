@@ -199,11 +199,12 @@ BB1_5:
 	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
 BB1_7:
-	ex	de, hl
-	ld	de, 2
+	push	de
+	pop	hl
+	ld	bc, 2
 	or	a, a
-	sbc	hl, de
-	jp	nz, BB1_1
+	sbc	hl, bc
+	jr	nz, BB1_9
 	scf
 	sbc	hl, hl
 	push	hl
@@ -239,6 +240,25 @@ BB1_7:
 	pop	hl
 	pop	hl
 	call	_gfx_SwapDraw
+	ld	de, (_menuitem)
+BB1_9:
+	push	de
+	pop	hl
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jr	nz, BB1_11
+	ld	hl, 2
+	jr	BB1_12
+BB1_11:
+	ex	de, hl
+	ld	de, 3
+	or	a, a
+	sbc	hl, de
+	ld	hl, 1
+	jp	nz, BB1_1
+BB1_12:
+	ld	(_menuitem), hl
 	jp	BB1_1
 	section	.text,"ax",@progbits
 
@@ -567,10 +587,10 @@ _paddlex:
 _paddley:
 	dl	160
 
-	section	.bss,"aw",@nobits
+	section	.data,"aw",@progbits
 	public	_menuitem
 _menuitem:
-	rb	3
+	dl	1
 
 	section	.rodata,"a",@progbits
 	private	_.str
