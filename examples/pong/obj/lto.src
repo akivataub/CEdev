@@ -115,7 +115,7 @@ BB1_2:
 	pop	de
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_42
+	jp	nz, BB1_43
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
@@ -163,36 +163,39 @@ BB1_10:
 BB1_11:
 	ld	(ix - 14), hl
 	ld	hl, (_ball_x)
+	ld	(ix - 11), hl
 	ld	bc, (_paddlex)
 	push	bc
 	pop	iy
 	ld	de, 4
 	add	iy, de
-	ld	de, (_ball_y)
-	ld	(ix - 11), de
+	ld	hl, (_ball_y)
 	ld	(ix - 8), hl
+	ld	de, (ix - 11)
+	push	de
+	pop	hl
 	or	a, a
 	sbc	hl, bc
+	push	de
+	pop	bc
 	call	pe, __setflag
 	ld	de, 20
 	jp	m, BB1_16
 	lea	hl, iy
-	ld	bc, (ix - 8)
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
 	jp	m, BB1_16
-	ld	bc, (ix - 14)
-	push	bc
-	pop	iy
+	ld	iy, (ix - 14)
 	add	iy, de
-	ld	hl, (ix - 11)
+	ld	hl, (ix - 8)
+	ld	de, (ix - 14)
 	or	a, a
-	sbc	hl, bc
+	sbc	hl, de
 	call	pe, __setflag
 	jp	m, BB1_16
 	lea	hl, iy
-	ld	de, (ix - 11)
+	ld	de, (ix - 8)
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
@@ -201,7 +204,7 @@ BB1_11:
 	call	__ineg
 	ld	(_ball_vel_x), hl
 BB1_16:
-	ld	hl, (ix - 11)
+	ld	hl, (ix - 8)
 	push	hl
 	pop	iy
 	ld	de, -238
@@ -214,7 +217,6 @@ BB1_16:
 	call	__ineg
 	ld	(_ball_vel_y), hl
 BB1_18:
-	ld	bc, (ix - 8)
 	push	bc
 	pop	hl
 	ld	de, 318
@@ -282,10 +284,10 @@ BB1_20:
 BB1_23:
 	ld	hl, (_ball_vel_x)
 BB1_24:
-	lea	de, iy
 	add	hl, bc
 	ld	(_ball_x), hl
 	ld	hl, (_ball_vel_y)
+	lea	de, iy
 	add	hl, de
 	ld	(_ball_y), hl
 	scf
@@ -496,10 +498,23 @@ BB1_33:
 	jp	(hl)
 BB1_35:
 	ld	hl, 2
-	jr	BB1_37
+	ld	(_menuitem), hl
 BB1_36:
-	ld	hl, 1
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	bit	0, l
+	jp	z, BB1_26
+	jr	BB1_42
 BB1_37:
+	ld	hl, 1
 	ld	(_menuitem), hl
 BB1_38:
 	ld	hl, -720868
@@ -553,6 +568,12 @@ BB1_41:
 	ld	de, 2
 	jp	BB1_1
 BB1_42:
+	scf
+	sbc	hl, hl
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+BB1_43:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
@@ -565,8 +586,8 @@ BB1_42:
 JTI1_0:
 	dl	BB1_35
 	dl	BB1_38
-	dl	BB1_38
 	dl	BB1_36
+	dl	BB1_37
 
 	section	.data,"aw",@progbits
 	public	_paddle_left_y

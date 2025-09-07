@@ -203,7 +203,6 @@ int main(void) {
                 break;
             } else if (menuitem == 2 && kb_IsDown(kb_KeyEnter)) {
                 gfx_FillScreen(255);
-                break;
                 goto ending;
             }
         }
