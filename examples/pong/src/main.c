@@ -204,14 +204,14 @@ int main(void) {
             } else if (menuitem == 2 && kb_IsDown(kb_KeyEnter)) {
                 gfx_FillScreen(255);
                 break;
+                goto ending;
             }
         }
     }
     gfx_SwapDraw();
     delay(20);
 }        
-
+    ending:
     gfx_End();
-
     return 0;
 }
