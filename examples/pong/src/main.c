@@ -20,8 +20,8 @@ int scorefa = 0;
 int paddlex = 0;
 int paddley = 160;
 
-
-char paddleystring[4];
+bool ifhit = false;
+//char paddleystring[4];
 void itoa(int num, char* str) {
     if (num == 0) {
         str[0] = '0';
@@ -52,7 +52,7 @@ int main(void) {
 
     gfx_Begin();
     // --- THE GAME LOOP ---
-    itoa(paddley, paddleystring);
+    //itoa(paddley, paddleystring);
     while (!kb_IsDown(kb_KeyClear)) { // Run until the 'Clear' key is pressed
         kb_Scan();
         bool balldrawn = false;
@@ -87,7 +87,7 @@ int main(void) {
         //paddley + 20 paddlex + 4
         if (ball_x >= paddlex &&  ball_x <= paddlex + paddle_width && ball_y >= paddley && ball_y <= paddley + paddle_height) {
             ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
-            gfx_PrintStringXY("HIT", 20, 80);
+            
         }
 
         if (ball_y >= 238 || ball_y <= 0) {
@@ -107,13 +107,13 @@ int main(void) {
         // 7. Swap the buffer to the screen
         gfx_FillScreen(255);
         char paddlexs [4];
-        char bys [4];
-        char byx [4];
+        //char bys [4];
+        //char byx [4];
         itoa(paddlex, paddlexs);
-        itoa(ball_y, bys);
-        itoa(ball_x, byx);
-        gfx_PrintStringXY(bys ,20, 20);
-        gfx_PrintStringXY(byx ,20, 40);
+        //itoa(ball_y, bys);
+        //itoa(ball_x, byx);
+        //gfx_PrintStringXY(bys ,20, 20);
+        //gfx_PrintStringXY(byx ,20, 40);
         gfx_PrintStringXY(paddlexs ,20, 60);
         gfx_FillCircle(ball_x, ball_y, 2);
         gfx_FillRectangle(paddlex, paddley, paddle_width, paddle_height);
