@@ -55,7 +55,7 @@ void itoa(int num, char* str) {
 int main(void) {
     startgame:
     
-    bool endg == false;
+    bool endg = false;
 
     ball_x = 10;
     ball_y = 10;
