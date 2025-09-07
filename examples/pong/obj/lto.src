@@ -252,7 +252,8 @@ BB1_22:
 	call	_itoa
 	pop	hl
 	pop	hl
-	ld	hl, 40
+	or	a, a
+	sbc	hl, hl
 	push	hl
 	ld	hl, 20
 	push	hl
