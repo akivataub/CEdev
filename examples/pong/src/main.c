@@ -57,6 +57,8 @@ void itoa(int num, char* str) {
 int main(void) {
     startgame:
     
+    
+
     endg = false;
 
     ball_x = 10;
