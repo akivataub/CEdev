@@ -22,6 +22,8 @@ int lastscorerp = 0;
 int paddlex = 2;
 int paddley = 160;
 
+int menuitem = 0;
+
 //bool ifhit = false; TEST
 //char paddleystring[4]; TEST
 
@@ -48,6 +50,7 @@ void itoa(int num, char* str) {
 }
 
 int endgame(void) {
+    gfx_FillScreen(255);
 
 }
 
