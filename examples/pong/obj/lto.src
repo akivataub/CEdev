@@ -158,11 +158,16 @@ BB1_9:
 	or	a, a
 	sbc	hl, bc
 	jr	nz, BB1_11
-	ld	bc, 0
-	ld	(_ball_vel_y), bc
-	ld	(_ball_vel_x), bc
-	push	bc
+	ld	hl, (_ball_vel_y)
+	call	__ineg
+	push	hl
 	pop	iy
+	ld	(_ball_vel_y), iy
+	ld	hl, (_ball_vel_x)
+	call	__ineg
+	push	hl
+	pop	bc
+	ld	(_ball_vel_x), bc
 	jr	BB1_12
 BB1_11:
 	ld	bc, (_ball_vel_x)
@@ -284,6 +289,7 @@ _paddleystring:
 	extern	__Unwind_SjLj_Unregister
 	extern	_gfx_FillRectangle
 	extern	_gfx_SetColor
+	extern	__ineg
 	extern	_delay
 	extern	_gfx_End
 	extern	_gfx_FillCircle
