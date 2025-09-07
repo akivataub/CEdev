@@ -52,8 +52,8 @@ void itoa(int num, char* str) {
 int endgame(void) {
     gfx_FillScreen(255);
     gfx_PrintStringXY("Play Again?", 20, 10);
-    gfx_PrintStringXY("→ Yes", 30, 20);
-    gfx_PrintStringXY("→ No", 30, 30);
+    gfx_PrintStringXY("> Yes", 30, 20);
+    gfx_PrintStringXY("  No", 30, 30);
     gfx_SwapDraw();
     delay(5000);
     return 0;
