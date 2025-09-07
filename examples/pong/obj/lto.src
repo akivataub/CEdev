@@ -137,7 +137,6 @@ BB1_1:
 	ld	(ix - 11), hl
 	ld	de, (_score_left_person)
 BB1_3:
-	inc	de
 	ld	iy, -720866
 	ld	l, (iy)
 	ld	h, (iy + 1)
@@ -239,7 +238,13 @@ BB1_19:
 	jp	p, BB1_25
 	ld	(ix - 11), iy
 	ld	de, (ix - 29)
+	ld	(_lastscorelp), de
+	push	de
+	pop	hl
+	inc	hl
+	inc	de
 	ld	(_score_left_person), de
+	ex	de, hl
 	jp	BB1_3
 BB1_22:
 	lea	hl, iy
@@ -360,6 +365,16 @@ _score_left_person:
 	section	.bss,"aw",@nobits
 	public	_score_right_person
 _score_right_person:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_lastscorelp
+_lastscorelp:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_lastscorerp
+_lastscorerp:
 	rb	3
 
 	section	.data,"aw",@progbits

@@ -100,8 +100,11 @@ int main(void) {
         }
 
         if (ball_x <= 2) {
+            lastscorelp = score_left_person;
             score_left_person++;
+            if (score_left_person > lastscorelp) {
             goto startgame;
+            }
         }
 
         if (balldrawn == false) {
