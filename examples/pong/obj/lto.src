@@ -325,6 +325,7 @@ BB2_20:
 	push	hl
 	call	_delay
 	pop	hl
+	call	_endgame
 	ld	de, (_ball_x)
 	ld	bc, (_ball_y)
 BB2_23:
