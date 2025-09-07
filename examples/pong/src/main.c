@@ -24,6 +24,8 @@ int paddley = 160;
 
 int menuitem = 1;
 
+int lastbpm;
+
 //bool ifhit = false; TEST
 //char paddleystring[4]; TEST
 
