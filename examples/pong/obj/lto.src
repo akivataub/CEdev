@@ -275,11 +275,6 @@ BB1_11:
 	ld	(ix - 9), iy
 	ld	(ix - 6), bc
 	ld	(ix - 3), hl
-	scf
-	sbc	hl, hl
-	push	hl
-	call	_gfx_FillScreen
-	pop	hl
 	ld	hl, 10
 	push	hl
 	ld	hl, 20
