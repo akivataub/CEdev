@@ -90,18 +90,19 @@ BB0_7:
 	section	.text,"ax",@progbits
 	public	_main
 _main:
-	ld	hl, -29
+	ld	hl, -14
 	call	__frameset
 	ld	hl, 3
 	ld	de, 2
 	lea	bc, ix - 2
 	ld	(ix - 5), bc
+BB1_1:
 	ld	(_ball_x), hl
 	ld	(_ball_y), hl
 	ld	(_ball_vel_x), de
 	ld	(_ball_vel_y), de
 	call	_gfx_Begin
-BB1_1:
+BB1_2:
 	ld	hl, -720868
 	push	de
 	ld	e, (hl)
@@ -112,38 +113,19 @@ BB1_1:
 	pop	de
 	ld	a, l
 	bit	6, a
-	jp	nz, BB1_27
+	jp	nz, BB1_24
 	call	_kb_Scan
 	or	a, a
 	sbc	hl, hl
 	push	hl
 	call	_gfx_SetColor
 	pop	hl
-	ld	hl, (_ball_x)
-	ld	(ix - 8), hl
-	ld	hl, (_paddlex)
-	ld	(ix - 14), hl
-	ld	bc, 4
-	add	hl, bc
-	ld	(ix - 26), hl
-	ld	hl, (_ball_y)
-	ld	(ix - 20), hl
-	ld	bc, -238
-	add	hl, bc
-	ld	(ix - 17), hl
-	ld	hl, (_ball_vel_x)
-	ld	(ix - 23), hl
-	ld	hl, (_ball_vel_y)
-	ld	(ix - 11), hl
-	ld	de, (_score_left_person)
-BB1_3:
 	ld	iy, -720866
 	ld	l, (iy)
 	ld	h, (iy + 1)
 	ld.sis	bc, 1
 	call	__sand
 	bit	0, l
-	ld	(ix - 29), de
 	jr	nz, BB1_7
 	ld	l, (iy)
 	ld	h, (iy + 1)
@@ -158,7 +140,7 @@ BB1_3:
 	call	pe, __setflag
 	jp	p, BB1_9
 BB1_6:
-	lea	bc, iy
+	lea	hl, iy
 	jr	BB1_11
 BB1_7:
 	ld	iy, (_paddley)
@@ -166,115 +148,100 @@ BB1_7:
 	ld	de, 220
 	or	a, a
 	sbc	hl, de
-	ld	bc, 220
+	ld	hl, 220
 	jr	z, BB1_11
-	ld	bc, 5
+	ld	de, 5
 	jr	BB1_10
 BB1_9:
-	ld	bc, -5
+	ld	de, -5
 BB1_10:
-	add	iy, bc
-	lea	bc, iy
-	ld	(_paddley), bc
+	add	iy, de
+	lea	hl, iy
+	ld	(_paddley), hl
 BB1_11:
+	ld	(ix - 14), hl
+	ld	hl, (_ball_x)
+	ld	bc, (_paddlex)
 	push	bc
 	pop	iy
-	ld	de, (ix - 8)
-	push	de
-	pop	hl
-	ld	bc, (ix - 14)
-	or	a, a
-	sbc	hl, bc
-	call	pe, __setflag
-	jp	m, BB1_15
-	ld	hl, (ix - 26)
-	or	a, a
-	sbc	hl, de
-	call	pe, __setflag
-	jp	m, BB1_14
-	lea	bc, iy
-	ld	de, 20
+	ld	de, 4
 	add	iy, de
-	ld	de, (ix - 20)
-	push	de
-	pop	hl
+	ld	de, (_ball_y)
+	ld	(ix - 11), de
+	ld	(ix - 8), hl
 	or	a, a
 	sbc	hl, bc
 	call	pe, __setflag
-	jp	p, BB1_22
-BB1_14:
+	ld	de, 20
+	jp	m, BB1_16
+	lea	hl, iy
 	ld	bc, (ix - 8)
-	jr	BB1_16
-BB1_15:
-	push	de
-	pop	bc
-BB1_16:
-	ld	iy, (ix - 11)
-BB1_17:
-	ld	hl, (ix - 17)
-	ld	de, -237
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	jp	m, BB1_16
+	ld	bc, (ix - 14)
+	push	bc
+	pop	iy
+	add	iy, de
+	ld	hl, (ix - 11)
+	or	a, a
+	sbc	hl, bc
+	call	pe, __setflag
+	jp	m, BB1_16
+	lea	hl, iy
+	ld	de, (ix - 11)
 	or	a, a
 	sbc	hl, de
-	jr	nc, BB1_19
-	lea	hl, iy
+	call	pe, __setflag
+	jp	m, BB1_16
+	ld	hl, (_ball_vel_x)
 	call	__ineg
+	ld	(_ball_vel_x), hl
+	ld	a, 1
+	ld	(_ifhit), a
+BB1_16:
+	ld	hl, (ix - 11)
 	push	hl
 	pop	iy
-	ld	(_ball_vel_y), iy
-BB1_19:
+	ld	de, -238
+	add	hl, de
+	inc	de
+	or	a, a
+	sbc	hl, de
+	jr	nc, BB1_18
+	ld	hl, (_ball_vel_y)
+	call	__ineg
+	ld	(_ball_vel_y), hl
+BB1_18:
+	ld	bc, (ix - 8)
 	push	bc
 	pop	hl
 	ld	de, 318
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	p, BB1_24
+	jp	m, BB1_20
+	ld	hl, (_ball_vel_x)
+	call	__ineg
+	ld	(_ball_vel_x), hl
+	jr	BB1_22
+BB1_20:
 	push	bc
 	pop	hl
 	ld	de, 3
 	or	a, a
 	sbc	hl, de
 	call	pe, __setflag
-	jp	p, BB1_25
-	ld	(ix - 11), iy
-	ld	de, (ix - 29)
-	ld	(_lastscorelp), de
-	push	de
-	pop	hl
-	inc	hl
-	inc	de
-	ld	(_score_left_person), de
-	ex	de, hl
-	jp	BB1_3
+	jp	m, BB1_23
+	ld	hl, (_ball_vel_x)
 BB1_22:
-	lea	hl, iy
-	or	a, a
-	sbc	hl, de
-	call	pe, __setflag
-	ld	bc, (ix - 8)
-	ld	iy, (ix - 11)
-	jp	m, BB1_17
-	ld	hl, (ix - 23)
-	call	__ineg
-	ld	(ix - 23), hl
-	ld	(_ball_vel_x), hl
-	ld	a, 1
-	ld	(_ifhit), a
-	jr	BB1_17
-BB1_24:
-	ld	hl, (ix - 23)
-	call	__ineg
-	ld	(_ball_vel_x), hl
-	ld	de, (ix - 20)
-	jr	BB1_26
-BB1_25:
-	ld	de, (ix - 20)
-	ld	hl, (ix - 23)
-BB1_26:
+	lea	de, iy
 	add	hl, bc
 	ld	(_ball_x), hl
-	add	iy, de
-	ld	(_ball_y), iy
+	ld	hl, (_ball_vel_y)
+	add	hl, de
+	ld	(_ball_y), hl
 	scf
 	sbc	hl, hl
 	push	hl
@@ -337,8 +304,16 @@ BB1_26:
 	push	hl
 	call	_delay
 	pop	hl
+	jp	BB1_2
+BB1_23:
+	ld	hl, (_score_left_person)
+	ld	(_lastscorelp), hl
+	inc	hl
+	ld	(_score_left_person), hl
+	ld	hl, 3
+	ld	de, 2
 	jp	BB1_1
-BB1_27:
+BB1_24:
 	call	_gfx_End
 	or	a, a
 	sbc	hl, hl
@@ -433,6 +408,6 @@ _.str:
 	extern	_gfx_SetColor
 	extern	__ineg
 	extern	_delay
-	extern	_gfx_FillCircle
 	extern	_gfx_PrintStringXY
+	extern	_gfx_FillCircle
 	extern	_gfx_End
