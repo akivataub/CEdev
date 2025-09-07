@@ -66,12 +66,13 @@ int endgame(void) {
                 menuitem = 2;
                 is_key_pressed = true;
                 delay(150);
-            }
-            if (kb_IsDown(kb_KeyUp)) {
-                menuitem = menuitem - 1;
+            } else if (kb_IsDown(kb_KeyUp)) {
+                menuitem = 1;
                 is_key_pressed = true;
                 delay(150);
             }
+        } else if (!kb_IsDown(kb_KeyDown) && !kb_IsDown(kb_KeyUp)) {
+            key_pressed = false; // Reset when keys are released
         }
         if (menuitem == 1) {
             gfx_FillScreen(255);

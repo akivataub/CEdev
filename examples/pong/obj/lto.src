@@ -139,14 +139,8 @@ BB1_1:
 	ld.sis	bc, 1
 	call	__sand
 	bit	0, l
-	jr	z, BB1_3
 	ld	hl, 2
-	ld	(_menuitem), hl
-	ld	hl, 150
-	push	hl
-	call	_delay
-	pop	hl
-BB1_3:
+	jr	nz, BB1_3
 	ld	hl, -720866
 	push	de
 	ld	e, (hl)
@@ -157,22 +151,22 @@ BB1_3:
 	pop	de
 	ld	a, l
 	bit	3, a
-	jr	z, BB1_5
-	ld	hl, (_menuitem)
-	dec	hl
+	ld	hl, 1
+	jr	z, BB1_4
+BB1_3:
 	ld	(_menuitem), hl
 	ld	hl, 150
 	push	hl
 	call	_delay
 	pop	hl
-BB1_5:
 	ld	de, (_menuitem)
 	push	de
 	pop	hl
 	ld	bc, 1
 	or	a, a
 	sbc	hl, bc
-	jr	nz, BB1_7
+	jr	nz, BB1_5
+BB1_4:
 	scf
 	sbc	hl, hl
 	push	hl
@@ -209,13 +203,13 @@ BB1_5:
 	pop	hl
 	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
-BB1_7:
+BB1_5:
 	push	de
 	pop	hl
 	ld	bc, 2
 	or	a, a
 	sbc	hl, bc
-	jr	nz, BB1_9
+	jr	nz, BB1_7
 	scf
 	sbc	hl, hl
 	push	hl
@@ -252,7 +246,7 @@ BB1_7:
 	pop	hl
 	call	_gfx_SwapDraw
 	ld	de, (_menuitem)
-BB1_9:
+BB1_7:
 	push	de
 	pop	hl
 	ld	bc, 3
@@ -260,7 +254,7 @@ BB1_9:
 	sbc	hl, bc
 	call	pe, __setflag
 	ld	hl, -2
-	jp	p, BB1_11
+	jp	p, BB1_9
 	push	de
 	pop	hl
 	ld	bc, 1
@@ -269,7 +263,7 @@ BB1_9:
 	call	pe, __setflag
 	ld	hl, 2
 	jp	p, BB1_1
-BB1_11:
+BB1_9:
 	add	hl, de
 	ld	(_menuitem), hl
 	jp	BB1_1

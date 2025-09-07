@@ -7,9 +7,9 @@ Section          Base   Top    High   Length
 .init.reruncheck D1AA52 D1AA52             0h
 .init            D1AA52 D1AA7C            2Ah
 .fini            D1AA7C D1AAB0            34h
-.text            D1AAB0 D1B106           656h
-.data            D1B106 D1B115             Fh
-.rodata          D1B115 D1B173            5Eh
+.text            D1AAB0 D1B0F7           647h
+.data            D1B0F7 D1B106             Fh
+.rodata          D1B106 D1B164            5Eh
 .init_array      000000 000000             0h
 .ctors           000000 000000             0h
 .dtors           000000 000000             0h
@@ -47,10 +47,10 @@ _os_DisableHomeTextBuffer  = D1ABDC
 _os_EnableHomeTextBuffer   = D1ABEE
 ___sleep_common.3          = D1AC02
 _clock                     = D1AC1B
-.missingappvar             = D1B115
-.libloadname               = D1B11A
+.missingappvar             = D1B106
+.libloadname               = D1B10B
 .libloadnamelen            = 000007
-.webaddress                = D1B122
+.webaddress                = D1B113
 ___init_clock              = D1AA37
 __start                    = D1AA52
 ___exithl                  = D1AA7C
@@ -61,23 +61,23 @@ _exit.sp                   = D1AA7D
 _exit.flash_wait_states    = D1AA87
 _itoa                      = D1AC26
 _endgame                   = D1ACD6
-_main                      = D1AE63
-_score_left_person         = D1B106
-_lastscorelp               = D1B109
-_paddlex                   = D1B10C
-_paddley                   = D1B10F
-_menuitem                  = D1B112
-_.str                      = D1B137
-_.str.1                    = D1B143
-_.str.2                    = D1B149
-_.str.3                    = D1B14E
-_.str.4                    = D1B154
+_main                      = D1AE54
+_score_left_person         = D1B0F7
+_lastscorelp               = D1B0FA
+_paddlex                   = D1B0FD
+_paddley                   = D1B100
+_menuitem                  = D1B103
+_.str                      = D1B128
+_.str.1                    = D1B134
+_.str.2                    = D1B13A
+_.str.3                    = D1B13F
+_.str.4                    = D1B145
 _ball_x                    = D052C6
 _ball_y                    = D052C9
 _ball_vel_x                = D052CC
 _ball_vel_y                = D052CF
-_.str.5                    = D1B159
-_.str.6                    = D1B165
+_.str.5                    = D1B14A
+_.str.6                    = D1B156
 lib.LibLoad                = D1A9F2
 _#gfx_Begin                = D1AA05
 _#gfx_End                  = D1AA09
