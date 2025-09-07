@@ -22,6 +22,7 @@ int lastscorerp = 0;
 int paddlex = 2;
 int paddley = 160;
 
+startgame:
 bool ifhit = false;
 //char paddleystring[4]; TEST
 
@@ -59,7 +60,6 @@ int main(void) {
         kb_Scan();
         bool balldrawn = false;
             gfx_SetColor(0);
-            startgame:
             if (kb_IsDown(kb_KeyDown)) {
                 if (paddley == 220)
                 {
