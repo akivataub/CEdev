@@ -55,6 +55,8 @@ void itoa(int num, char* str) {
 int main(void) {
     startgame:
     
+    bool endg == false;
+
     ball_x = 10;
     ball_y = 10;
     ball_vel_x = 2; // Start moving right
@@ -115,6 +117,7 @@ int main(void) {
                     gfx_SetTextScale(1, 1);
                     gfx_SwapDraw();
                     delay(1500);
+                    endg == true;
                     goto endgame;
             } else if (score_left_person > lastscorelp) {
                     gfx_FillScreen(255);
@@ -161,7 +164,7 @@ int main(void) {
         delay(20);
 
         endgame:
-        if () {
+        if (endg == true) {
         gfx_FillScreen(255);
         gfx_PrintStringXY("Play Again?", 20, 10);
         gfx_PrintStringXY("> Yes", 30, 20);
