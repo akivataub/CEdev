@@ -91,7 +91,7 @@ int main(void) {
             ball_y = ball_vel_y;
             balldrawn = true;
         }
-        //hi2
+        //hi3
         // 7. Swap the buffer to the screen
         gfx_FillScreen(255);
         gfx_FillCircle(ball_x, ball_y, 2);

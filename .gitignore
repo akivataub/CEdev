@@ -1,0 +1,19 @@
+# Ignore CEdev toolchain
+bin/
+include/
+lib/
+meta/
+examples/*/bin/
+examples/*/obj/
+*.8xp
+*.bin
+*.map
+# Keep Pong project files
+!examples/pong/src/
+!examples/pong/makefile
+!examples/pong/icon.png
+!examples/pong/readme.md
+# Automation files
+!update-cedev.sh
+# Ignore log file
+update.log

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script to auto-upload files in ~/Documents/CEdev to GitHub
 REPO_DIR="/home/akiva/Documents/CEdev"
-LOG_FILE="/home/akiva/Documents/CEdev/update.log"
+LOG_FILE="/home/akiva/update-cedev.log"
 
 # Navigate to the repository
 cd "$REPO_DIR" || {
@@ -25,18 +25,16 @@ git pull origin main --rebase || {
     exit 1
 }
 
-# Add all files (in case new files were added after pull)
+# Stage and commit any new changes (e.g., from merge)
 git add .
-
-# Commit changes (only if there are changes)
-if git diff-index --quiet HEAD --; then
-    echo "$(date): No changes to commit" >> "$LOG_FILE"
-else
-    git commit -m "Auto-commit: $(date)" && {
-        echo "$(date): Committed changes" >> "$LOG_FILE"
+if ! git diff-index --quiet HEAD --; then
+    git commit -m "Auto-commit after pull: $(date)" && {
+        echo "$(date): Committed changes after pull" >> "$LOG_FILE"
     } || {
-        echo "$(date): Commit failed" >> "$LOG_FILE"
+        echo "$(date): Commit after pull failed" >> "$LOG_FILE"
     }
+else
+    echo "$(date): No changes to commit after pull" >> "$LOG_FILE"
 fi
 
 # Push to GitHub
