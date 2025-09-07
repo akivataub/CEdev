@@ -92,7 +92,8 @@ BB0_7:
 _main:
 	ld	hl, -14
 	call	__frameset
-	ld	hl, 3
+	or	a, a
+	sbc	hl, hl
 	ld	de, 2
 	lea	bc, ix - 4
 	ld	(ix - 11), bc
@@ -176,7 +177,7 @@ BB1_12:
 	ld	bc, (_ball_x)
 	push	bc
 	pop	hl
-	ld	de, -2
+	ld	de, -1
 	or	a, a
 	sbc	hl, de
 	jr	z, BB1_14
