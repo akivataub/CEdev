@@ -13,8 +13,8 @@ int ball_vel_x, ball_vel_y;
 int paddle_left_y = 120;
 int paddle_right_y = 120;
     
-int scroefp = 0;
-int scorefa = 0;
+int score_left_person = 0;
+int score_right_person = 0;
 
 int paddlex = 2;
 int paddley = 160;
@@ -94,6 +94,10 @@ int main(void) {
         }
         if (ball_x >= 318) {
             ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
+        }
+
+        if (ball_x <= 2) {
+            score_left_person++;
         }
 
         if (balldrawn == false) {
