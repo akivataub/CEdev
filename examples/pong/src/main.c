@@ -82,6 +82,7 @@ int endgame(void) {
             gfx_PrintStringXY("> Yes", 30, 20);
             gfx_PrintStringXY("  No", 30, 30);
             gfx_SwapDraw();
+            menuitem = 1;
         }
         if (menuitem <= 0) {
             gfx_FillScreen(255);
@@ -89,6 +90,7 @@ int endgame(void) {
             gfx_PrintStringXY("  Yes", 30, 20);
             gfx_PrintStringXY("> No", 30, 30);
             gfx_SwapDraw();
+            menuitem = 2;
         }
     }
     gfx_End();
