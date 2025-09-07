@@ -203,7 +203,7 @@ BB1_15:
 	ld	hl, (ix - 7)
 	ld	de, -238
 	add	hl, de
-	inc	de
+	dec	de
 	or	a, a
 	sbc	hl, de
 	jr	nc, BB1_17
@@ -217,7 +217,7 @@ BB1_17:
 	ld	de, -318
 	add	hl, de
 	ld	iy, (_ball_vel_x)
-	inc	de
+	dec	de
 	or	a, a
 	sbc	hl, de
 	jr	nc, BB1_19

@@ -90,10 +90,10 @@ int main(void) {
             ifhit = true;
         }
 
-        if (ball_y >= 238 || ball_y <= -2) {
+        if (ball_y >= 238 || ball_y <= 0) {
             ball_vel_y = ball_vel_y - ball_vel_y - ball_vel_y;
         }
-        if (ball_x >= 318 || ball_x <= -2) {
+        if (ball_x >= 318 || ball_x <= 0) {
             ball_vel_x = ball_vel_x - ball_vel_x - ball_vel_x;
         }
 
