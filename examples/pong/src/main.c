@@ -52,7 +52,7 @@ void itoa(int num, char* str) {
     }
 }
 
-startgl1:
+    startgl1:
 
 
 int endgame(void) {
@@ -91,7 +91,7 @@ int endgame(void) {
         }
         if (menuitem == 1 && kb_IsDown(kb_KeyEnter)) {
             gfx_FillScreen(255);
-            startgl1;
+            goto startgl1;
             break;
         } else if (menuitem == 2 && kb_IsDown(kb_KeyEnter)) {
             gfx_FillScreen(255);
