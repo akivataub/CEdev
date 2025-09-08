@@ -49,9 +49,6 @@ void itoa(int num, char* str) {
 }
 
 int main(void) {
-    score_left_person = 0;
-    lastscorelp = 0;
-    
     startgame:
 
     endg = false;
@@ -197,6 +194,8 @@ int main(void) {
                 }
                 if (menuitem == 1 && kb_IsDown(kb_KeyEnter)) {
                     gfx_FillScreen(255);
+                    score_left_person = 0;
+                    lastscorelp = 0;
                     break;
                 } else if (menuitem == 2 && kb_IsDown(kb_KeyEnter)) {
                     gfx_FillScreen(255);

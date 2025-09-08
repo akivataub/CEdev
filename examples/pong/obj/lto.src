@@ -92,20 +92,17 @@ BB0_7:
 _main:
 	ld	hl, -14
 	call	__frameset
-	ld	iy, 0
 	xor	a, a
-	ld	de, 10
-	ld	bc, 2
-	lea	hl, ix - 2
-	ld	(ix - 5), hl
-	ld	(_score_left_person), iy
-	ld	(_lastscorelp), iy
+	ld	hl, 10
+	ld	de, 2
+	lea	bc, ix - 2
+	ld	(ix - 5), bc
 BB1_1:
 	ld	(_endg), a
-	ld	(_ball_x), de
-	ld	(_ball_y), de
-	ld	(_ball_vel_x), bc
-	ld	(_ball_vel_y), bc
+	ld	(_ball_x), hl
+	ld	(_ball_y), hl
+	ld	(_ball_vel_x), de
+	ld	(_ball_vel_y), de
 	call	_gfx_Begin
 BB1_2:
 	ld	hl, -720868
@@ -515,7 +512,7 @@ BB1_36:
 	call	__sand
 	bit	0, l
 	jp	z, BB1_26
-	jr	BB1_42
+	jp	BB1_42
 BB1_37:
 	ld	hl, 1
 	ld	(_menuitem), hl
@@ -537,6 +534,10 @@ BB1_38:
 	push	hl
 	call	_gfx_FillScreen
 	pop	hl
+	or	a, a
+	sbc	hl, hl
+	ld	(_score_left_person), hl
+	ld	(_lastscorelp), hl
 BB1_40:
 	call	_gfx_SwapDraw
 	ld	hl, 20
@@ -567,8 +568,8 @@ BB1_41:
 	call	_delay
 	pop	hl
 	xor	a, a
-	ld	de, 10
-	ld	bc, 2
+	ld	hl, 10
+	ld	de, 2
 	jp	BB1_1
 BB1_42:
 	scf
