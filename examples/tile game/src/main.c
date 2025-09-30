@@ -9,19 +9,29 @@
 #include "tile_back.h"
 #include "global_palette.h"
 
-// Define TI-84 CE color constants
-#define COLOR_RED     gfx_RGBTo1555(255, 0, 0)  // 0xF800
-#define COLOR_GREEN   gfx_RGBTo1555(0, 255, 0)  // 0x07E0
-#define COLOR_BLUE    gfx_RGBTo1555(0, 0, 255)  // 0x001F
-#define COLOR_BLACK   gfx_RGBTo1555(0, 0, 0)    // 0x0000
-#define COLOR_WHITE   gfx_RGBTo1555(255, 255, 255)  // 0xFFFF
+// Function to bake the background into the sprite's transparent areas
+void copyBackgroundToSprite(gfx_sprite_t *sprite, int x, int y) {
+    gfx_sprite_t *temp = gfx_MallocSprite(sprite->width, sprite->height);
+    if (temp == NULL) return;
 
-void set_custom_palette(void) {
-    // Set palette index 1 to red
-    gfx_palette[1] = COLOR_RED;
-    // Set palette index 2 to black (or whatever you want)
-    gfx_palette[2] = COLOR_BLACK;
-    gfx_palette[3] = COLOR_BLACK;
+    // Capture the background area where the sprite will be drawn
+    gfx_GetSprite(temp, x, y);
+
+    // Overlay the non-transparent pixels from the original sprite onto the temp sprite
+    uint8_t *orig_data = sprite->data;
+    uint8_t *temp_data = temp->data;
+    int size = sprite->width * sprite->height;
+    for (int k = 0; k < size; k++) {
+        if (orig_data[k] != 0) {  // Assuming index 0 is transparent
+            temp_data[k] = orig_data[k];
+        }
+    }
+
+    // Draw the combined sprite (with background baked in)
+    gfx_Sprite(temp, x, y);
+
+    // Free the temporary sprite
+    free(temp);
 }
 
 void rand2(int input[], int output[], int size) {
@@ -94,7 +104,7 @@ int i = 0;
 int main(void)
 {
 gfx_Begin();
-set_custom_palette();
+gfx_SetPalette(global_palette, sizeof_global_palette, 0);  // Apply the generated palette
 gfx_SetDrawBuffer();
 gfx_FillScreen(0);
 gfx_SetColor(15);
@@ -142,7 +152,10 @@ if (level == 1) {
         gfx_PrintStringXY(t4, fourtht, begin_second_row_y);
         gfx_PrintStringXY(t5, fiftht, begin_second_row_y);
         gfx_PrintStringXY(t6, sixtht, begin_second_row_y);
-        gfx_Sprite(tile_back, 0, 0);
+        copyBackgroundToSprite(tile_back, 120, 103);
+        gfx_SetColor(244);
+        gfx_Rectangle(126, 109, 64, 64); // cause sprite is 64x64
+        gfx_SetColor(0);
         gfx_SwapDraw();
         delay(2000);
     }
