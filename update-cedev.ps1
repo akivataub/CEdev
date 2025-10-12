@@ -1,11 +1,7 @@
-# PowerShell script for fully automated CEdev repo update on Windows
-# Save as update-cedev.ps1 and run with: powershell -ExecutionPolicy Bypass -File update-cedev.ps1
-
 param(
     [switch]$Silent = $false
 )
 
-# PowerShell script for fully automated CEdev repo update on Windows
 $REPO_DIR = "C:\Users\Akiva\Documents\CEdev"
 $LOG_FILE = "C:\Users\Akiva\Documents\CEdev\update-cedev.log"
 
@@ -19,11 +15,20 @@ function Write-Log {
 
 try {
     Set-Location $REPO_DIR
-    Write-Log "Started update in $REPO_DIR"
+    Write-Log "Started check in $REPO_DIR"
 } catch {
     Write-Log "Failed to change to ${REPO_DIR}: $($_.Exception.Message)"
     exit 1
 }
+
+# Check for any changes (unstaged or uncommitted)
+$status_output = git status --porcelain 2>$null
+if ($status_output -eq "") {
+    Write-Log "No changes detected - skipping upload"
+    exit 0  # Success, but no action
+}
+
+Write-Log "Changes detected - staging and committing"
 
 # Stage all changes
 git add . 2>$null
@@ -32,66 +37,41 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-# Check for staged changes and commit
-if (-not (git diff-index --quiet HEAD --)) {
-    git commit -m "Auto-commit unstaged changes: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" 2>$null
-    if ($LASTEXITCODE -eq 0) {
-        Write-Log "Committed unstaged changes"
-    } else {
-        Write-Log "Commit failed - stashing"
-        git stash push -m "Auto-stash before pull: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" 2>$null
-        if ($LASTEXITCODE -ne 0) {
-            Write-Log "Stash failed - aborting"
-            exit 1
-        }
-    }
+# Commit
+git commit -m "Auto-upload changes: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" 2>$null
+if ($LASTEXITCODE -ne 0) {
+    Write-Log "Commit failed"
+    exit 1
 }
 
-# Pull without rebase (uses merge, safer for auto scripts)
+Write-Log "Committed changes"
+
+# Pull first (merge strategy for safety)
 git pull origin master 2>$null
 if ($LASTEXITCODE -ne 0) {
-    Write-Log "Pull failed - restoring stash if any"
-    git stash pop 2>$null
+    Write-Log "Pull failed"
     exit 1
 }
 
-# Stage any new changes from pull
+# Re-stage and commit any merge conflicts/resolutions (if needed)
 git add . 2>$null
-if ($LASTEXITCODE -ne 0) {
-    Write-Log "git add after pull failed"
-    exit 1
-}
-
-# Commit if changes
-if (-not (git diff-index --quiet HEAD --)) {
-    git commit -m "Auto-commit after pull: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" 2>$null
-    if ($LASTEXITCODE -eq 0) {
-        Write-Log "Committed changes after pull"
-    } else {
-        Write-Log "Commit after pull failed - stashing"
-        git stash push -m "Auto-stash after pull: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" 2>$null
-        if ($LASTEXITCODE -ne 0) {
-            Write-Log "Stash after pull failed"
-            exit 1
-        }
+$status_after_pull = git status --porcelain 2>$null
+if ($status_after_pull -ne "") {
+    git commit -m "Auto-resolve after pull: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Log "Post-pull commit failed"
+        exit 1
     }
-} else {
-    Write-Log "No changes after pull"
+    Write-Log "Committed post-pull changes"
 }
 
 # Push
 git push origin master 2>$null
 if ($LASTEXITCODE -eq 0) {
     Write-Log "Pushed successfully"
-    # Clean up any stashes (pop if exists)
-    git stash list 2>$null | Out-Null
-    if ($LASTEXITCODE -eq 0) {
-        git stash pop 2>$null
-        Write-Log "Cleaned up stashes"
-    }
 } else {
     Write-Log "Push failed"
     exit 1
 }
 
-Write-Log "Update completed successfully"
+Write-Log "Auto-upload completed"
