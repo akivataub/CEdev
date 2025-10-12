@@ -1,0 +1,7 @@
+# All Unique Colors from 5 images
+	- color: {index: 0, r: 14, g: 7, b: 27}
+	- color: {index: 1, r: 26, g: 25, b: 50}
+	- color: {index: 2, r: 42, g: 47, b: 78}
+	- color: {index: 3, r: 51, g: 152, b: 75}
+	- color: {index: 4, r: 199, g: 207, b: 221}
+	- color: {index: 5, r: 255, g: 255, b: 255}

@@ -5,11 +5,11 @@
 extern "C" {
 #endif
 
-#define tile_back_width 64
-#define tile_back_height 64
-#define tile_back_size 4098
+#define tile_back_width 38
+#define tile_back_height 58
+#define tile_back_size 2206
 #define tile_back ((gfx_sprite_t*)tile_back_data)
-extern unsigned char tile_back_data[4098];
+extern unsigned char tile_back_data[2206];
 
 #ifdef __cplusplus
 }
