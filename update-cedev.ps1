@@ -47,8 +47,8 @@ if (-not (git diff-index --quiet HEAD --)) {
     }
 }
 
-# Pull with rebase
-git pull origin master --rebase 2>$null
+# Pull without rebase (uses merge, safer for auto scripts)
+git pull origin master 2>$null
 if ($LASTEXITCODE -ne 0) {
     Write-Log "Pull failed - restoring stash if any"
     git stash pop 2>$null
