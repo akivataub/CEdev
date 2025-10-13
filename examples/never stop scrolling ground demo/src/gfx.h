@@ -7,12 +7,7 @@ extern "C" {
 
 #include "global_palette.h"
 #define sprites_palette_offset 0
-#include "tile_back.h"
-#include "ntwo.h"
-#include "nthree.h"
-#include "nfour.h"
-#include "nfive.h"
-#include "ace.h"
+#include "bush.h"
 
 #ifdef __cplusplus
 }
