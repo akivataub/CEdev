@@ -35,6 +35,7 @@ void drawground() {
     makelinesthicker(SCREEN_HEIGHT, (SCREEN_WIDTH - 40), 0, 40);
     copy_background_to_sprite(bush, 4, fbushy);
     copy_background_to_sprite(bush, 284, sbushy);
+    copy_background_to_sprite(bush, 284, tbushy);
 }
 
 void randomInteger(int min, int max, int *result) {
@@ -69,6 +70,7 @@ int main(void)
     gfx_FillScreen(255);
     randomInteger(0, 240, &fbushy);
     randomInteger(0, 240, &sbushy);
+    randomInteger(0, 240, &tbushy);
     while (!os_GetCSC()) {
         // first bush
         if (fbushy == SCREEN_HEIGHT) {
@@ -84,6 +86,17 @@ int main(void)
             drawground();
         } else if (sbushy < SCREEN_HEIGHT) {
             sbushy += 1;
+            drawground();
+        }
+        // same for third bush just tbushy
+        if (tbushy == sbushy) {
+            randomInteger(0, 240, &tbushy);
+            drawground();
+        } else if (tbushy == SCREEN_HEIGHT) {
+            tbushy = 1;
+            drawground();
+        } else if (tbushy < SCREEN_HEIGHT) {
+            tbushy += 1;
             drawground();
         }
         gfx_SwapDraw();
