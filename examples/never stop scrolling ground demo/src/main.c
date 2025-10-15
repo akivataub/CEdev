@@ -89,8 +89,10 @@ int main(void)
             drawground();
         }
         // same for third bush just tbushy
-        if (tbushy == sbushy) {
-            randomInteger(0, 240, &tbushy);
+        if (tbushy == sbushy || abs(tbushy - sbushy) < 32) {
+            do {
+                randomInteger(0, 240, &tbushy);
+            } while (abs(tbushy - sbushy) < 32); // Keep trying until they're far enough apart
             drawground();
         } else if (tbushy == SCREEN_HEIGHT) {
             tbushy = 1;
