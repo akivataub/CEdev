@@ -1,0 +1,18 @@
+palettes:
+  - name: global_palette
+    images: automatic  # Let it scan your images and create the palette
+
+converts:
+  - name: my_sprites
+    palette: global_palette
+    images:
+      - f1.jpg
+      - 2.jpg
+
+outputs:
+  - type: c
+    include-file: gfx.h
+    palettes:
+      - global_palette
+    converts:
+      - my_sprites
