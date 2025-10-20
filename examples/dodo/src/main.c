@@ -1,7 +1,6 @@
 #include <ti/getcsc.h>
 #include <keypadc.h>    // For key scanning
 #include <graphx.h>
-#include <ti/realclock.h>  // For timers
 #include <fileioc.h>    // For AppVars (optional loading)
 #include "gfx/gfx.h" 
 #include "f1.h"
