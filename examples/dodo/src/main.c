@@ -1,6 +1,12 @@
-#include <ti/screen.h>
-#include <ti/getcsc.h>
+#include <tice.h>
+#include <graphx.h>
+#include <keypadc.h>
 #include <stdlib.h>
+#include <time.h>
+#include "gfx.h"
+#include "global_palette.h"
+#include "1.h"
+*include "2.h"
 
 /* Main function, called first */
 int main(void)
