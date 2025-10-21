@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <time.h>
 #include <stdio.h>
-#include <rtc.h>
+#include <sys/rtc.h>
 #include "gfx.h"
 #include "b1.h"
 #include "b2.h"
@@ -108,14 +108,14 @@ int show_menu() {
     }
 }
 
-void main(void) {
+int main(void) {
     gfx_Begin();
     gfx_SetPalette(global_palette, sizeof_global_palette, 0);
     gfx_SetTransparentColor(0);
     gfx_SetTextFGColor(COLOR_WHITE);
     gfx_SetDrawBuffer();
 
-    rtc_Enable(RTC_ENABLE_CLOCK);
+    rtc_Enable(RTC_INT_MASK);
 
     uint32_t last_time = rtc_Time();
 
@@ -154,4 +154,5 @@ void main(void) {
     }
 
     gfx_End();
+    return 0;
 }

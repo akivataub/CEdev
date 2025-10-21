@@ -2,9 +2,9 @@
 # Makefile Options
 # ----------------------------
 
-NAME = DEMO
+NAME = picview
 ICON = icon.png
-DESCRIPTION = "CE C Toolchain Demo"
+DESCRIPTION = "pic viewer demo"
 COMPRESSED = NO
 
 CFLAGS = -Wall -Wextra -Oz
