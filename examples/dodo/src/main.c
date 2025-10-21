@@ -11,8 +11,8 @@
 #include "b2.h"
 
 #define MAX_SPRITES 10
-#define PHOTO_WIDTH 128
-#define PHOTO_HEIGHT 128
+#define MAX_PHOTO_WIDTH 155
+#define MAX_PHOTO_HEIGHT 105
 #define PADDING 10
 #define ARROW_SIZE 12 
 
@@ -20,7 +20,12 @@ gfx_sprite_t *sprites[MAX_SPRITES] = {b1, b2, NULL, NULL, NULL, NULL, NULL, NULL
 int num_sprites = 2;
 bool auto_scroll = true;
 int scroll_speed = 3;
-int current_pair = 0;
+int current_index = 0;
+bool is_horizontal = true;
+int view_mode = 0; // 0: pair, 1: single
+
+#define VIEW_PAIR 0
+#define VIEW_SINGLE 1
 
 #define COLOR_BLACK 0
 #define COLOR_WHITE 255
@@ -28,21 +33,9 @@ int current_pair = 0;
 #define COLOR_RED 2 
 #define COLOR_TRANSPARENT_GRAY 100 
 
-void draw_left_arrow_overlay(int x, int y, int color) {
-    gfx_SetColor(color);
-    // Draw a small triangle pointing left inside the photo area
-    gfx_FillTriangle_NoClip(x, y + ARROW_SIZE, x, y - ARROW_SIZE, x - ARROW_SIZE, y);
-}
-
-void draw_right_arrow_overlay(int x, int y, int color) {
-    gfx_SetColor(color);
-    // Draw a small triangle pointing right inside the photo area
-    gfx_FillTriangle_NoClip(x, y - ARROW_SIZE, x, y + ARROW_SIZE, x + ARROW_SIZE, y);
-}
-
-void draw_photo_border(int x, int y) {
+void draw_photo_border(int x, int y, int w, int h) {
     gfx_SetColor(COLOR_BLUE);
-    gfx_Rectangle_NoClip(x - 2, y - 2, PHOTO_WIDTH + 4, PHOTO_HEIGHT + 4);
+    gfx_Rectangle_NoClip(x - 2, y - 2, w + 4, h + 4);
 }
 
 void draw_status_bar(bool menu_active) {
@@ -54,7 +47,7 @@ void draw_status_bar(bool menu_active) {
     gfx_PrintStringXY("Photo Viewer", 5, 5);
 
     char status[30];
-    sprintf(status, "Photo %d/%d", current_pair + 1, num_sprites); 
+    sprintf(status, "Photo %d/%d", current_index + 1, num_sprites); 
     gfx_PrintStringXY(status, 320 - gfx_GetStringWidth(status) - 5, 5);
 
     gfx_SetColor(COLOR_BLUE);
@@ -66,81 +59,179 @@ void draw_status_bar(bool menu_active) {
     }
 }
 
-void display_pair() {
-    int x1 = (320 - 2 * PHOTO_WIDTH - PADDING) / 2;
-    int x2 = x1 + PHOTO_WIDTH + PADDING;
-    int y = (240 - PHOTO_HEIGHT) / 2;
+void display_current() {
+    int photo_area_height = 240 - 20;
 
     gfx_FillScreen(COLOR_BLACK);
     draw_status_bar(false);
 
-    if (current_pair < num_sprites) {
-        gfx_TransparentSprite(sprites[current_pair], x1, y);
-        draw_photo_border(x1, y);
-    }
-    if (current_pair + 1 < num_sprites) {
-        gfx_TransparentSprite(sprites[current_pair + 1], x2, y);
-        draw_photo_border(x2, y);
+    if (view_mode == VIEW_SINGLE) {
+        if (current_index < num_sprites) {
+            gfx_sprite_t *spr = sprites[current_index];
+            int w = spr->width;
+            int h = spr->height;
+            int scale_x = 320 / w;
+            int scale_y = photo_area_height / h;
+            int scale = (scale_x < scale_y ? scale_x : scale_y);
+            if (scale < 1) scale = 1;
+            scale = (scale > 255 ? 255 : scale);
+            int drawn_w = w * scale;
+            int drawn_h = h * scale;
+            int x = (320 - drawn_w) / 2;
+            int y = 20 + (photo_area_height - drawn_h) / 2;
+            gfx_ScaledTransparentSprite_NoClip(spr, x, y, scale, scale);
+            draw_photo_border(x, y, drawn_w, drawn_h);
+        }
     } else {
-        gfx_SetTextFGColor(COLOR_WHITE);
-        gfx_SetTextScale(2, 2);
-        gfx_PrintStringXY("End of Album", x2 + 10, y + 50);
-        gfx_SetTextScale(1, 1);
-    }
-    
-    // Draw tiny navigation arrows on the pictures
-    if (num_sprites > 2) {
-        // Arrow for previous (left photo)
-        draw_left_arrow_overlay(x1 + 10, y + PHOTO_HEIGHT / 2, COLOR_WHITE);
-        // Arrow for next (right photo)
-        draw_right_arrow_overlay(x2 + PHOTO_WIDTH - 10, y + PHOTO_HEIGHT / 2, COLOR_WHITE);
+        gfx_sprite_t *spr1 = (current_index < num_sprites) ? sprites[current_index] : NULL;
+        gfx_sprite_t *spr2 = (current_index + 1 < num_sprites) ? sprites[current_index + 1] : NULL;
+        int w1 = spr1 ? spr1->width : 0;
+        int h1 = spr1 ? spr1->height : 0;
+        int w2 = spr2 ? spr2->width : 0;
+        int h2 = spr2 ? spr2->height : 0;
+
+        int x1, y1, x2, y2;
+        if (is_horizontal) {
+            int total_w = w1 + w2 + PADDING;
+            int max_h = (h1 > h2 ? h1 : h2);
+            x1 = (320 - total_w) / 2;
+            y1 = 20 + (photo_area_height - max_h) / 2;
+            x2 = x1 + w1 + PADDING;
+            y2 = y1;
+        } else {
+            int max_w = (w1 > w2 ? w1 : w2);
+            int total_h = h1 + h2 + PADDING;
+            x1 = (320 - max_w) / 2;
+            y1 = 20 + (photo_area_height - total_h) / 2;
+            x2 = x1;
+            y2 = y1 + h1 + PADDING;
+        }
+
+        if (spr1) {
+            gfx_TransparentSprite(spr1, x1, y1);
+            draw_photo_border(x1, y1, w1, h1);
+        }
+        if (spr2) {
+            gfx_TransparentSprite(spr2, x2, y2);
+            draw_photo_border(x2, y2, w2, h2);
+        } else if (spr1) {
+            gfx_SetTextFGColor(COLOR_WHITE);
+            gfx_SetTextScale(2, 2);
+            gfx_PrintStringXY("End of Album", x2 + 10, y2 + 50);
+            gfx_SetTextScale(1, 1);
+        }
     }
     
     gfx_Blit(gfx_buffer);
 }
 
 void slide_transition(int direction) {
-    int dx = direction * (PHOTO_WIDTH + PADDING); 
+    int step = (view_mode == VIEW_PAIR ? 2 : 1);
+    int new_index = (current_index - direction * step + num_sprites) % num_sprites;
 
-    for (int i = 0; i < PHOTO_WIDTH + PADDING; i += 16) {
+    int dx = 0;
+    int dy = 0;
+    int slide_size = 0;
+    if (view_mode == VIEW_SINGLE || is_horizontal) {
+        dx = direction * (MAX_PHOTO_WIDTH + PADDING);
+        slide_size = MAX_PHOTO_WIDTH + PADDING;
+    } else {
+        dy = direction * (MAX_PHOTO_HEIGHT + PADDING);
+        slide_size = MAX_PHOTO_HEIGHT + PADDING;
+    }
+
+    for (int i = 0; i < slide_size; i += 16) {
         
         gfx_FillScreen(COLOR_BLACK);
         draw_status_bar(false);
 
-        // Draw current/next pair
-        if (current_pair < num_sprites) {
-            gfx_TransparentSprite(sprites[current_pair], (320 - 2 * PHOTO_WIDTH - PADDING) / 2 + dx - i, (240 - PHOTO_HEIGHT) / 2);
-        }
-        if (current_pair + 1 < num_sprites) {
-            gfx_TransparentSprite(sprites[current_pair + 1], (320 - 2 * PHOTO_WIDTH - PADDING) / 2 + PHOTO_WIDTH + PADDING + dx - i, (240 - PHOTO_HEIGHT) / 2);
+        // Draw current
+        gfx_sprite_t *spr1 = (current_index < num_sprites) ? sprites[current_index] : NULL;
+        gfx_sprite_t *spr2 = (view_mode == VIEW_PAIR && current_index + 1 < num_sprites) ? sprites[current_index + 1] : NULL;
+        int w1 = spr1 ? spr1->width : 0;
+        int h1 = spr1 ? spr1->height : 0;
+        int w2 = spr2 ? spr2->width : 0;
+        int h2 = spr2 ? spr2->height : 0;
+
+        int x1, y1, x2, y2;
+        if (view_mode == VIEW_SINGLE) {
+            int scale = min(320 / w1, (240 - 20) / h1);
+            scale = min(255, scale > 1 ? scale : 1);
+            int drawn_w = w1 * scale;
+            int drawn_h = h1 * scale;
+            x1 = (320 - drawn_w) / 2 + dx - i;
+            y1 = 20 + ((240 - 20) - drawn_h) / 2 + dy - i;
+            if (spr1) gfx_ScaledTransparentSprite_NoClip(spr1, x1, y1, scale, scale);
+        } else {
+            if (is_horizontal) {
+                int total_w = w1 + w2 + PADDING;
+                int max_h = max(h1, h2);
+                x1 = (320 - total_w) / 2 + dx - i;
+                y1 = 20 + ((240 - 20) - max_h) / 2;
+                x2 = x1 + w1 + PADDING;
+                y2 = y1;
+            } else {
+                int max_w = max(w1, w2);
+                int total_h = h1 + h2 + PADDING;
+                x1 = (320 - max_w) / 2;
+                y1 = 20 + ((240 - 20) - total_h) / 2 + dy - i;
+                x2 = x1;
+                y2 = y1 + h1 + PADDING;
+            }
+            if (spr1) gfx_TransparentSprite(spr1, x1, y1);
+            if (spr2) gfx_TransparentSprite(spr2, x2, y2);
         }
 
-        // Draw previous/new pair coming in
-        int new_pair = (current_pair - direction * 2 + num_sprites) % num_sprites;
-        int new_x_offset = (320 - 2 * PHOTO_WIDTH - PADDING) / 2 - dx;
+        // Draw new
+        gfx_sprite_t *newspr1 = (new_index < num_sprites) ? sprites[new_index] : NULL;
+        gfx_sprite_t *newspr2 = (view_mode == VIEW_PAIR && new_index + 1 < num_sprites) ? sprites[new_index + 1] : NULL;
+        int nw1 = newspr1 ? newspr1->width : 0;
+        int nh1 = newspr1 ? newspr1->height : 0;
+        int nw2 = newspr2 ? newspr2->width : 0;
+        int nh2 = newspr2 ? newspr2->height : 0;
 
-        if (new_pair < num_sprites) {
-            gfx_TransparentSprite(sprites[new_pair], new_x_offset + i, (240 - PHOTO_HEIGHT) / 2);
-        }
-        if (new_pair + 1 < num_sprites) {
-            gfx_TransparentSprite(sprites[new_pair + 1], new_x_offset + PHOTO_WIDTH + PADDING + i, (240 - PHOTO_HEIGHT) / 2);
+        int nx1, ny1, nx2, ny2;
+        if (view_mode == VIEW_SINGLE) {
+            int nscale = min(320 / nw1, (240 - 20) / nh1);
+            nscale = min(255, nscale > 1 ? nscale : 1);
+            int ndrawn_w = nw1 * nscale;
+            int ndrawn_h = nh1 * nscale;
+            nx1 = (320 - ndrawn_w) / 2 - dx + i;
+            ny1 = 20 + ((240 - 20) - ndrawn_h) / 2 - dy + i;
+            if (newspr1) gfx_ScaledTransparentSprite_NoClip(newspr1, nx1, ny1, nscale, nscale);
+        } else {
+            if (is_horizontal) {
+                int ntotal_w = nw1 + nw2 + PADDING;
+                int nmax_h = max(nh1, nh2);
+                nx1 = (320 - ntotal_w) / 2 - dx + i;
+                ny1 = 20 + ((240 - 20) - nmax_h) / 2;
+                nx2 = nx1 + nw1 + PADDING;
+                ny2 = ny1;
+            } else {
+                int nmax_w = max(nw1, nw2);
+                int ntotal_h = nh1 + nh2 + PADDING;
+                nx1 = (320 - nmax_w) / 2;
+                ny1 = 20 + ((240 - 20) - ntotal_h) / 2 - dy + i;
+                nx2 = nx1;
+                ny2 = ny1 + nh1 + PADDING;
+            }
+            if (newspr1) gfx_TransparentSprite(newspr1, nx1, ny1);
+            if (newspr2) gfx_TransparentSprite(newspr2, nx2, ny2);
         }
 
         gfx_Blit(gfx_buffer);
-        delay(10);
+        os_Wait(10);
     }
 }
 
 void scroll_photos(int direction) {
-    int new_pair = (current_pair + direction * 2 + num_sprites) % num_sprites;
+    int step = (view_mode == VIEW_PAIR ? 2 : 1);
+    int new_index = (current_index + direction * step + num_sprites) % num_sprites;
     
-    // Perform a slide transition if the new pair index is different
-    if (new_pair != current_pair) {
-        // Slide right (direction 1) if going to a higher index, otherwise slide left (direction -1)
-        slide_transition(direction); 
-        current_pair = new_pair;
-        // Final display to clean up
-        display_pair();
+    if (new_index != current_index) {
+        slide_transition(direction);
+        current_index = new_index;
+        display_current();
     }
 }
 
@@ -162,8 +253,14 @@ int show_menu() {
     sprintf(option_status, "2: Speed (%d sec)", scroll_speed);
     gfx_PrintStringXY(option_status, 10, 70);
 
+    sprintf(option_status, "3: View Mode (%s)", view_mode == VIEW_SINGLE ? "Single (Zoom)" : "Pair");
+    gfx_PrintStringXY(option_status, 10, 90);
+
+    sprintf(option_status, "4: Layout (%s)", is_horizontal ? "Horizontal" : "Vertical");
+    gfx_PrintStringXY(option_status, 10, 110);
+
     gfx_SetTextFGColor(COLOR_BLUE);
-    gfx_PrintStringXY("EXIT", 10, 110);
+    gfx_PrintStringXY("5: EXIT", 10, 130);
     
     gfx_SetTextFGColor(COLOR_RED);
     gfx_PrintStringXY("Press CLEAR to return", 10, 200);
@@ -172,8 +269,10 @@ int show_menu() {
         kb_Scan();
         if (kb_Data[7] & kb_1) { auto_scroll = !auto_scroll; return 0; }
         if (kb_Data[7] & kb_2) { scroll_speed = (scroll_speed == 3) ? 5 : 3; return 0; }
+        if (kb_Data[7] & kb_3) { view_mode = (view_mode == VIEW_SINGLE ? VIEW_PAIR : VIEW_SINGLE); return 0; }
+        if (kb_Data[7] & kb_4) { is_horizontal = !is_horizontal; return 0; }
+        if (kb_Data[7] & kb_5) { return 1; }
         if (kb_Data[6] & kb_Clear) { return 0; }
-        if (kb_Data[7] & kb_4) { return 1; }
     }
 }
 
@@ -188,7 +287,7 @@ int main(void) {
 
     uint32_t last_time = rtc_Time();
 
-    display_pair();
+    display_current();
 
     while (1) {
         kb_Scan();
@@ -196,7 +295,7 @@ int main(void) {
         if (kb_Data[1] & kb_2nd) {
             if (show_menu()) break;
             gfx_SetDrawBuffer(); 
-            display_pair();
+            display_current();
         }
 
         if (auto_scroll) {
