@@ -1,6 +1,9 @@
 import os
 import subprocess
 import glob
+import yaml
+
+CONVERT_NAME = 'my_sprites'
 
 def get_current_counter(lines):
     for line in lines:
@@ -9,31 +12,80 @@ def get_current_counter(lines):
     return 3  # default
 
 def add_to_convimg(name):
-    with open('convimg.yaml', 'a') as f:
-        f.write(f'  - name: {name}\n')
-        f.write('    palette: global_palette\n')
-        f.write('    images:\n')
-        f.write(f'      - {name}.png\n')
+    with open('convimg.yaml', 'r') as f:
+        data = yaml.safe_load(f)
+    
+    # Find or create the convert block
+    convert_block = None
+    for c in data.get('converts', []):
+        if c.get('name') == CONVERT_NAME:
+            convert_block = c
+            break
+    
+    if convert_block is None:
+        new_convert = {
+            'name': CONVERT_NAME,
+            'palette': 'global_palette',
+            'images': [f'{name}.png']
+        }
+        data['converts'] = data.get('converts', []) + [new_convert]
+    else:
+        convert_block['images'].append(f'{name}.png')
+    
+    # Ensure output exists (add if not)
+    output_exists = False
+    for o in data.get('outputs', []):
+        if CONVERT_NAME in o.get('converts', []):
+            output_exists = True
+            break
+    if not output_exists:
+        new_output = {
+            'type': 'c',
+            'include-file': 'gfx.h',
+            'converts': [CONVERT_NAME]
+        }
+        data['outputs'] = data.get('outputs', []) + [new_output]
+    
+    with open('convimg.yaml', 'w') as f:
+        yaml.dump(data, f, default_flow_style=False, sort_keys=False)
+    
+    # Post-process to use 3 tabs for images lines
+    with open('convimg.yaml', 'r') as f:
+        lines = f.readlines()
+    with open('convimg.yaml', 'w') as f:
+        for line in lines:
+            if line.startswith('    - '):  # Assuming 4 spaces from dump (under images: with 2 spaces indent)
+                line = '\t\t\t' + line.lstrip('    ')
+            f.write(line)
+
+def remove_from_convimg(name):
+    with open('convimg.yaml', 'r') as f:
+        data = yaml.safe_load(f)
+    
+    # Find and remove from images in the convert block
+    for c in data.get('converts', []):
+        if c.get('name') == CONVERT_NAME:
+            c['images'] = [img for img in c.get('images', []) if img != f'{name}.png']
+            break
+    
+    with open('convimg.yaml', 'w') as f:
+        yaml.dump(data, f, default_flow_style=False, sort_keys=False)
 
 def add_include(lines, name):
-    last_include_idx = -1
-    for i, line in enumerate(lines):
-        if line.startswith('#include "b') and line.endswith('.h"\n'):
-            last_include_idx = i
-    if last_include_idx != -1:
-        lines.insert(last_include_idx + 1, f'#include "{name}.h"\n')
+    # No need for separate includes; all in gfx.h
+    pass
 
 def add_to_sprites(lines, name):
     for i, line in enumerate(lines):
         if 'gfx_sprite_t *sprites[MAX_SPRITES] =' in line:
             parts = line.split('=')[1].strip()[1:-2]  # remove { and };
             items = [p.strip() for p in parts.split(',')]
-            for j, item in enumerate(items):
-                if item == 'NULL':
-                    items.insert(j, name)
+            for j in range(len(items)):
+                if items[j] == 'NULL':
+                    items.insert(j, f'{CONVERT_NAME}_{name}')
                     break
-            new_array = '{' + ', '.join(items) + '};'
-            lines[i] = 'gfx_sprite_t *sprites[MAX_SPRITES] = ' + new_array + '\n'
+            new_array = ' { ' + ', '.join(items) + ' };'
+            lines[i] = 'gfx_sprite_t *sprites[MAX_SPRITES] =' + new_array + '\n'
             break
 
 def update_num_sprites(lines, delta=1):
@@ -45,7 +97,7 @@ def update_num_sprites(lines, delta=1):
             break
 
 def resize_image(file, name):
-    subprocess.call(['magick', 'convert', file, '-resize', '155x105^>', f'{name}.png'])
+    subprocess.call(['magick', file, '-resize', '155x105^>', f'{name}.png'])
 
 def set_layout(lines, is_horiz):
     for i, line in enumerate(lines):
@@ -59,33 +111,19 @@ def set_view_mode(lines, is_pair):
             lines[i] = f'int view_mode = {0 if is_pair else 1}; // 0: pair, 1: single\n'
             break
 
-def remove_from_convimg(name):
-    with open('convimg.yaml', 'r') as f:
-        lines = f.readlines()
-    start = -1
-    for i, line in enumerate(lines):
-        if f'  - name: {name}' in line:
-            start = i
-            break
-    if start != -1:
-        del lines[start:start+4]
-    with open('convimg.yaml', 'w') as f:
-        f.writelines(lines)
-
 def remove_include(lines, name):
-    for i, line in enumerate(lines):
-        if line == f'#include "{name}.h"\n':
-            del lines[i]
-            break
+    # No separate includes
+    pass
 
 def remove_from_sprites(lines, name):
     for i, line in enumerate(lines):
         if 'gfx_sprite_t *sprites[MAX_SPRITES] =' in line:
             parts = line.split('=')[1].strip()[1:-2]
             items = [p.strip() for p in parts.split(',')]
-            if name in items:
-                items.remove(name)
-            new_array = '{' + ', '.join(items) + '};'
+            full_name = f'{CONVERT_NAME}_{name}'
+            if full_name in items:
+                items.remove(full_name)
+            new_array = ' { ' + ', '.join(items) + ' };'
             lines[i] = 'gfx_sprite_t *sprites[MAX_SPRITES] = ' + new_array + '\n'
             break
 
@@ -102,12 +140,14 @@ def main():
         with open('src/main.c', 'r') as f:
             lines = f.readlines()
 
+        # Remove old separate includes if present (one-time cleanup)
+        lines = [l for l in lines if not (l.startswith('#include "b') and l.endswith('.h"\n') and 'gfx.h' not in l)]
+
         if choice in ['1', '3']:
             horiz = input("Horizontal or Vertical layout (h/v)? ").lower() == 'h'
             set_layout(lines, horiz)
             pair = input("View mode pair or single (p/s)? ").lower() == 'p'
             set_view_mode(lines, pair)
-            # Note: photos per page is 2 for pair, 1 for single; pages calculated based on total photos
 
             counter = get_current_counter(lines)
 
@@ -117,7 +157,7 @@ def main():
                 for _ in range(num):
                     file = input("Enter photo file path: ")
                     files.append(file)
-            else:  # '3'
+            else:
                 files = glob.glob('*.png') + glob.glob('*.jpg')
                 files = [f for f in files if not f.startswith('b')]
 
@@ -125,7 +165,6 @@ def main():
                 name = f'b{counter}'
                 resize_image(file, name)
                 add_to_convimg(name)
-                add_include(lines, name)
                 add_to_sprites(lines, name)
                 update_num_sprites(lines, 1)
                 counter += 1
@@ -136,7 +175,6 @@ def main():
             for _ in range(num):
                 bname = input("Enter b name to remove (e.g., b3): ")
                 remove_from_convimg(bname)
-                remove_include(lines, bname)
                 remove_from_sprites(lines, bname)
                 update_num_sprites(lines, -1)
                 print(f"Removed {bname}")
@@ -144,7 +182,8 @@ def main():
         with open('src/main.c', 'w') as f:
             f.writelines(lines)
 
-        print("Changes saved. Run convimg and recompile.")
+        print("Changes saved. Running go.bat...")
+        subprocess.call('go.bat', shell=True)
 
 if __name__ == "__main__":
     main()
