@@ -5,31 +5,13 @@ converts:
 - name: my_sprites
   palette: global_palette
   images:
+			- b2.png
   - b1.png
-  - b2.png
-  - b7.png
-  - b8.png
-- name: b5
-  palette: global_palette
-  images:
-  - b5.png
-- name: b6
-  palette: global_palette
-  images:
-  - b6.png
 outputs:
 - type: c
   include-file: gfx.h
   palettes:
   - global_palette
-- type: c
-  include-file: b5.h
-  converts:
-  - b5
-- type: c
-  include-file: b6.h
-  converts:
-  - b6
 - type: c
   include-file: gfx.h
   converts:
