@@ -1,20 +1,20 @@
 palettes:
-  - name: global_palette
-    images: automatic
-
+- name: global_palette
+  images: automatic
 converts:
-  - name: sprites
-    palette: global_palette
-    transparent-color-index: 0
-    bpp: 8  # Force 8bpp for simple byte-per-pixel access
-    images:
-      -b1.png
-      -b2.png
-
+- name: sprites
+  palette: global_palette
+  transparent-color-index: 0
+  bpp: 8
+  images:
+			- b2.png
+			- b1.png
+			- b11.png
+			- b12.png
 outputs:
-  - type: c
-    include-file: gfx.h
-    palettes:
-      - global_palette
-    converts:
-      - sprites
+- type: c
+  include-file: gfx.h
+  palettes:
+  - global_palette
+  converts:
+  - sprites

@@ -3,7 +3,7 @@ import subprocess
 import glob
 import yaml
 
-CONVERT_NAME = 'my_sprites'
+CONVERT_NAME = 'sprites'
 
 def get_current_counter(lines):
     for line in lines:
@@ -13,7 +13,29 @@ def get_current_counter(lines):
 
 def migrate_yaml():
     with open('convimg.yaml', 'r') as f:
-        content = f.read().replace('\t', '  ')
+        content = f.read()
+
+    # Replace tabs with spaces for parsing
+    content = content.replace('\t', '  ')
+
+    # Fix invalid images line if present
+    lines = content.splitlines()
+    new_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith('images:') and '-' in stripped and not stripped.endswith(':'):
+            indent = line[:line.find('images:')]
+            new_lines.append(indent + 'images:')
+            images_str = stripped[len('images:'):].strip()
+            images = images_str.split()
+            for img in images:
+                if img.strip():
+                    clean_img = img.strip().lstrip('-')
+                    new_lines.append(indent + '  - ' + clean_img)
+        else:
+            new_lines.append(line)
+
+    content = '\n'.join(new_lines)
     data = yaml.safe_load(content)
 
     # Find all old bX converts and collect images
@@ -22,7 +44,10 @@ def migrate_yaml():
     for c in data.get('converts', []):
         name = c.get('name')
         if name.startswith('b') and name[1:].isdigit():
-            old_images += c.get('images', [])
+            images = c.get('images', [])
+            if isinstance(images, str):
+                images = [img.strip().lstrip('-') for img in images.split() if img.strip()]
+            old_images += images
         else:
             new_converts.append(c)
     data['converts'] = new_converts
@@ -30,7 +55,7 @@ def migrate_yaml():
     # Filter existing files
     old_images = [img for img in old_images if os.path.exists(img)]
 
-    # Add to my_sprites
+    # Add to sprites
     convert_block = None
     for c in data['converts']:
         if c.get('name') == CONVERT_NAME:
@@ -40,25 +65,33 @@ def migrate_yaml():
         convert_block = {
             'name': CONVERT_NAME,
             'palette': 'global_palette',
+            'transparent-color-index': 0,
+            'bpp': 8,
             'images': old_images
         }
         data['converts'].append(convert_block)
     else:
         existing_images = convert_block.get('images', [])
+        if isinstance(existing_images, str):
+            existing_images = [img.strip().lstrip('-') for img in existing_images.split() if img.strip()]
         all_images = existing_images + old_images
-        unique_images = list(set(all_images))  # remove duplicates
+        unique_images = list(set(all_images))
         convert_block['images'] = [img for img in unique_images if os.path.exists(img)]
 
-    # Remove old outputs for bX
+    # Remove old outputs for bX and duplicates
     new_outputs = []
+    seen_convs = set()
     for o in data.get('outputs', []):
-        convs = o.get('converts', [])
+        convs = tuple(sorted(o.get('converts', [])))
+        if convs in seen_convs:
+            continue
+        seen_convs.add(convs)
         if len(convs) == 1 and convs[0].startswith('b') and convs[0][1:].isdigit():
             continue
         new_outputs.append(o)
     data['outputs'] = new_outputs
 
-    # Ensure output for my_sprites and global_palette
+    # Ensure output for sprites and global_palette
     output_exists = False
     for o in data['outputs']:
         if CONVERT_NAME in o.get('converts', []):
@@ -72,6 +105,9 @@ def migrate_yaml():
         }
         data['outputs'].append(new_output)
 
+    # Remove other convert blocks like my_sprites
+    data['converts'] = [c for c in data['converts'] if c.get('name') == CONVERT_NAME]
+
     with open('convimg.yaml', 'w') as f:
         yaml.dump(data, f, default_flow_style=False, sort_keys=False)
 
@@ -84,11 +120,13 @@ def migrate_yaml():
             stripped = line.strip()
             if stripped == 'images:':
                 in_images = True
-            elif in_images and not stripped.startswith('- '):
+                f.write(line)
+            elif in_images and stripped.startswith('- '):
+                line = '\t\t\t' + stripped + '\n'
+                f.write(line)
+            else:
                 in_images = False
-            if in_images and stripped.startswith('- '):
-                line = '\t\t\t' + line.lstrip()  # 3 tabs + the rest
-            f.write(line)
+                f.write(line)
 
 def migrate_sprites(lines):
     for i, line in enumerate(lines):
@@ -99,21 +137,42 @@ def migrate_sprites(lines):
             for item in items:
                 if item == 'NULL':
                     new_items.append(item)
-                elif item.startswith('my_sprites_'):
+                elif item.startswith(CONVERT_NAME + '_'):
                     new_items.append(item)
+                elif item.startswith('my_sprites_'):
+                    new_items.append(item.replace('my_sprites_', CONVERT_NAME + '_'))
                 else:
-                    # assume it's bX, add prefix
-                    new_items.append(f'my_sprites_{item}')
+                    new_items.append(f'{CONVERT_NAME}_{item}')
             new_array = ' { ' + ', '.join(new_items) + ' };'
             lines[i] = 'gfx_sprite_t *sprites[MAX_SPRITES] =' + new_array + '\n'
             break
 
 def add_to_convimg(name):
     with open('convimg.yaml', 'r') as f:
-        content = f.read().replace('\t', '  ')
+        content = f.read()
+
+    content = content.replace('\t', '  ')
+
+    lines = content.splitlines()
+    new_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith('images:') and '-' in stripped and not stripped.endswith(':'):
+            indent = line[:line.find('images:')]
+            new_lines.append(indent + 'images:')
+            images_str = stripped[len('images:'):].strip()
+            images = images_str.split()
+            for img in images:
+                if img.strip():
+                    clean_img = img.strip().lstrip('-')
+                    new_lines.append(indent + '  - ' + clean_img)
+        else:
+            new_lines.append(line)
+
+    content = '\n'.join(new_lines)
     data = yaml.safe_load(content)
     
-    # Add to my_sprites images
+    # Add to sprites images
     convert_block = None
     for c in data.get('converts', []):
         if c.get('name') == CONVERT_NAME:
@@ -124,11 +183,17 @@ def add_to_convimg(name):
         new_convert = {
             'name': CONVERT_NAME,
             'palette': 'global_palette',
+            'transparent-color-index': 0,
+            'bpp': 8,
             'images': [f'{name}.png']
         }
         data['converts'] = data.get('converts', []) + [new_convert]
     else:
-        convert_block['images'].append(f'{name}.png')
+        existing_images = convert_block.get('images', [])
+        if isinstance(existing_images, str):
+            existing_images = [img.strip().lstrip('-') for img in existing_images.split() if img.strip()]
+        existing_images.append(f'{name}.png')
+        convert_block['images'] = existing_images
     
     # Ensure output exists
     output_exists = False
@@ -156,25 +221,67 @@ def add_to_convimg(name):
             stripped = line.strip()
             if stripped == 'images:':
                 in_images = True
-            elif in_images and not stripped.startswith('- '):
+                f.write(line)
+            elif in_images and stripped.startswith('- '):
+                line = '\t\t\t' + stripped + '\n'
+                f.write(line)
+            else:
                 in_images = False
-            if in_images and stripped.startswith('- '):
-                line = '\t\t\t' + line.lstrip()  # 3 tabs + the rest
-            f.write(line)
+                f.write(line)
 
 def remove_from_convimg(name):
     with open('convimg.yaml', 'r') as f:
-        content = f.read().replace('\t', '  ')
+        content = f.read()
+
+    content = content.replace('\t', '  ')
+
+    lines = content.splitlines()
+    new_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith('images:') and '-' in stripped and not stripped.endswith(':'):
+            indent = line[:line.find('images:')]
+            new_lines.append(indent + 'images:')
+            images_str = stripped[len('images:'):].strip()
+            images = images_str.split()
+            for img in images:
+                if img.strip():
+                    clean_img = img.strip().lstrip('-')
+                    new_lines.append(indent + '  - ' + clean_img)
+        else:
+            new_lines.append(line)
+
+    content = '\n'.join(new_lines)
     data = yaml.safe_load(content)
     
-    # Remove from images in my_sprites
+    # Remove from images in sprites
     for c in data.get('converts', []):
         if c.get('name') == CONVERT_NAME:
-            c['images'] = [img for img in c.get('images', []) if img != f'{name}.png']
+            images = c.get('images', [])
+            if isinstance(images, str):
+                images = [img.strip().lstrip('-') for img in images.split() if img.strip()]
+            c['images'] = [img for img in images if img != f'{name}.png']
             break
     
     with open('convimg.yaml', 'w') as f:
         yaml.dump(data, f, default_flow_style=False, sort_keys=False)
+    
+    # Post-process to use 3 tabs for images lines
+    with open('convimg.yaml', 'r') as f:
+        lines = f.readlines()
+    with open('convimg.yaml', 'w') as f:
+        in_images = False
+        for line in lines:
+            stripped = line.strip()
+            if stripped == 'images:':
+                in_images = True
+                f.write(line)
+            elif in_images and stripped.startswith('- '):
+                line = '\t\t\t' + stripped + '\n'
+                f.write(line)
+            else:
+                in_images = False
+                f.write(line)
 
 def add_include(lines, name):
     # No need for separate includes

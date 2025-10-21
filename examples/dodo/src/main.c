@@ -17,8 +17,8 @@
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
 
-gfx_sprite_t *sprites[MAX_SPRITES] = { my_sprites_b1, my_sprites_b2, my_sprites_b3, my_sprites_b4, my_sprites_b5, my_sprites_b6, my_sprites_b7, my_sprites_b8, my_sprites_b9, my_sprites_b10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
-int num_sprites = 10;
+gfx_sprite_t *sprites[MAX_SPRITES] = { sprites_b1, sprites_b2, sprites_b3, sprites_b4, sprites_b5, sprites_b6, sprites_b7, sprites_b8, sprites_b9, sprites_b10, sprites_b11, sprites_b12, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+int num_sprites = 12;
 bool auto_scroll = true;
 int scroll_speed = 3;
 int current_index = 0;
