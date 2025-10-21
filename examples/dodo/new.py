@@ -13,7 +13,8 @@ def get_current_counter(lines):
 
 def migrate_yaml():
     with open('convimg.yaml', 'r') as f:
-        data = yaml.safe_load(f)
+        content = f.read().replace('\t', '  ')
+    data = yaml.safe_load(content)
 
     # Find all old bX converts and collect images
     old_images = []
@@ -78,9 +79,15 @@ def migrate_yaml():
     with open('convimg.yaml', 'r') as f:
         lines = f.readlines()
     with open('convimg.yaml', 'w') as f:
+        in_images = False
         for line in lines:
-            if line.strip().startswith('- ') and 'images:' in lines[lines.index(line)-1]:
-                line = '\t\t\t' + line.lstrip(' ')
+            stripped = line.strip()
+            if stripped == 'images:':
+                in_images = True
+            elif in_images and not stripped.startswith('- '):
+                in_images = False
+            if in_images and stripped.startswith('- '):
+                line = '\t\t\t' + line.lstrip()  # 3 tabs + the rest
             f.write(line)
 
 def migrate_sprites(lines):
@@ -103,7 +110,8 @@ def migrate_sprites(lines):
 
 def add_to_convimg(name):
     with open('convimg.yaml', 'r') as f:
-        data = yaml.safe_load(f)
+        content = f.read().replace('\t', '  ')
+    data = yaml.safe_load(content)
     
     # Add to my_sprites images
     convert_block = None
@@ -143,14 +151,21 @@ def add_to_convimg(name):
     with open('convimg.yaml', 'r') as f:
         lines = f.readlines()
     with open('convimg.yaml', 'w') as f:
+        in_images = False
         for line in lines:
-            if line.strip().startswith('- ') and 'images:' in lines[lines.index(line)-1]:
-                line = '\t\t\t' + line.lstrip(' ')
+            stripped = line.strip()
+            if stripped == 'images:':
+                in_images = True
+            elif in_images and not stripped.startswith('- '):
+                in_images = False
+            if in_images and stripped.startswith('- '):
+                line = '\t\t\t' + line.lstrip()  # 3 tabs + the rest
             f.write(line)
 
 def remove_from_convimg(name):
     with open('convimg.yaml', 'r') as f:
-        data = yaml.safe_load(f)
+        content = f.read().replace('\t', '  ')
+    data = yaml.safe_load(content)
     
     # Remove from images in my_sprites
     for c in data.get('converts', []):
