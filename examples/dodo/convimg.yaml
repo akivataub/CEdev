@@ -14,5 +14,3 @@ outputs:
     include-file: gfx.h
     palettes:
       - global_palette
-    converts:
-      - my_sprites

@@ -9,6 +9,8 @@
 #include "gfx.h"
 #include "b1.h"
 #include "b2.h"
+#include "b3.h"
+#include "b4.h"
 
 #define MAX_SPRITES 10
 #define PADDING 10
@@ -19,12 +21,12 @@
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
 
-gfx_sprite_t *sprites[MAX_SPRITES] = {b1, b2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
-int num_sprites = 2;
+gfx_sprite_t *sprites[MAX_SPRITES] = {b1, b2, b3, b4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+int num_sprites = 4;
 bool auto_scroll = true;
 int scroll_speed = 3;
 int current_index = 0;
-bool is_horizontal = true;
+bool is_horizontal = false;
 int view_mode = 0; // 0: pair, 1: single
 
 #define VIEW_PAIR 0
