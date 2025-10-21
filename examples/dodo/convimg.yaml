@@ -6,8 +6,8 @@ converts:
   - name: my_sprites
     palette: global_palette
     images:
-      - f1.jpg
-      - 2.jpg
+      - b1.png
+      - b2.png
 
 outputs:
   - type: c
